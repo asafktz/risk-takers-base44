@@ -1,0 +1,16 @@
+{
+  "name": "Risk Takers",
+  "short_name": "Risk Takers",
+  "description": "Live webinars and interviews about AI adoption, cybersecurity, governance, and real-world risk.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F4F2ED",
+  "theme_color": "#1F1F1F",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    }
+  ]
+}

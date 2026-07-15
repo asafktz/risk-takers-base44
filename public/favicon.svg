@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Risk Takers">
+  <rect width="64" height="64" fill="#1F1F1F"/>
+  <path d="M10 14h44v10H10zM10 30h34v10H10zM10 46h24v6H10z" fill="#F1C40F"/>
+  <path d="M47 30l7 7-7 7v-5H35v-4h12z" fill="#FFFFFF"/>
+</svg>

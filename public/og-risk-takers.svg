@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#1F1F1F"/>
+  <rect x="80" y="80" width="220" height="34" fill="#F1C40F"/>
+  <text x="80" y="260" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="118" font-weight="900">RISK</text>
+  <text x="80" y="390" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="118" font-weight="900">TAKERS</text>
+  <text x="84" y="480" fill="#F1C40F" font-family="Inter, Arial, sans-serif" font-size="36" font-weight="800">AI. CYBERSECURITY. GOVERNANCE. REAL-WORLD RISK.</text>
+  <path d="M830 140h250v70H830zM830 270h190v70H830zM830 400h130v70H830z" fill="#F1C40F"/>
+  <path d="M1020 280l80 65-80 65v-45H890v-40h130z" fill="#FFFFFF"/>
+</svg>
