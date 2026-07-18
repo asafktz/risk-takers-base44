@@ -38,6 +38,9 @@
       }
     </script>
     <title>Risk Takers | AI, Cybersecurity, and Risk Shows</title>
+    <!-- Hosting-migration hygiene: unregister any service worker the previous (Base44) deployment left on
+         this domain — a stale SW would keep serving the old shell whose asset hashes no longer exist. -->
+    <script>try { navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function (rs) { rs.forEach(function (r) { r.unregister(); }); }); } catch (e) {}</script>
     <!-- Showrunner first-party visitor pixel — captures intent for the featured show -->
     <script src="https://webinar-show.vercel.app/sr.js" data-show="building-resilient-systems-insig-s1pc" async></script>
     <script src="https://webinar-show.vercel.app/sr.js" data-account="px_ea318f7787914774a763926a" async></script>
