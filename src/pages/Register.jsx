@@ -9,6 +9,7 @@ import TornPaper from '../components/TornPaper';
 import { Loader2, CheckCircle2, AlertCircle, Calendar, Clock, Users, Linkedin } from 'lucide-react';
 import { format } from 'date-fns';
 import { episodeIdFromSlug, episodePath, setSEO } from '@/lib/seo';
+import { SHOWRUNNER_ORIGIN, showrunnerSlugFromUrl } from '@/config/liveEvent';
 
 export default function Register() {
   const { episodeSlug } = useParams();
@@ -47,6 +48,8 @@ export default function Register() {
   const guests = episodeData?.guests || [];
 
   const isLinkedInLive = episode?.platform === 'linkedin_live';
+  // Showrunner-produced episode → embed its REAL registration widget instead of this local form.
+  const srSlug = showrunnerSlugFromUrl(episode?.event_registration_url);
 
   React.useEffect(() => {
     if (!episode) return;
@@ -236,8 +239,18 @@ export default function Register() {
           <div className="lg:col-span-1">
             <div className="sticky top-8">
               <Card className="border-4 border-[#1F1F1F] shadow-2xl">
-                <CardContent className="p-6 bg-white">
-                  {status === 'success' ? (
+                <CardContent className={srSlug ? 'p-0' : 'p-6 bg-white'}>
+                  {srSlug ? (
+                    // The REAL Showrunner signup widget — same form/pipeline as every other
+                    // Showrunner registration; it handles its own submit, consent and confirmation.
+                    <iframe
+                      key={srSlug}
+                      src={`${SHOWRUNNER_ORIGIN}/widget/${srSlug}`}
+                      title="Register — powered by Showrunner"
+                      className="w-full block"
+                      style={{ height: 440, border: 0 }}
+                    />
+                  ) : status === 'success' ? (
                     <div className="text-center py-4">
                       <div className="mb-4 flex justify-center">
                         <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">

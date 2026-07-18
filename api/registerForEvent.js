@@ -13,17 +13,11 @@ async function getEpisode(id) {
   return rows[0] || null;
 }
 
-// A Showrunner-produced episode carries its Showrunner signup URL in event_registration_url — registering
-// there (not just locally) is what gets the person their PERSONAL fail-proof watch link, the RSVP calendar
-// invite and the 24h/1h reminders, and puts them in the show's real registrants list.
-const SHOWRUNNER_APP = 'https://webinar-show.vercel.app';
-function showrunnerSlug(episode) {
-  const m = /webinar-show\.vercel\.app\/e\/([a-z0-9-]+)/i.exec(episode?.event_registration_url || '');
-  return m ? m[1] : null;
-}
-
-// Demio is retired. Every event is now treated as a LinkedIn Live / link-based
-// registration: capture the attendee and email them the join link.
+// Demio is retired. Every event is now treated as a LinkedIn Live / link-based registration: capture the
+// attendee and email them the join link. Showrunner-produced episodes DON'T reach this function at all —
+// their pages embed Showrunner's own /widget/<slug> registration form, which registers the person directly
+// on Showrunner (personal /w link, RSVP calendar invite, reminders). This is only the fallback for
+// episodes with no Showrunner backing (plain LinkedIn Live events, old Demio links).
 export default handler(async (body) => {
   const { name, email, episodeId } = body;
   if (!name || !email) throw new Error('Name and email are required');
@@ -40,24 +34,7 @@ export default handler(async (body) => {
   });
 
   const title = episode?.title || 'Risk Takers';
-
-  // Showrunner-produced episode → register them THERE too. Showrunner then sends the one confirmation
-  // that matters (personal /w link + calendar invite + reminders), so we skip our own join-link email —
-  // two confirmations is spam. Any failure falls back to today's local email.
-  let bridged = false;
-  const srSlug = showrunnerSlug(episode);
-  if (srSlug) {
-    try {
-      const res = await fetch(`${SHOWRUNNER_APP}/api/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slug: srSlug, name, email, consent_agreed: true, utm: { source: 'risktakers.show', medium: 'episode-page' } }),
-      });
-      bridged = res.ok;
-    } catch { /* bridge down → local email below still covers the attendee */ }
-  }
-
-  if (joinLink && !bridged) {
+  if (joinLink) {
     await sendEmail({
       to: email,
       subject: `You're registered: ${title}`,
@@ -72,7 +49,7 @@ export default handler(async (body) => {
   await sendEmail({
     to: NOTIFY_EMAIL,
     subject: `New registration: ${title}`,
-    text: `New registration\n\nName: ${name}\nEmail: ${email}\nEpisode: ${title}${bridged ? '\n(also registered on Showrunner — confirmation + reminders come from there)' : ''}`,
+    text: `New registration\n\nName: ${name}\nEmail: ${email}\nEpisode: ${title}`,
   });
 
   return { success: true, data: joinLink ? [{ join_link: joinLink }] : [] };

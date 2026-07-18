@@ -9,6 +9,7 @@ import TornPaper from '../components/TornPaper';
 import { Loader2, CheckCircle2, AlertCircle, Calendar, Clock, ExternalLink, Mail, PlayCircle, FileText, ChevronDown } from 'lucide-react';
 import { format } from 'date-fns';
 import { episodeIdFromSlug, episodeJsonLd, episodePath, setSEO } from '@/lib/seo';
+import { SHOWRUNNER_ORIGIN, showrunnerSlugFromUrl } from '@/config/liveEvent';
 
 export default function Episode() {
   const { episodeSlug } = useParams();
@@ -146,6 +147,9 @@ export default function Episode() {
   const hasRecording = episode.status === 'recorded' || episode.status === 'published';
   const isUpcoming = (episode.status === 'upcoming' || episode.status === 'live') && !isPast;
   const isEnded = isPast && !hasRecording;
+  // Showrunner-produced episode → embed its REAL registration widget (own signup form, own send
+  // pipeline, own personal /w link + reminders). Only episodes without one fall back to the local form.
+  const srSlug = showrunnerSlugFromUrl(episode.event_registration_url);
 
   return (
     <div className="min-h-screen bg-[#E8E6E1]">
@@ -211,8 +215,19 @@ export default function Episode() {
           {/* Registration Section (Upcoming) */}
           {isUpcoming && (
             <Card className="border-4 border-[#1F1F1F]">
-              <CardContent className="p-8 bg-white">
-                {registrationStatus === 'success' ? (
+              <CardContent className={srSlug ? 'p-0' : 'p-8 bg-white'}>
+                {srSlug ? (
+                  // The REAL Showrunner signup widget — same form/pipeline as every other Showrunner
+                  // registration, not a lookalike. It shows its own title/date, handles its own submit,
+                  // consent and confirmation state — nothing local to manage here.
+                  <iframe
+                    key={srSlug}
+                    src={`${SHOWRUNNER_ORIGIN}/widget/${srSlug}`}
+                    title="Register — powered by Showrunner"
+                    className="w-full block"
+                    style={{ height: 440, border: 0 }}
+                  />
+                ) : registrationStatus === 'success' ? (
                   <div className="text-center py-8">
                     <CheckCircle2 className="w-16 h-16 text-green-600 mx-auto mb-4" />
                     <h3 className="text-2xl font-bold text-[#111111] mb-2">You're Registered!</h3>
