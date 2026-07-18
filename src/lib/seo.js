@@ -41,6 +41,11 @@ export const episodePath = (episode) => {
 };
 
 export const episodeIdFromSlug = (slug = '') => {
+  // Supabase ids are UUIDs — they CONTAIN dashes, so "last dash-segment" (fine for the old dash-less
+  // Base44 ids) truncated them and every /episodes/<slug>-<uuid> link 404'd. Extract a trailing UUID
+  // first; fall back to the legacy last-segment for any old dashless links still out in the wild.
+  const uuid = /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/i.exec(slug);
+  if (uuid) return uuid[1];
   const parts = slug.split('-');
   return parts[parts.length - 1] || '';
 };
