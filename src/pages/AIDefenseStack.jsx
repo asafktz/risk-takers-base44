@@ -48,6 +48,7 @@ const timelineItems = [
 ];
 
 const initialForm = {
+  name: '',
   company: '',
   email: '',
   website: ''
@@ -62,7 +63,7 @@ function scrollToApply() {
 }
 
 function RegisterForm() {
-  const [form, setForm] = useState({ email: '' });
+  const [form, setForm] = useState({ name: '', email: '' });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
@@ -73,11 +74,15 @@ function RegisterForm() {
     setError('');
 
     try {
-      // For now, just show success - you'll need to set up the Base44 function
+      const { data } = await base44.functions.invoke('registerForEvent', {
+        name: form.name,
+        email: form.email,
+      });
+      if (data?.error) throw new Error(data.error);
       setSubmitted(true);
-      setForm({ email: '' });
+      setForm({ name: '', email: '' });
     } catch (submitError) {
-      setError('Something went wrong. Please try again.');
+      setError('Something went wrong. Please email risktakers@linkedotter.com.');
     } finally {
       setSubmitting(false);
     }
@@ -89,7 +94,7 @@ function RegisterForm() {
         <CheckCircle2 className="h-16 w-16 text-green-600" />
         <h2 className="mt-5 text-3xl font-black uppercase">You're registered.</h2>
         <p className="mt-3 max-w-md text-base leading-7 text-[#55504A]">
-          Watch link and details will be sent September 20.
+          We'll send your watch link and details before September 23.
         </p>
       </div>
     );
@@ -98,6 +103,17 @@ function RegisterForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <h2 className="text-2xl font-black uppercase leading-none sm:text-3xl">Register to watch live</h2>
+      <div>
+        <Label htmlFor="register-name" className="font-black uppercase tracking-wide">Name *</Label>
+        <Input
+          id="register-name"
+          value={form.name}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+          placeholder="Your name"
+          required
+          className="mt-2 rounded-none border-2 border-[#1F1F1F]"
+        />
+      </div>
       <div>
         <Label htmlFor="register-email" className="font-black uppercase tracking-wide">Email *</Label>
         <Input
@@ -128,6 +144,10 @@ function ApplyForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (!form.name.trim()) {
+      setError('Your name is required.');
+      return;
+    }
     if (!form.company.trim()) {
       setError('Company name is required.');
       return;
@@ -145,11 +165,19 @@ function ApplyForm() {
     setError('');
 
     try {
-      // For now, just show success - you'll need to set up the Base44 function
+      const { data } = await base44.functions.invoke('submitAIDefenseStackLead', {
+        name: form.name,
+        email: form.email,
+        company: form.company,
+        linkedin: form.website,
+        role: 'vendor',
+        message: 'AI Defense Stack showcase — startup application',
+      });
+      if (data?.error) throw new Error(data.error);
       setSubmitted(true);
       setForm(initialForm);
     } catch (submitError) {
-      setError('Something went wrong. Please try again.');
+      setError('Something went wrong. Please email risktakers@linkedotter.com.');
     } finally {
       setSubmitting(false);
     }
@@ -173,6 +201,17 @@ function ApplyForm() {
       <p className="text-sm font-semibold leading-6 text-[#55504A]">
         We are selecting five cybersecurity startups representing different parts of the AI defense stack.
       </p>
+
+      <div>
+        <Label htmlFor="apply-name" className="font-black uppercase tracking-wide">Your name *</Label>
+        <Input
+          id="apply-name"
+          value={form.name}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+          placeholder="Contact name"
+          className="mt-2 rounded-none border-2 border-[#1F1F1F]"
+        />
+      </div>
 
       <div>
         <Label htmlFor="apply-company" className="font-black uppercase tracking-wide">Company name *</Label>

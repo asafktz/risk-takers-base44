@@ -9,6 +9,8 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
 import AppLayout from '@/components/AppLayout';
+import MiniPlayer from '@/components/MiniPlayer';
+import WatchPage from '@/pages/Watch';
 import AboutPage from '@/pages/About';
 import ContactPage from '@/pages/Contact';
 import ApplyPage from '@/pages/Apply';
@@ -100,6 +102,13 @@ const AuthenticatedApp = () => {
             <Pages.Register />
           </LayoutWrapper>
         } />
+        {/* The show lives HERE: Showrunner invite/reminder/calendar links point at this page (the event's
+            watch destination) — the full journey runs in the embed, attendees never leave risktakers.show. */}
+        <Route path="/watch/:slug" element={
+          <LayoutWrapper currentPageName="Watch">
+            <WatchPage />
+          </LayoutWrapper>
+        } />
         <Route path="/" element={
           <LayoutWrapper currentPageName={mainPageKey}>
             <MainPage />
@@ -132,6 +141,9 @@ function App() {
         <Router>
           <NavigationTracker />
           <AuthenticatedApp />
+          {/* persistent mini player — the show follows visitors across the site (SPA: never reloads);
+              hides itself on /watch and when dismissed. Config: src/config/liveEvent.js */}
+          <MiniPlayer />
         </Router>
         <Toaster />
       </QueryClientProvider>
