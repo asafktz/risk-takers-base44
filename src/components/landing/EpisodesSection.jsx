@@ -19,7 +19,10 @@ export default function EpisodesSection() {
         ).filter(Boolean) || [];
         
         const episodeDate = new Date(ep.date);
-        
+        // real per-episode times — the old hardcoded "11:00 AM ET |…" row silently lied whenever a
+        // show wasn't in that exact slot (the Jul 22 episode is 12 PM ET, not 11 AM)
+        const tzTime = (zone) => new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZone: zone }).format(episodeDate);
+
         return {
           id: ep.id,
           title: ep.title,
@@ -31,8 +34,8 @@ export default function EpisodesSection() {
           description: ep.description,
           date: format(episodeDate, 'EEE, d MMM'),
           times: {
-            primary: "11:00 AM ET | 10:00 AM CT | 9:00 AM MT | 8:00 AM PT",
-            international: "5:00 PM CET | 4:00 PM UK | 6:00 PM Israel"
+            primary: `${tzTime('America/New_York')} ET | ${tzTime('America/Chicago')} CT | ${tzTime('America/Denver')} MT | ${tzTime('America/Los_Angeles')} PT`,
+            international: `${tzTime('Europe/Paris')} CET | ${tzTime('Europe/London')} UK | ${tzTime('Asia/Jerusalem')} Israel`
           },
           isLive: ep.is_live,
           spotify_link: ep.spotify_link,
