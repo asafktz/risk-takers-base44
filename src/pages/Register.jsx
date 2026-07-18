@@ -248,7 +248,7 @@ export default function Register() {
                       src={`${SHOWRUNNER_ORIGIN}/widget/${srSlug}`}
                       title="Register — powered by Showrunner"
                       className="w-full block"
-                      style={{ height: 440, border: 0 }}
+                      style={{ height: 320, border: 0 }}
                     />
                   ) : status === 'success' ? (
                     <div className="text-center py-4">
