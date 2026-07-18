@@ -244,13 +244,16 @@ export default function Episode() {
                           <p className="text-sm text-red-700">Registration failed. Please try again.</p>
                         </div>
                       )}
-                      <Button 
-                        type="submit" 
+                      <Button
+                        type="submit"
                         disabled={registering}
                         className="w-full bg-[#C0392B] hover:bg-[#A0301B] text-white font-bold py-6"
                       >
                         {registering ? <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Registering...</> : 'Register Now'}
                       </Button>
+                      <p className="text-xs text-[#666666] text-center">
+                        By registering you agree to receive event emails (confirmation, your join link and reminders). Unsubscribe anytime.
+                      </p>
                     </form>
                   </>
                 )}
