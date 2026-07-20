@@ -20,14 +20,18 @@ export default function WatchPage() {
     return `${SHOWRUNNER_ORIGIN}/embed/${clean}${qs ? `?${qs}` : ''}`;
   }, [slug, location.search]);
 
+  // 3.5rem = the sticky navbar's h-14. Using 100dvh keeps the show fully visible on mobile, where
+  // 100vh sits behind the browser's collapsing chrome and would clip the bottom of the stage.
+  const fill = 'calc(100dvh - 3.5rem)';
+
   return (
-    <div className="bg-black" style={{ minHeight: 'calc(100vh - 64px)' }}>
+    <div className="bg-black" style={{ minHeight: fill }}>
       <iframe
         src={src}
         title="Risk Takers — live show"
         allow="camera; microphone; autoplay; fullscreen; picture-in-picture; clipboard-write"
         allowFullScreen
-        style={{ border: 0, width: '100%', height: 'calc(100vh - 64px)', display: 'block', background: '#000' }}
+        style={{ border: 0, width: '100%', height: fill, display: 'block', background: '#000' }}
       />
     </div>
   );

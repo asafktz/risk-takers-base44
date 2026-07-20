@@ -23,7 +23,7 @@ export default function MiniPlayer() {
     let dead = false;
     const poll = async () => {
       try {
-        const r = await fetch(`${SHOWRUNNER_ORIGIN}/api/live?room=${LIVE_EVENT.roomSlug}`);
+        const r = await fetch(`${SHOWRUNNER_ORIGIN}/api/live?room=${LIVE_EVENT.publicSlug}`);
         const d = await r.json();
         if (!dead && d?.live) { setIsLive(true); save('open'); }
       } catch { /* transient — keep the pill */ }

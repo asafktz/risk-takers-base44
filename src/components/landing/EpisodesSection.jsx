@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 import TornPaper from '../TornPaper';
 import EpisodeCard from './EpisodeCard';
 import { format } from 'date-fns';
+import { watchSlugForEpisode } from '@/config/liveEvent';
 
 export default function EpisodesSection() {
   const { data: episodes = [], isLoading } = useQuery({
@@ -41,6 +42,10 @@ export default function EpisodesSection() {
           spotify_link: ep.spotify_link,
           youtube_link: ep.youtube_link,
           registration_link: ep.registration_link,
+          // resolved here because the raw episode (with linkedin_live_url / event_registration_url)
+          // isn't passed down to the card — the card only sees this view model
+          watchSlug: watchSlugForEpisode(ep),
+          status: ep.status,
           date_raw: ep.date
         };
       });

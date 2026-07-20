@@ -119,9 +119,17 @@ export default function EpisodeCard({ episode }) {
             asChild
             className="w-full bg-[#1F1F1F] hover:bg-[#111111] text-white font-bold py-5 transition-all hover:translate-y-[-2px]"
           >
-            <Link to={episodePath(episode)}>
-              {isLive ? 'Register Live' : hasRecording ? 'View Episode' : 'Learn More'}
-            </Link>
+            {/* Showrunner-produced episodes go straight to the on-site watch page — the embed
+                handles signup → waiting room → live → replay itself, so one CTA covers every state. */}
+            {episode.watchSlug ? (
+              <Link to={`/watch/${episode.watchSlug}`}>
+                {isLive ? 'Watch Live' : hasRecording ? 'Watch Replay' : 'Watch the Show'}
+              </Link>
+            ) : (
+              <Link to={episodePath(episode)}>
+                {isLive ? 'Register Live' : hasRecording ? 'View Episode' : 'Learn More'}
+              </Link>
+            )}
           </Button>
         </div>
       </TornPaper>

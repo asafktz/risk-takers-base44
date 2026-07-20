@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,7 +9,7 @@ import TornPaper from '../components/TornPaper';
 import { Loader2, CheckCircle2, AlertCircle, Calendar, Clock, ExternalLink, Mail, PlayCircle, FileText, ChevronDown } from 'lucide-react';
 import { format } from 'date-fns';
 import { episodeIdFromSlug, episodeJsonLd, episodePath, setSEO } from '@/lib/seo';
-import { SHOWRUNNER_ORIGIN, showrunnerSlugFromUrl } from '@/config/liveEvent';
+import { SHOWRUNNER_ORIGIN, showrunnerSlugFromUrl, watchSlugForEpisode } from '@/config/liveEvent';
 
 export default function Episode() {
   const { episodeSlug } = useParams();
@@ -150,6 +150,12 @@ export default function Episode() {
   // Showrunner-produced episode → embed its REAL registration widget (own signup form, own send
   // pipeline, own personal /w link + reminders). Only episodes without one fall back to the local form.
   const srSlug = showrunnerSlugFromUrl(episode.event_registration_url);
+  // …and the watch destination on our own domain, where the whole show (waiting room → live →
+  // replay) plays inside the site rather than sending people off to Showrunner.
+  const watchSlug = watchSlugForEpisode(episode);
+  const watchLabel = episode.is_live || episode.status === 'live'
+    ? 'Watch live now'
+    : hasRecording ? 'Watch the replay' : 'Watch the show';
 
   return (
     <div className="min-h-screen bg-[#E8E6E1]">
@@ -184,6 +190,18 @@ export default function Episode() {
                 <Clock className="w-5 h-5" />
                 <span className="font-bold">{format(new Date(episode.date), 'h:mm a')}</span>
               </div>
+            </div>
+          )}
+
+          {watchSlug && (
+            <div className="flex justify-center mb-6">
+              <Link
+                to={`/watch/${watchSlug}`}
+                className="inline-flex items-center gap-2 bg-[#C0392B] hover:bg-[#A0301B] text-white font-black uppercase tracking-wide px-8 py-4 transition-colors shadow-[4px_4px_0_#1F1F1F]"
+              >
+                <PlayCircle className="w-5 h-5" />
+                {watchLabel}
+              </Link>
             </div>
           )}
 
