@@ -31,3 +31,6 @@ dist-ssr
 .vercel
 .env*
 base44/.app.jsonc
+
+# saved Base44-era Vercel project link (kept for reference, not part of the app)
+.vercel-base44-team-backup/
