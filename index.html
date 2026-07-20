@@ -48,5 +48,72 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <!-- Showrunner persistent mini player — the show follows visitors across the site.
+         Platform snippet, copied verbatim from the event's embed panel. Do not hand-roll this:
+         it stands down automatically on /watch (where the full embed already plays) so we never
+         run two players and pay twice in attendee-minutes. Swap the slug for the next show. -->
+    <script>(function(){
+      if (window.__srMini) return; window.__srMini = 1;
+      var K='sr-mini-the-human-operating-system-is-the-new-attack-surface-with-ev', st;
+      try { st = sessionStorage.getItem(K) || ''; } catch(e){ st=''; }
+      if (st === 'closed') return;
+      var qs=(function(){var p=new URLSearchParams(location.search),o=new URLSearchParams();p.forEach(function(v,k){if(k==='r'||k==='n'||k.indexOf('utm_')===0)o.append(k,v)});var s=o.toString();return s?'?'+s:'';})();
+      var box=document.createElement('div');
+      box.style.cssText='position:fixed;right:16px;bottom:16px;z-index:2147483000;font-family:system-ui,sans-serif;box-shadow:0 8px 32px rgba(0,0,0,.35);border-radius:12px;overflow:hidden;background:#0b0d11;color:#fff;transition:width .25s,height .25s;';
+      function save(v){ try{ sessionStorage.setItem(K,v); }catch(e){} }
+      function render(open){
+        box.innerHTML='';
+        var bar=document.createElement('div');
+        bar.style.cssText='display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;background:#0b0d11;font-size:12px;font-weight:700;';
+        bar.innerHTML='<span style="width:8px;height:8px;border-radius:50%;background:#ff4d00;display:inline-block"></span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Live show</span>'+
+          '<a href="https://www.risktakers.show/watch/the-human-operating-system-is-the-new-attack-surface-with-ev'+qs+'" style="color:#fff;text-decoration:none;padding:0 4px" title="Open full page">⤢</a>'+
+          '<span data-a="m" style="padding:0 4px" title="'+(open?'Minimize':'Expand')+'">'+(open?'—':'▶')+'</span>'+
+          '<span data-a="x" style="padding:0 4px" title="Close">✕</span>';
+        bar.onclick=function(e){
+          var a=e.target&&e.target.getAttribute&&e.target.getAttribute('data-a');
+          if(a==='x'){ save('closed'); box.remove(); return; }
+          if(a==='m'||e.target===bar||e.target.tagName==='SPAN'&&!a){ render(!open); save(open?'min':'open'); }
+        };
+        box.appendChild(bar);
+        if(open){
+          var f=document.createElement('iframe');
+          f.src='https://webinar-show.vercel.app/embed/the-human-operating-system-is-the-new-attack-surface-with-ev'+qs;
+          f.allow='camera; microphone; autoplay; fullscreen; picture-in-picture';
+          f.style.cssText='width:360px;height:202px;border:0;display:block;background:#000';
+          box.appendChild(f);
+        }
+      }
+      render(st==='open');
+      document.body.appendChild(box);
+      // A host runs this site-wide AND usually has a full watch page. On that page both would render the
+      // same event: two players, doubled audio, and a SECOND LiveKit join billed as extra attendee-minutes.
+      // So whenever a full /embed for THIS event is already on the page, collapse to a pill and hide —
+      // and restore when it goes away, so SPA route changes back out of the watch page bring the player back.
+      // Removing our iframe (not just hiding it) is the point: a hidden iframe stays connected and still bills.
+      function read(){ try{ return sessionStorage.getItem(K)||''; }catch(e){ return ''; } }
+      function foreign(){
+        var f=document.querySelectorAll('iframe[src*="/embed/the-human-operating-system-is-the-new-attack-surface-with-ev"]');
+        for(var i=0;i<f.length;i++){ if(!box.contains(f[i])) return true; }
+        return false;
+      }
+      var hidden=false, mo, deb;
+      function sync(){
+        if(read()==='closed'){ try{ mo&&mo.disconnect(); }catch(e){} return; }
+        var dup=foreign();
+        if(dup===hidden) return;
+        hidden=dup;
+        if(dup){ render(false); box.style.display='none'; }
+        else { box.style.display=''; render(read()==='open'); }
+      }
+      sync();
+      try{ mo=new MutationObserver(function(){ clearTimeout(deb); deb=setTimeout(sync,300); }); mo.observe(document.body,{childList:true,subtree:true}); }catch(e){}
+      // best-effort: auto-expand the pill the moment the show goes live (stops polling once open/dismissed)
+      var tries=0, t=setInterval(function(){
+        if(!document.body.contains(box) || box.querySelector('iframe') || ++tries>240){ clearInterval(t); return; }
+        fetch('https://webinar-show.vercel.app/api/live?room=the-human-operating-system-is-the-new-attack-surface-with-ev').then(function(r){return r.json()}).then(function(d){
+          if(d&&d.live&&!hidden){ clearInterval(t); render(true); save('open'); }
+        }).catch(function(){});
+      }, 30000);
+    })();</script>
   </body>
 </html>

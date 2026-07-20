@@ -1,13 +1,8 @@
-// The CURRENT featured live show — drives /watch/<publicSlug> deep links and the site-wide mini player.
-// Swap these three values when a new episode goes on the calendar.
-export const LIVE_EVENT = {
-  // the public event slug on Showrunner (what /watch/:slug and invite links carry)
-  publicSlug: 'the-human-operating-system-is-the-new-attack-surface-with-ev',
-  // the internal LiveKit room slug — used only for the lightweight "is it live yet?" poll
-  roomSlug: 'unpopular-opinion-using-ai-to-cu-a0fq',
-  title: 'The Human Operating System is the New Attack Surface — with Eva Benn',
-};
-
+// The site-wide floating mini player is NOT built here — it's a Showrunner feature. Copy the
+// "Persistent mini player" snippet from the event's embed panel and paste it in index.html.
+// We used to hand-roll it in React (components/MiniPlayer.jsx) with its own live-poll and its own
+// copy of the featured-event config; that duplicated a platform capability and drifted out of sync
+// (its poll slug had rotted to a different event, so it would never have opened when the show went live).
 export const SHOWRUNNER_ORIGIN = 'https://webinar-show.vercel.app';
 
 // An episode produced on Showrunner carries its signup page in event_registration_url
