@@ -54,6 +54,9 @@
          run two players and pay twice in attendee-minutes. Swap the slug for the next show. -->
     <script>(function(){
       if (window.__srMini) return; window.__srMini = 1;
+      // This QA page already renders a full Flarea comparison. Keep the persistent site player out
+      // of the test surface so it cannot obscure either iframe or add a third event experience.
+      if (location.pathname.replace(/\/+$/, '') === '/flarea-embed-lab') return;
       var K='sr-mini-the-human-operating-system-is-the-new-attack-surface-with-ev', st;
       try { st = sessionStorage.getItem(K) || ''; } catch(e){ st=''; }
       if (st === 'closed') return;
