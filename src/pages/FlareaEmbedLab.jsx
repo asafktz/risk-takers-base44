@@ -125,12 +125,12 @@ export default function FlareaEmbedLab() {
               the Netflix-style library at <code className="text-white">/me</code>. Hosting stays separate and invite-only.
             </p>
             <a
-              href={`${SHOWRUNNER_ORIGIN}/me`}
+              href={`${SHOWRUNNER_ORIGIN}/me?demo=1`}
               target="_blank"
               rel="noreferrer"
               className="mt-6 inline-flex items-center gap-2 bg-[#F1C40F] px-4 py-3 text-sm font-black text-[#1F1F1F] transition hover:bg-white"
             >
-              See the Watcher library <ArrowUpRight className="h-4 w-4" />
+              Preview the Watcher library <ArrowUpRight className="h-4 w-4" />
             </a>
           </div>
         </section>
