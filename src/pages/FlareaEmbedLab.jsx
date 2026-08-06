@@ -10,7 +10,7 @@ function EmbedFrame({ mode, title, initialHeight }) {
   const frameRef = useRef(null);
   const [height, setHeight] = useState(initialHeight);
   const src = useMemo(
-    () => `${SHOWRUNNER_ORIGIN}/${mode}/${QA_EVENT_SLUG}?utm_source=risktakers&utm_medium=embed_lab&utm_campaign=before_after`,
+    () => `${SHOWRUNNER_ORIGIN}/${mode}/${QA_EVENT_SLUG}?utm_source=risktakers&utm_medium=embed_lab&utm_campaign=before_after${mode === 'embed' ? '&powered_by=1' : ''}`,
     [mode],
   );
 
