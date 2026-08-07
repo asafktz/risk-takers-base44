@@ -16,6 +16,8 @@ import ApplyPage from '@/pages/Apply';
 import VendorsPage from '@/pages/Vendors';
 import JoinPage from '@/pages/Join';
 import FlareaEmbedLabPage from '@/pages/FlareaEmbedLab';
+import PrivacyPage from '@/pages/Privacy';
+import TermsPage from '@/pages/Terms';
 // PreviousEpisodesPage hidden until episode videos are uploaded — see /episodes route below.
 // import PreviousEpisodesPage from '@/pages/PreviousEpisodes';
 
@@ -92,6 +94,16 @@ const AuthenticatedApp = () => {
         <Route path="/flarea-embed-lab" element={
           <LayoutWrapper currentPageName="FlareaEmbedLab">
             <FlareaEmbedLabPage />
+          </LayoutWrapper>
+        } />
+        <Route path="/privacy" element={
+          <LayoutWrapper currentPageName="Privacy">
+            <PrivacyPage />
+          </LayoutWrapper>
+        } />
+        <Route path="/terms" element={
+          <LayoutWrapper currentPageName="Terms">
+            <TermsPage />
           </LayoutWrapper>
         } />
         {/* Previous Episodes hidden until episode videos are uploaded — redirects home for now.

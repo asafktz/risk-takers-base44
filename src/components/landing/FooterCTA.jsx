@@ -91,6 +91,12 @@ export default function FooterCTA() {
             <Link to="/contact" className="text-[#666666] hover:text-[#111111] text-sm transition-colors">
               Contact
             </Link>
+            <Link to="/privacy" className="text-[#666666] hover:text-[#111111] text-sm transition-colors">
+              Privacy
+            </Link>
+            <Link to="/terms" className="text-[#666666] hover:text-[#111111] text-sm transition-colors">
+              Terms
+            </Link>
             <Link to={createPageUrl('Admin')} className="text-[#666666] hover:text-[#111111] text-sm transition-colors">
               Admin
             </Link>
