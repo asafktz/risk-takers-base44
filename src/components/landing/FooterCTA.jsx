@@ -97,6 +97,9 @@ export default function FooterCTA() {
             <Link to="/terms" className="text-[#666666] hover:text-[#111111] text-sm transition-colors">
               Terms
             </Link>
+            <a href="mailto:hello@risktakers.live?subject=Do%20Not%20Sell%20or%20Share%20My%20Personal%20Information" className="text-[#666666] hover:text-[#111111] text-sm transition-colors">
+              Do Not Sell or Share
+            </a>
             <Link to={createPageUrl('Admin')} className="text-[#666666] hover:text-[#111111] text-sm transition-colors">
               Admin
             </Link>

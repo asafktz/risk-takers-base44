@@ -17,6 +17,7 @@ export default function Privacy() {
     <LegalPageLayout eyebrow="Your information" title="Privacy Policy" effectiveDate={EFFECTIVE_DATE}>
       <LegalSection title="1. Who we are">
         <p>Risk Takers is owned and operated by LinkedOtter LLC. Risk Takers produces webinars, interviews, events, and related content about AI, cybersecurity, governance, and technology risk. This policy explains how LinkedOtter LLC handles personal information through <a className="font-bold underline" href="https://risktakers.show">risktakers.show</a>, Risk Takers events, and communications that link to this policy.</p>
+        <p><strong>Risk Takers is a media business.</strong> As described below, our business includes advertising, sponsorships, lead generation, audience insights, and licensing or providing business-contact and engagement information to sponsors, advertisers, partners, and other third parties. Depending on applicable law, some of these disclosures may be considered a “sale,” “sharing,” or targeted advertising.</p>
         <p>Questions or privacy requests can be sent to <a className="font-bold underline" href="mailto:hello@risktakers.live">hello@risktakers.live</a>.</p>
       </LegalSection>
 
@@ -36,6 +37,9 @@ export default function Privacy() {
           <li>Operate the website, register attendees, deliver events, and send confirmations or join links.</li>
           <li>Respond to inquiries and review guest, vendor, sponsor, partner, or attendee applications.</li>
           <li>Send requested updates and marketing communications, subject to applicable law and your choices.</li>
+          <li>Create audience segments, lead lists, market research, analytics, and business or professional profiles based on information you provide and your interactions with our services.</li>
+          <li>Match attendees, applicants, viewers, and other audience members with sponsors, advertisers, vendors, event partners, and businesses that may want to contact them.</li>
+          <li>Advertise, measure campaigns, generate revenue, and sell, license, share, or otherwise provide eligible information to third parties for their own marketing, sales, analytics, research, advertising, event, and business-development purposes.</li>
           <li>Produce, edit, distribute, and promote event recordings and related Risk Takers content.</li>
           <li>Understand audience interest, measure performance, improve our services, prevent abuse, maintain security, and comply with law.</li>
         </LegalList>
@@ -47,16 +51,19 @@ export default function Privacy() {
         <p>You can limit cookies through your browser settings and, where presented, use the site&apos;s consent choices. Blocking some technologies may affect functionality. Browser privacy signals are honored where required by applicable law and technically supported.</p>
       </LegalSection>
 
-      <LegalSection title="5. When we share information">
-        <p>We may share information with:</p>
+      <LegalSection title="5. When we sell, share, license, or disclose information">
+        <p>Subject to applicable law and the choices described below, we may disclose information for monetary or other valuable consideration, or permit a recipient to use it for its own purposes. Recipients may use eligible information to contact you, market products or services, measure campaigns, build or enhance business records, conduct research, or identify prospective customers and event participants.</p>
+        <p>We may sell, license, share, or disclose information to:</p>
         <LegalList>
           <li>Hosting, database, form-processing, email, analytics, security, and production providers working for us.</li>
           <li>Showrunner or another event platform when you view, register for, or attend an embedded event.</li>
           <li>Google and other providers whose tags are enabled through our tag-management setup.</li>
-          <li>Event partners, sponsors, speakers, or vendors when you request an introduction, explicitly consent, or the sharing is clearly disclosed at collection.</li>
+          <li>Event sponsors, exhibitors, advertisers, speakers, vendors, and partners, including attendee or registrant contact details and engagement information, so they can follow up, market, sell, measure sponsorship value, or plan future events.</li>
+          <li>Business-data, advertising, analytics, research, demand-generation, lead-generation, and marketing companies, including data platforms and other commercial partners.</li>
+          <li>Other third parties that acquire, license, sponsor, distribute, analyze, promote, or monetize Risk Takers content, events, audiences, or business information.</li>
           <li>Professional advisers, authorities, or counterparties when reasonably necessary for legal compliance, safety, fraud prevention, or a business transaction.</li>
         </LegalList>
-        <p>We do not disclose personal information to an event sponsor merely because you visited or registered, unless we tell you and have an appropriate legal basis.</p>
+        <p>The categories involved may include identifiers and contact details, professional or employment information, registration and application information, commercial information, internet or network activity, event engagement, communications, and inferences about business interests. We do not knowingly sell or share passwords, payment-card data, government identifiers, or personal information of people under 16. We do not use this policy to claim a right to process information where applicable law requires a separate notice, opt-in, or other authorization.</p>
       </LegalSection>
 
       <LegalSection title="6. International processing and retention">
@@ -68,9 +75,10 @@ export default function Privacy() {
           <li>Unsubscribe from marketing using the link in an email or by contacting us.</li>
           <li>Ask to access, correct, delete, restrict, object to processing, or receive a copy of your personal information where applicable.</li>
           <li>Withdraw consent for certain processing where applicable; withdrawal does not affect earlier lawful processing.</li>
+          <li>Opt out of the sale or sharing of personal information, targeted advertising, or certain profiling where applicable.</li>
           <li>Complain to your local data-protection authority where that right applies.</li>
         </LegalList>
-        <p>Send requests to <a className="font-bold underline" href="mailto:hello@risktakers.live">hello@risktakers.live</a>. We may need to verify your identity. Authorized agents may submit requests where permitted by law.</p>
+        <p>To opt out of sale or sharing, use <a className="font-bold underline" href="mailto:hello@risktakers.live?subject=Do%20Not%20Sell%20or%20Share%20My%20Personal%20Information">Do Not Sell or Share My Personal Information</a>. For other requests, email <a className="font-bold underline" href="mailto:hello@risktakers.live">hello@risktakers.live</a>. We may need to verify your identity. Authorized agents may submit requests where permitted by law. We will not discriminate against you for exercising a privacy right.</p>
       </LegalSection>
 
       <LegalSection title="8. Security and children">

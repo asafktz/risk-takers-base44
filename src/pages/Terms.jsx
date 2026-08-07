@@ -21,6 +21,7 @@ export default function Terms() {
 
       <LegalSection title="2. What Risk Takers provides">
         <p>Risk Takers produces educational and professional content, live and recorded events, interviews, community experiences, and opportunities involving guests, vendors, sponsors, partners, and attendees. Features, speakers, dates, formats, eligibility, availability, and content may change.</p>
+        <p>Risk Takers is a media business supported by advertising, sponsorships, lead generation, audience insights, and commercial data partnerships. Our Privacy Policy explains how LinkedOtter LLC may use, sell, license, share, or otherwise provide eligible business-contact, registration, application, and engagement information to event sponsors, advertisers, partners, and other third parties, subject to applicable law and privacy choices.</p>
       </LegalSection>
 
       <LegalSection title="3. Eligibility and accounts">
