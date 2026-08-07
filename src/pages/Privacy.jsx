@@ -16,7 +16,7 @@ export default function Privacy() {
   return (
     <LegalPageLayout eyebrow="Your information" title="Privacy Policy" effectiveDate={EFFECTIVE_DATE}>
       <LegalSection title="1. Who we are">
-        <p>Risk Takers produces webinars, interviews, events, and related content about AI, cybersecurity, governance, and technology risk. This policy explains how Risk Takers handles personal information through <a className="font-bold underline" href="https://risktakers.show">risktakers.show</a>, our events, and communications that link to this policy.</p>
+        <p>Risk Takers is owned and operated by LinkedOtter LLC. Risk Takers produces webinars, interviews, events, and related content about AI, cybersecurity, governance, and technology risk. This policy explains how LinkedOtter LLC handles personal information through <a className="font-bold underline" href="https://risktakers.show">risktakers.show</a>, Risk Takers events, and communications that link to this policy.</p>
         <p>Questions or privacy requests can be sent to <a className="font-bold underline" href="mailto:hello@risktakers.live">hello@risktakers.live</a>.</p>
       </LegalSection>
 

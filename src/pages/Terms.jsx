@@ -16,7 +16,7 @@ export default function Terms() {
   return (
     <LegalPageLayout eyebrow="Site and event rules" title="Terms & Conditions" effectiveDate={EFFECTIVE_DATE}>
       <LegalSection title="1. Agreement to these terms">
-        <p>These Terms &amp; Conditions govern your use of risktakers.show and Risk Takers registrations, webinars, events, applications, communications, and content that link to these terms. By using those services, you agree to these terms. If you do not agree, do not use the services.</p>
+        <p>Risk Takers is owned and operated by LinkedOtter LLC. These Terms &amp; Conditions govern your use of risktakers.show and Risk Takers registrations, webinars, events, applications, communications, and content that link to these terms. In these terms, “Risk Takers,” “we,” “us,” and “our” refer to LinkedOtter LLC. By using those services, you agree to these terms. If you do not agree, do not use the services.</p>
       </LegalSection>
 
       <LegalSection title="2. What Risk Takers provides">
@@ -51,7 +51,7 @@ export default function Terms() {
       </LegalSection>
 
       <LegalSection title="7. Intellectual property">
-        <p>The site, Risk Takers branding, graphics, formats, edited recordings, and original content are owned by Risk Takers or its licensors and protected by applicable law. You may access public content for personal or internal business learning. No other license is granted. Third-party names and content remain the property of their respective owners.</p>
+        <p>The site, Risk Takers branding, graphics, formats, edited recordings, and original content are owned by LinkedOtter LLC or its licensors and protected by applicable law. You may access public content for personal or internal business learning. No other license is granted. Third-party names and content remain the property of their respective owners.</p>
       </LegalSection>
 
       <LegalSection title="8. Educational content; no professional advice">
@@ -64,7 +64,7 @@ export default function Terms() {
 
       <LegalSection title="10. Disclaimers and limitation of liability">
         <p>To the maximum extent permitted by law, the services and content are provided “as is” and “as available,” without warranties of uninterrupted availability, accuracy, fitness for a particular purpose, non-infringement, or specific results. Nothing in these terms excludes rights that cannot lawfully be excluded.</p>
-        <p>To the maximum extent permitted by law, Risk Takers and its team will not be liable for indirect, incidental, special, consequential, exemplary, or lost-profit damages arising from the services, events, content, or third-party platforms. Where liability cannot be excluded, it is limited to the greater of the amount you paid Risk Takers for the specific service giving rise to the claim during the preceding twelve months or US$100. This limitation does not apply where prohibited by law.</p>
+        <p>To the maximum extent permitted by law, LinkedOtter LLC and the Risk Takers team will not be liable for indirect, incidental, special, consequential, exemplary, or lost-profit damages arising from the services, events, content, or third-party platforms. Where liability cannot be excluded, it is limited to the greater of the amount you paid LinkedOtter LLC for the specific service giving rise to the claim during the preceding twelve months or US$100. This limitation does not apply where prohibited by law.</p>
       </LegalSection>
 
       <LegalSection title="11. Suspension, termination, and changes">
@@ -72,7 +72,7 @@ export default function Terms() {
       </LegalSection>
 
       <LegalSection title="12. General terms and contact">
-        <p>If any provision is unenforceable, the remaining provisions remain effective. A failure to enforce a provision is not a waiver. These terms are governed by the laws applicable to the Risk Takers operator, without overriding mandatory rights you may have under applicable consumer law. Before filing a claim, contact us so we can try to resolve the issue informally.</p>
+        <p>If any provision is unenforceable, the remaining provisions remain effective. A failure to enforce a provision is not a waiver. These terms are governed by the laws applicable to LinkedOtter LLC, without overriding mandatory rights you may have under applicable consumer law. Before filing a claim, contact us so we can try to resolve the issue informally.</p>
         <p>Questions can be sent to <a className="font-bold underline" href="mailto:hello@risktakers.live">hello@risktakers.live</a>.</p>
       </LegalSection>
     </LegalPageLayout>
