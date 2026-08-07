@@ -18,6 +18,7 @@ import JoinPage from '@/pages/Join';
 import FlareaEmbedLabPage from '@/pages/FlareaEmbedLab';
 import PrivacyPage from '@/pages/Privacy';
 import TermsPage from '@/pages/Terms';
+import PrivacyChoicesPage from '@/pages/PrivacyChoices';
 // PreviousEpisodesPage hidden until episode videos are uploaded — see /episodes route below.
 // import PreviousEpisodesPage from '@/pages/PreviousEpisodes';
 
@@ -104,6 +105,11 @@ const AuthenticatedApp = () => {
         <Route path="/terms" element={
           <LayoutWrapper currentPageName="Terms">
             <TermsPage />
+          </LayoutWrapper>
+        } />
+        <Route path="/privacy-choices" element={
+          <LayoutWrapper currentPageName="PrivacyChoices">
+            <PrivacyChoicesPage />
           </LayoutWrapper>
         } />
         {/* Previous Episodes hidden until episode videos are uploaded — redirects home for now.

@@ -11,6 +11,7 @@ import { isValidPhone } from '@/lib/phone';
 import { EVENT } from '@/lib/event';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import PrivacyCollectionNotice from '@/components/PrivacyCollectionNotice';
 
 const initialForm = {
   name: '',
@@ -211,6 +212,7 @@ export default function Vendors() {
 
               {error && <p className="border-2 border-[#C0392B] bg-red-50 p-3 text-sm font-bold text-[#C0392B]">{error}</p>}
 
+              <PrivacyCollectionNotice />
               <Button type="submit" disabled={submitting} className="h-12 w-full rounded-none bg-[#C0392B] text-sm font-black uppercase tracking-wide text-white hover:bg-[#9f2f24]">
                 {submitting ? <><Loader2 className="h-4 w-4 animate-spin" /> Sending</> : <>Submit application <ArrowRight className="h-4 w-4" /></>}
               </Button>

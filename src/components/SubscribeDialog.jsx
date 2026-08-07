@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import PrivacyCollectionNotice from '@/components/PrivacyCollectionNotice';
 
 export default function SubscribeDialog({ open, onOpenChange }) {
   const [formData, setFormData] = useState({ name: '', email: '' });
@@ -80,6 +81,7 @@ export default function SubscribeDialog({ open, onOpenChange }) {
                   <p className="text-sm text-red-700">Something went wrong. Please try again.</p>
                 </div>
               )}
+              <PrivacyCollectionNotice />
               <Button 
                 type="submit" 
                 disabled={loading}

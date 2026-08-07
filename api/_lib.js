@@ -37,6 +37,22 @@ export async function insertRow(table, row) {
   return Array.isArray(rows) ? rows[0] : rows;
 }
 
+export async function upsertRow(table, row, onConflict) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?on_conflict=${encodeURIComponent(onConflict)}`, {
+    method: 'POST',
+    headers: {
+      apikey: SERVICE_KEY,
+      Authorization: `Bearer ${SERVICE_KEY}`,
+      'Content-Type': 'application/json',
+      Prefer: 'resolution=merge-duplicates,return=representation',
+    },
+    body: JSON.stringify(row),
+  });
+  if (!res.ok) throw new Error(`upsert ${table} failed: ${res.status} ${await res.text()}`);
+  const rows = await res.json();
+  return Array.isArray(rows) ? rows[0] : rows;
+}
+
 export async function updateRow(table, id, patch) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${encodeURIComponent(id)}`, {
     method: 'PATCH',

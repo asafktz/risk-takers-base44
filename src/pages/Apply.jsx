@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import TornPaper from '../components/TornPaper';
 import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { setSEO } from '@/lib/seo';
+import PrivacyCollectionNotice from '@/components/PrivacyCollectionNotice';
 
 export default function Apply() {
   React.useEffect(() => {
@@ -144,6 +145,7 @@ export default function Apply() {
                 </div>
               )}
 
+              <PrivacyCollectionNotice />
               <Button
                 type="submit"
                 disabled={submitting}

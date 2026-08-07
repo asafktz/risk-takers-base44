@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { setSEO, organizationJsonLd, absoluteUrl } from '@/lib/seo';
 import { isBusinessEmail } from '@/lib/email';
+import PrivacyCollectionNotice from '@/components/PrivacyCollectionNotice';
 
 const eventJsonLd = {
   '@context': 'https://schema.org',
@@ -127,6 +128,7 @@ function RegisterForm() {
         />
       </div>
       {error && <p className="border-2 border-[#C0392B] bg-red-50 p-3 text-sm font-bold text-[#C0392B]">{error}</p>}
+      <PrivacyCollectionNotice />
       <Button type="submit" disabled={submitting} className="h-12 w-full rounded-none bg-[#C0392B] text-sm font-black uppercase tracking-wide text-white hover:bg-[#9f2f24]">
         {submitting ? <><Loader2 className="h-4 w-4 animate-spin" /> Registering</> : <>Register <ArrowRight className="h-4 w-4" /></>}
       </Button>
@@ -250,6 +252,7 @@ function ApplyForm() {
 
       {error && <p className="border-2 border-[#C0392B] bg-red-50 p-3 text-sm font-bold text-[#C0392B]">{error}</p>}
 
+      <PrivacyCollectionNotice />
       <Button type="submit" disabled={submitting} className="h-12 w-full rounded-none bg-[#C0392B] text-sm font-black uppercase tracking-wide text-white hover:bg-[#9f2f24]">
         {submitting ? <><Loader2 className="h-4 w-4 animate-spin" /> Submitting</> : <>Submit Application <ArrowRight className="h-4 w-4" /></>}
       </Button>

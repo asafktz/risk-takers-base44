@@ -2,6 +2,7 @@ import React from 'react';
 import TornPaper from '../components/TornPaper';
 import { Calendar, Clock, Radio } from 'lucide-react';
 import { setSEO } from '@/lib/seo';
+import PrivacyCollectionNotice from '@/components/PrivacyCollectionNotice';
 
 /**
  * Join — dedicated on-site registration page for the current Risk Takers show.
@@ -96,6 +97,8 @@ export default function Join() {
               <p className="text-white font-black text-sm tracking-wide uppercase">Register free</p>
               <p className="text-[#AAAAAA] text-xs">Free · live + replay · instant join link</p>
             </div>
+
+            <PrivacyCollectionNotice className="px-6 pt-4" />
 
             <iframe
               title="Register for the Risk Takers show"

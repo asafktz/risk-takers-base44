@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import TornPaper from '../components/TornPaper';
 import { Loader2, Calendar, Clock, Globe, ExternalLink } from 'lucide-react';
 import { setSEO } from '@/lib/seo';
+import PrivacyCollectionNotice from '@/components/PrivacyCollectionNotice';
 
 export default function RegisterWebinar() {
   React.useEffect(() => {
@@ -271,6 +272,7 @@ export default function RegisterWebinar() {
                           </div>
                         )}
 
+                        <PrivacyCollectionNotice />
                         <Button 
                           type="submit" 
                           disabled={loading}

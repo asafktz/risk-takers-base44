@@ -10,6 +10,7 @@ import { Loader2, CheckCircle2, AlertCircle, Calendar, Clock, ExternalLink, Mail
 import { format } from 'date-fns';
 import { episodeIdFromSlug, episodeJsonLd, episodePath, setSEO } from '@/lib/seo';
 import { SHOWRUNNER_ORIGIN, showrunnerSlugFromUrl } from '@/config/liveEvent';
+import PrivacyCollectionNotice from '@/components/PrivacyCollectionNotice';
 
 export default function Episode() {
   const { episodeSlug } = useParams();
@@ -220,13 +221,16 @@ export default function Episode() {
                   // The REAL Showrunner signup widget — same form/pipeline as every other Showrunner
                   // registration, not a lookalike. It shows its own title/date, handles its own submit,
                   // consent and confirmation state — nothing local to manage here.
-                  <iframe
-                    key={srSlug}
-                    src={`${SHOWRUNNER_ORIGIN}/widget/${srSlug}`}
-                    title="Register — powered by Showrunner"
-                    className="w-full block"
-                    style={{ height: 320, border: 0 }}
-                  />
+                  <>
+                    <PrivacyCollectionNotice className="px-5 pt-5" />
+                    <iframe
+                      key={srSlug}
+                      src={`${SHOWRUNNER_ORIGIN}/widget/${srSlug}`}
+                      title="Register — powered by Showrunner"
+                      className="w-full block"
+                      style={{ height: 320, border: 0 }}
+                    />
+                  </>
                 ) : registrationStatus === 'success' ? (
                   <div className="text-center py-8">
                     <CheckCircle2 className="w-16 h-16 text-green-600 mx-auto mb-4" />
@@ -259,6 +263,7 @@ export default function Episode() {
                           <p className="text-sm text-red-700">Registration failed. Please try again.</p>
                         </div>
                       )}
+                      <PrivacyCollectionNotice />
                       <Button
                         type="submit"
                         disabled={registering}
@@ -458,6 +463,7 @@ export default function Episode() {
                         required
                         className="flex-1 border-2 border-[#1F1F1F]"
                       />
+                      <PrivacyCollectionNotice className="basis-full" />
                       <Button 
                         type="submit" 
                         disabled={signingUp}

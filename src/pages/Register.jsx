@@ -10,6 +10,7 @@ import { Loader2, CheckCircle2, AlertCircle, Calendar, Clock, Users, Linkedin } 
 import { format } from 'date-fns';
 import { episodeIdFromSlug, episodePath, setSEO } from '@/lib/seo';
 import { SHOWRUNNER_ORIGIN, showrunnerSlugFromUrl } from '@/config/liveEvent';
+import PrivacyCollectionNotice from '@/components/PrivacyCollectionNotice';
 
 export default function Register() {
   const { episodeSlug } = useParams();
@@ -243,13 +244,16 @@ export default function Register() {
                   {srSlug ? (
                     // The REAL Showrunner signup widget — same form/pipeline as every other
                     // Showrunner registration; it handles its own submit, consent and confirmation.
-                    <iframe
-                      key={srSlug}
-                      src={`${SHOWRUNNER_ORIGIN}/widget/${srSlug}`}
-                      title="Register — powered by Showrunner"
-                      className="w-full block"
-                      style={{ height: 320, border: 0 }}
-                    />
+                    <>
+                      <PrivacyCollectionNotice className="px-5 pt-5" />
+                      <iframe
+                        key={srSlug}
+                        src={`${SHOWRUNNER_ORIGIN}/widget/${srSlug}`}
+                        title="Register — powered by Showrunner"
+                        className="w-full block"
+                        style={{ height: 320, border: 0 }}
+                      />
+                    </>
                   ) : status === 'success' ? (
                     <div className="text-center py-4">
                       <div className="mb-4 flex justify-center">
@@ -311,6 +315,7 @@ export default function Register() {
                           </div>
                         )}
 
+                        <PrivacyCollectionNotice />
                         <Button 
                           type="submit" 
                           disabled={loading}

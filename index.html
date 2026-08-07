@@ -41,9 +41,22 @@
     <!-- Hosting-migration hygiene: unregister any service worker the previous (Base44) deployment left on
          this domain — a stale SW would keep serving the old shell whose asset hashes no longer exist. -->
     <script>try { navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function (rs) { rs.forEach(function (r) { r.unregister(); }); }); } catch (e) {}</script>
-    <!-- Showrunner first-party visitor pixel — captures intent for the featured show -->
-    <script src="https://webinar-show.vercel.app/sr.js" data-show="building-resilient-systems-insig-s1pc" async></script>
-    <script src="https://webinar-show.vercel.app/sr.js" data-account="px_ea318f7787914774a763926a" async></script>
+    <!-- Honor browser and saved sale/share opt-outs before optional Showrunner tracking loads. -->
+    <script>
+      (function () {
+        var optedOut = navigator.globalPrivacyControl === true;
+        try { optedOut = optedOut || localStorage.getItem('rt_privacy_opt_out') === '1'; } catch (e) {}
+        window.__rtPrivacyOptOut = optedOut;
+        if (optedOut) return;
+        [['data-show','building-resilient-systems-insig-s1pc'],['data-account','px_ea318f7787914774a763926a']].forEach(function (entry) {
+          var script = document.createElement('script');
+          script.src = 'https://webinar-show.vercel.app/sr.js';
+          script.async = true;
+          script.setAttribute(entry[0], entry[1]);
+          document.head.appendChild(script);
+        });
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
@@ -53,6 +66,7 @@
          it stands down automatically on /watch (where the full embed already plays) so we never
          run two players and pay twice in attendee-minutes. Swap the slug for the next show. -->
     <script>(function(){
+      if (window.__rtPrivacyOptOut) return;
       if (window.__srMini) return; window.__srMini = 1;
       // This QA page already renders a full Flarea comparison. Keep the persistent site player out
       // of the test surface so it cannot obscure either iframe or add a third event experience.

@@ -7,6 +7,7 @@ import { Mail, CheckCircle2, Loader2 } from 'lucide-react';
 import TornPaper from '../components/TornPaper';
 import { base44 } from '@/api/base44Client';
 import { setSEO, organizationJsonLd } from '@/lib/seo';
+import PrivacyCollectionNotice from '@/components/PrivacyCollectionNotice';
 
 export default function Contact() {
   React.useEffect(() => {
@@ -109,6 +110,7 @@ export default function Contact() {
                     {error && (
                       <p className="text-[#C0392B] text-sm font-medium">{error}</p>
                     )}
+                    <PrivacyCollectionNotice />
                     <Button
                       type="submit"
                       disabled={sending}

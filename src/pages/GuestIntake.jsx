@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import TornPaper from '../components/TornPaper';
 import { Loader2, CheckCircle2, Upload, AlertCircle } from 'lucide-react';
 import { setSEO } from '@/lib/seo';
+import PrivacyCollectionNotice from '@/components/PrivacyCollectionNotice';
 
 export default function GuestIntake() {
   React.useEffect(() => {
@@ -375,6 +376,7 @@ export default function GuestIntake() {
                 </div>
               )}
 
+              <PrivacyCollectionNotice />
               <Button 
                 type="submit" 
                 disabled={submitting}

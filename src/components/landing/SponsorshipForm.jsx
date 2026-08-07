@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { base44 } from '@/api/base44Client';
 import { Loader2 } from 'lucide-react';
+import PrivacyCollectionNotice from '@/components/PrivacyCollectionNotice';
 
 export default function SponsorshipForm() {
   const [formData, setFormData] = useState({
@@ -81,6 +82,7 @@ export default function SponsorshipForm() {
           className="bg-[#F4F2ED] border-[#1F1F1F] text-[#111111] placeholder:text-[#666666] min-h-[120px]"
         />
       </div>
+      <PrivacyCollectionNotice />
       <Button 
         type="submit"
         disabled={loading}

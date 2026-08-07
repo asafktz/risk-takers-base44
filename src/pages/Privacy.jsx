@@ -78,7 +78,7 @@ export default function Privacy() {
           <li>Opt out of the sale or sharing of personal information, targeted advertising, or certain profiling where applicable.</li>
           <li>Complain to your local data-protection authority where that right applies.</li>
         </LegalList>
-        <p>To opt out of sale or sharing, use <a className="font-bold underline" href="mailto:hello@risktakers.live?subject=Do%20Not%20Sell%20or%20Share%20My%20Personal%20Information">Do Not Sell or Share My Personal Information</a>. For other requests, email <a className="font-bold underline" href="mailto:hello@risktakers.live">hello@risktakers.live</a>. We may need to verify your identity. Authorized agents may submit requests where permitted by law. We will not discriminate against you for exercising a privacy right.</p>
+        <p>To opt out of sale or sharing, use <a className="font-bold underline" href="/privacy-choices">Do Not Sell or Share My Personal Information</a>. For other requests, email <a className="font-bold underline" href="mailto:hello@risktakers.live">hello@risktakers.live</a>. We may need to verify your identity. Authorized agents may submit requests where permitted by law. We will not discriminate against you for exercising a privacy right.</p>
       </LegalSection>
 
       <LegalSection title="8. Security and children">
