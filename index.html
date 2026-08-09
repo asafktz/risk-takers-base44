@@ -77,7 +77,7 @@
       // This QA page already renders a full Flarea comparison. Keep the persistent site player out
       // of the test surface so it cannot obscure either iframe or add a third event experience.
       if (['/flarea-embed-lab', '/analytics-journey-qa-20260810'].includes(location.pathname.replace(/\/+$/, ''))) return;
-      var K='sr-mini-the-human-operating-system-is-the-new-attack-surface-with-ev', st;
+      var K='sr-mini-ai-defense-stack-showcase-day-n4qd', st;
       try { st = sessionStorage.getItem(K) || ''; } catch(e){ st=''; }
       if (st === 'closed') return;
       var qs=(function(){var p=new URLSearchParams(location.search),o=new URLSearchParams();p.forEach(function(v,k){if(k==='r'||k==='n'||k.indexOf('utm_')===0)o.append(k,v)});var s=o.toString();return s?'?'+s:'';})();
@@ -89,7 +89,7 @@
         var bar=document.createElement('div');
         bar.style.cssText='display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;background:#0b0d11;font-size:12px;font-weight:700;';
         bar.innerHTML='<span style="width:8px;height:8px;border-radius:50%;background:#ff4d00;display:inline-block"></span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Live show</span>'+
-          '<a href="https://www.risktakers.show/watch/the-human-operating-system-is-the-new-attack-surface-with-ev'+qs+'" style="color:#fff;text-decoration:none;padding:0 4px" title="Open full page">⤢</a>'+
+          '<a href="https://www.risktakers.show/watch/ai-defense-stack-showcase-day-n4qd'+qs+'" style="color:#fff;text-decoration:none;padding:0 4px" title="Open full page">⤢</a>'+
           '<span data-a="m" style="padding:0 4px" title="'+(open?'Minimize':'Expand')+'">'+(open?'—':'▶')+'</span>'+
           '<span data-a="x" style="padding:0 4px" title="Close">✕</span>';
         bar.onclick=function(e){
@@ -100,7 +100,7 @@
         box.appendChild(bar);
         if(open){
           var f=document.createElement('iframe');
-          f.src='https://webinar-show.vercel.app/embed/the-human-operating-system-is-the-new-attack-surface-with-ev'+qs;
+          f.src='https://flarea.ai/embed/ai-defense-stack-showcase-day-n4qd'+qs;
           f.allow='camera; microphone; autoplay; fullscreen; picture-in-picture';
           f.style.cssText='width:360px;height:202px;border:0;display:block;background:#000';
           box.appendChild(f);
@@ -115,7 +115,7 @@
       // Removing our iframe (not just hiding it) is the point: a hidden iframe stays connected and still bills.
       function read(){ try{ return sessionStorage.getItem(K)||''; }catch(e){ return ''; } }
       function foreign(){
-        var f=document.querySelectorAll('iframe[src*="/embed/the-human-operating-system-is-the-new-attack-surface-with-ev"]');
+        var f=document.querySelectorAll('iframe[src*="/embed/ai-defense-stack-showcase-day-n4qd"]');
         for(var i=0;i<f.length;i++){ if(!box.contains(f[i])) return true; }
         return false;
       }
@@ -133,10 +133,14 @@
       // best-effort: auto-expand the pill the moment the show goes live (stops polling once open/dismissed)
       var tries=0, t=setInterval(function(){
         if(!document.body.contains(box) || box.querySelector('iframe') || ++tries>240){ clearInterval(t); return; }
-        fetch('https://webinar-show.vercel.app/api/live?room=the-human-operating-system-is-the-new-attack-surface-with-ev').then(function(r){return r.json()}).then(function(d){
+        fetch('https://flarea.ai/api/live?room=ai-defense-stack-showcase-day-n4qd').then(function(r){return r.json()}).then(function(d){
           if(d&&d.live&&!hidden){ clearInterval(t); render(true); save('open'); }
         }).catch(function(){});
       }, 30000);
+      window.addEventListener('rt:privacy-opt-out', function(){
+        try { clearInterval(t); mo&&mo.disconnect(); } catch(e){}
+        box.remove();
+      });
     })();</script>
   </body>
 </html>
