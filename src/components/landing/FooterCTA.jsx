@@ -92,10 +92,10 @@ export default function FooterCTA() {
               Contact
             </Link>
             <Link to="/privacy" className="text-[#666666] hover:text-[#111111] text-sm transition-colors">
-              Privacy
+              Privacy Policy
             </Link>
             <Link to="/terms" className="text-[#666666] hover:text-[#111111] text-sm transition-colors">
-              Terms
+              Terms &amp; Conditions
             </Link>
             <Link to="/privacy-choices" className="text-[#666666] hover:text-[#111111] text-sm transition-colors">
               Do Not Sell or Share

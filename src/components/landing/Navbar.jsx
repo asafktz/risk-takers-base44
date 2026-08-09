@@ -62,7 +62,7 @@ export default function Navbar() {
             </Link>
           ))}
           <Link
-            to="/Join"
+            to="/AIDefenseStack#register"
             className="bg-[#F1C40F] hover:bg-[#D4AC0D] text-[#1F1F1F] text-sm font-black px-4 py-2 transition-colors"
           >
             Register
@@ -98,7 +98,7 @@ export default function Navbar() {
             </Link>
           ))}
           <Link
-            to="/Join"
+            to="/AIDefenseStack#register"
             onClick={() => setOpen(false)}
             className="block w-full text-center py-3 mt-3 bg-[#F1C40F] text-[#1F1F1F] text-sm font-black"
           >
