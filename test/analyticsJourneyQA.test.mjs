@@ -41,4 +41,6 @@ test('privacy opt-out disables the optional Flarea pixel', async () => {
   ]);
   assert.match(layout, /<FlareaAnalyticsConsent \/>/);
   assert.match(choices, /disableOptionalFlarea\(\)/);
+  assert.match(choices, /saveFlareaConsent\(consent\)/);
+  assert.match(choices, /Current choice:/);
 });

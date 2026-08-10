@@ -33,6 +33,9 @@ test('the consent choice is mounted site-wide and privacy opt-out disables Flare
   ]);
   assert.match(layout, /<FlareaAnalyticsConsent \/>/);
   assert.match(choices, /disableOptionalFlarea\(\)/);
+  assert.match(choices, /saveFlareaConsent\(consent\)/);
+  assert.match(choices, /Allow analytics/);
+  assert.match(choices, /Reject analytics/);
 });
 
 test('the split watch page forwards only personal and campaign parameters', async () => {
