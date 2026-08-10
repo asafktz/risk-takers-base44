@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { disableOptionalFlarea } from '@/lib/flareaConsent';
+import {
+  disableOptionalFlarea,
+  readFlareaConsentState,
+  saveFlareaConsent,
+} from '@/lib/flareaConsent';
 import { setSEO } from '@/lib/seo';
 
 const STORAGE_KEY = 'rt_privacy_opt_out';
@@ -9,6 +13,8 @@ export default function PrivacyChoices() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState('idle');
   const [message, setMessage] = useState('');
+  const [analyticsConsent, setAnalyticsConsent] = useState(null);
+  const [privacyOptOut, setPrivacyOptOut] = useState(false);
   const gpc = typeof navigator !== 'undefined' && navigator.globalPrivacyControl === true;
 
   useEffect(() => {
@@ -17,11 +23,21 @@ export default function PrivacyChoices() {
       description: 'Opt out of the sale or sharing of personal information and targeted advertising.',
       path: '/privacy-choices',
     });
+    let optedOut = false;
+    try { optedOut = localStorage.getItem(STORAGE_KEY) === '1'; } catch (_) { /* storage may be disabled */ }
+    setPrivacyOptOut(optedOut || gpc);
     if (gpc) {
       try { localStorage.setItem(STORAGE_KEY, '1'); } catch (_) { /* storage may be disabled */ }
       disableOptionalFlarea();
     }
+    setAnalyticsConsent(readFlareaConsentState().consent);
   }, [gpc]);
+
+  function chooseAnalytics(consent) {
+    if (consent && (gpc || privacyOptOut)) return;
+    saveFlareaConsent(consent);
+    setAnalyticsConsent(consent);
+  }
 
   async function submit(event) {
     event.preventDefault();
@@ -37,6 +53,8 @@ export default function PrivacyChoices() {
       if (!response.ok) throw new Error(result.error || 'Unable to save your choice.');
       try { localStorage.setItem(STORAGE_KEY, '1'); } catch (_) { /* storage may be disabled */ }
       disableOptionalFlarea();
+      setPrivacyOptOut(true);
+      setAnalyticsConsent(false);
       setStatus('success');
       setMessage('Your opt-out has been saved. We will suppress this email from sale, sharing, and targeted-advertising uses.');
     } catch (error) {
@@ -60,6 +78,19 @@ export default function PrivacyChoices() {
           </button>
         </form>
         {message && <p role="status" className={`mt-5 border-2 p-3 font-bold ${status === 'success' ? 'border-green-700 bg-green-50 text-green-900' : 'border-[#C0392B] bg-red-50 text-[#8F241C]'}`}>{message}</p>}
+        <section className="mt-10 border-t-2 border-[#1F1F1F] pt-8" aria-labelledby="analytics-choice-heading">
+          <p className="text-sm font-black uppercase tracking-[0.16em] text-[#C0392B]">Analytics choice</p>
+          <h2 id="analytics-choice-heading" className="mt-2 text-2xl font-black uppercase">Flarea audience analytics</h2>
+          <p className="mt-3 leading-7 text-[#49443D]">Choose whether Risk Takers may connect pages you visit with your event registration. You can change this choice here at any time.</p>
+          <p role="status" className="mt-3 font-bold">
+            Current choice: {privacyOptOut ? 'Disabled by your broader privacy opt-out' : analyticsConsent === true ? 'Allowed' : analyticsConsent === false ? 'Rejected' : 'Not chosen'}
+          </p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <button type="button" disabled={gpc} onClick={() => chooseAnalytics(false)} className="min-h-12 border-2 border-[#1F1F1F] bg-white px-5 font-black uppercase disabled:opacity-50">Reject analytics</button>
+            <button type="button" disabled={gpc || privacyOptOut} onClick={() => chooseAnalytics(true)} className="min-h-12 border-2 border-[#1F1F1F] bg-[#E0A800] px-5 font-black uppercase disabled:opacity-50">Allow analytics</button>
+          </div>
+          {gpc && <p className="mt-3 text-sm font-bold text-green-900">Global Privacy Control keeps optional analytics disabled in this browser.</p>}
+        </section>
         <p className="mt-8 text-sm leading-6 text-[#6D665B]">For access, correction, deletion, or other privacy requests, email <a className="font-black underline" href="mailto:hello@risktakers.live">hello@risktakers.live</a>. Read our <Link className="font-black underline" to="/privacy">Privacy Policy</Link>.</p>
       </div>
     </main>
