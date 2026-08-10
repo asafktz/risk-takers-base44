@@ -47,3 +47,9 @@ test('new Flarea links use the canonical host while legacy event URLs remain rea
   assert.equal(showrunnerSlugFromUrl('https://flarea.ai/e/current-show'), 'current-show');
   assert.equal(showrunnerSlugFromUrl('https://webinar-show.vercel.app/e/legacy-show'), 'legacy-show');
 });
+
+test('authenticated navigation treats the removed Base44 activity logger as optional', async () => {
+  const source = await readFile(new URL('../src/lib/NavigationTracker.jsx', import.meta.url), 'utf8');
+  assert.match(source, /typeof base44\.appLogs\?\.logUserInApp === 'function'/);
+  assert.doesNotMatch(source, /if \(isAuthenticated && pageName\) \{\s*base44\.appLogs\.logUserInApp/);
+});

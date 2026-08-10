@@ -31,10 +31,14 @@ export default function NavigationTracker() {
             pageName = matchedKey || null;
         }
 
-        if (isAuthenticated && pageName) {
-            base44.appLogs.logUserInApp(pageName).catch(() => {
-                // Silently fail - logging shouldn't break the app
-            });
+        if (isAuthenticated && pageName && typeof base44.appLogs?.logUserInApp === 'function') {
+            try {
+                Promise.resolve(base44.appLogs.logUserInApp(pageName)).catch(() => {
+                    // Silently fail - logging shouldn't break the app
+                });
+            } catch (_) {
+                // The legacy activity logger is optional and must never break navigation.
+            }
         }
     }, [location, isAuthenticated, Pages, mainPageKey]);
 
