@@ -16,6 +16,7 @@ import ApplyPage from '@/pages/Apply';
 import VendorsPage from '@/pages/Vendors';
 import JoinPage from '@/pages/Join';
 import FlareaEmbedLabPage from '@/pages/FlareaEmbedLab';
+import AnalyticsJourneyQAPage from '@/pages/AnalyticsJourneyQA';
 import PrivacyPage from '@/pages/Privacy';
 import TermsPage from '@/pages/Terms';
 import PrivacyChoicesPage from '@/pages/PrivacyChoices';
@@ -95,6 +96,11 @@ const AuthenticatedApp = () => {
         <Route path="/flarea-embed-lab" element={
           <LayoutWrapper currentPageName="FlareaEmbedLab">
             <FlareaEmbedLabPage />
+          </LayoutWrapper>
+        } />
+        <Route path="/analytics-journey-qa-20260810" element={
+          <LayoutWrapper currentPageName="AnalyticsJourneyQA">
+            <AnalyticsJourneyQAPage />
           </LayoutWrapper>
         } />
         <Route path="/privacy" element={

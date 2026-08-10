@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { disableOptionalFlarea } from '@/lib/flareaConsent';
 import { setSEO } from '@/lib/seo';
 
 const STORAGE_KEY = 'rt_privacy_opt_out';
@@ -18,6 +19,7 @@ export default function PrivacyChoices() {
     });
     if (gpc) {
       try { localStorage.setItem(STORAGE_KEY, '1'); } catch (_) { /* storage may be disabled */ }
+      disableOptionalFlarea();
     }
   }, [gpc]);
 
@@ -34,6 +36,7 @@ export default function PrivacyChoices() {
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(result.error || 'Unable to save your choice.');
       try { localStorage.setItem(STORAGE_KEY, '1'); } catch (_) { /* storage may be disabled */ }
+      disableOptionalFlarea();
       setStatus('success');
       setMessage('Your opt-out has been saved. We will suppress this email from sale, sharing, and targeted-advertising uses.');
     } catch (error) {
