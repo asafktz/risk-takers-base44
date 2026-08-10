@@ -56,8 +56,8 @@ const panelists = [
   },
   {
     name: 'Eva Benn',
-    title: 'Principal Security Program Manager',
-    company: 'Microsoft · Cyber Security Woman of the Year',
+    title: 'Multi-Award Winning Security Leader and Educator',
+    company: 'Microsoft',
     image: '/ai-defense-stack/eva-benn.jpeg',
   },
   {
@@ -267,7 +267,7 @@ export default function AIDefenseStack() {
                   <img
                     src={person.image}
                     alt={person.name}
-                    className={`h-full w-full object-cover object-center ${person.name === 'Priya Mouli' ? 'scale-[1.08]' : ''}`}
+                    className={`h-full w-full object-cover ${person.name === 'Eva Benn' ? 'object-[center_35%]' : 'object-center'} ${person.name === 'Priya Mouli' ? 'scale-[1.08]' : ''}`}
                   />
                 </div>
                 <h3 className="rt-display mt-4 text-3xl uppercase leading-[0.88]">{person.name}</h3>
