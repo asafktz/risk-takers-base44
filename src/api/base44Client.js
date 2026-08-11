@@ -47,7 +47,11 @@ async function apiDb(op, entity, id, data) {
     body: JSON.stringify({ op, entity, id, data }),
   });
   const out = await res.json().catch(() => ({}));
-  if (!res.ok) { const e = new Error(out.error || `db ${op} ${entity} failed`); e.status = res.status; throw e; }
+  if (!res.ok) {
+    throw Object.assign(new Error(out.error || `db ${op} ${entity} failed`), {
+      status: res.status,
+    });
+  }
   return out;
 }
 
@@ -115,7 +119,9 @@ const auth = {
   // via the is_admin() RPC (email allow-list in the `admins` table).
   async me() {
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { const e = new Error('Not authenticated'); e.status = 401; throw e; }
+    if (!user) {
+      throw Object.assign(new Error('Not authenticated'), { status: 401 });
+    }
     const { data: isAdmin } = await supabase.rpc('is_admin');
     return { id: user.id, email: user.email, role: isAdmin ? 'admin' : 'viewer' };
   },

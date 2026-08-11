@@ -1,4 +1,3 @@
-import React from 'react';
 
 const tornEdges = {
   top: "polygon(0% 8px, 3% 2px, 7% 6px, 12% 1px, 18% 5px, 24% 0px, 31% 4px, 38% 1px, 45% 6px, 52% 2px, 58% 5px, 65% 0px, 72% 3px, 78% 6px, 85% 1px, 91% 4px, 96% 2px, 100% 6px, 100% 100%, 0% 100%)",

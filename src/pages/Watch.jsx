@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { SHOWRUNNER_ORIGIN } from '@/config/liveEvent';
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import TornPaper from '../TornPaper';
 import { Check } from 'lucide-react';
 import SponsorshipForm from './SponsorshipForm';

@@ -1,4 +1,4 @@
-import { handler, insertRow, updateRow, deleteRow, sendEmail, NOTIFY_EMAIL } from './_lib.js';
+import { handler, insertRow, sendEmail, NOTIFY_EMAIL } from './_lib.js';
 
 // Maps the Base44 entity names the frontend uses to Postgres tables + the fields
 // that may be written from the client. Reads happen directly against Supabase
