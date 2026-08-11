@@ -23,6 +23,8 @@ const initialForm = {
   target_accounts: ''
 };
 
+const VENDOR_PACK_PATH = '/downloads/AI-Defense-Stack-Day-Vendor-Information-Pack.pdf';
+
 const idealFit = [
   'Emerging companies with a new or recently launched AI-era security product.',
   'Out of stealth in the last 12 months, or a major new product/module launched recently.',
@@ -37,6 +39,8 @@ export default function Vendors() {
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState('');
+  const [emailDeliveryFailed, setEmailDeliveryFailed] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -71,6 +75,8 @@ export default function Vendors() {
     try {
       const { data } = await base44.functions.invoke('submitVendorApplication', form);
       if (data?.error) throw new Error(data.error);
+      setSubmittedEmail(form.work_email);
+      setEmailDeliveryFailed(data?.notifications?.applicant?.sent === false);
       setSubmitted(true);
       setForm(initialForm);
     } catch (submitError) {
@@ -151,10 +157,21 @@ export default function Vendors() {
               <CheckCircle2 className="h-16 w-16 text-green-600" />
               <h2 className="mt-5 text-3xl font-black uppercase">Application received</h2>
               <p className="mt-3 max-w-md text-base leading-7 text-[#55504A]">
-                Thanks. We review every applicant for fit before we follow up. If there's a match, you'll hear from us with
-                next steps.
+                Thanks. We review every applicant for fit before we follow up. Your vendor information pack is ready below.
               </p>
-              <Button onClick={() => setSubmitted(false)} className="mt-7 rounded-none bg-[#1F1F1F] px-5 font-black uppercase text-white hover:bg-[#333]">
+              {emailDeliveryFailed ? (
+                <p className="mt-4 max-w-md border-2 border-[#C0392B] bg-[#FFF4F2] p-3 text-sm font-semibold leading-6 text-[#8E2B20]" role="alert">
+                  We saved your application, but could not email the pack to {submittedEmail}. Please download it now.
+                </p>
+              ) : (
+                <p className="mt-4 max-w-md text-sm font-semibold leading-6 text-[#55504A]">
+                  We also emailed the pack to {submittedEmail}.
+                </p>
+              )}
+              <Button asChild className="mt-6 rounded-none bg-[#C0392B] px-5 font-black uppercase text-white hover:bg-[#A93226]">
+                <a href={VENDOR_PACK_PATH} download>Download vendor pack</a>
+              </Button>
+              <Button onClick={() => setSubmitted(false)} variant="outline" className="mt-3 rounded-none border-2 border-[#1F1F1F] px-5 font-black uppercase">
                 Submit another
               </Button>
             </div>

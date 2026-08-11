@@ -8,9 +8,9 @@ const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
 export const NOTIFY_EMAIL = 'asaf@linkedotter.com';
-// asafkatz.com is the domain verified in this Resend account. Swap to
-// risktakers@risktakers.show once risktakers.show is verified in the same account.
-export const FROM = 'Risk Takers <notifications@asafkatz.com>';
+// Production mail has an authenticated risktakers.show sender. Keep this
+// overrideable so a preview environment can use its own verified sender.
+export const FROM = process.env.RESEND_FROM || 'Risk Takers <vendors@risktakers.show>';
 
 export async function readBody(req) {
   if (req.body && typeof req.body === 'object') return req.body;
@@ -78,16 +78,33 @@ export async function deleteRow(table, id) {
   return { success: true };
 }
 
-// Send an email via Resend. Silently degrades if RESEND_API_KEY is unset.
-export async function sendEmail({ to, subject, html, text, replyTo }) {
-  if (!RESEND_API_KEY) return { skipped: 'no RESEND_API_KEY' };
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: FROM, to, subject, html, text, reply_to: replyTo }),
-  });
-  const out = await res.json().catch(() => ({}));
-  return res.ok ? { sent: true, id: out.id } : { error: out };
+// Send an email via Resend and return an explicit delivery result. Callers can
+// keep a saved lead while still surfacing/logging a notification failure.
+export async function sendEmail({ to, subject, html, text, replyTo, attachments, idempotencyKey }) {
+  if (!RESEND_API_KEY) {
+    return { sent: false, error: { code: 'missing_resend_api_key', message: 'RESEND_API_KEY is not configured' } };
+  }
+
+  const headers = {
+    Authorization: `Bearer ${RESEND_API_KEY}`,
+    'Content-Type': 'application/json',
+  };
+  if (idempotencyKey) headers['Idempotency-Key'] = idempotencyKey;
+
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ from: FROM, to, subject, html, text, reply_to: replyTo, attachments }),
+    });
+    const out = await res.json().catch(() => ({}));
+    return res.ok ? { sent: true, id: out.id } : { sent: false, status: res.status, error: out };
+  } catch (error) {
+    return {
+      sent: false,
+      error: { code: 'resend_request_failed', message: error?.message || 'Could not reach the email provider' },
+    };
+  }
 }
 
 export function escapeHtml(s) {
