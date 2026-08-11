@@ -1,5 +1,7 @@
 export const FLAREA_ANALYTICS_CONSENT_KEY = 'rt_flarea_analytics_consent';
 export const RISK_TAKERS_PRIVACY_OPT_OUT_KEY = 'rt_privacy_opt_out';
+export const FLAREA_VISITOR_STORAGE_KEY = 'sr_vid';
+export const FLAREA_EMAIL_STORAGE_KEY = 'sr_email';
 
 export function resolveFlareaConsent({ gpc = false, optedOut = false, saved = null } = {}) {
   if (gpc || optedOut || saved === 'denied') return { consent: false, prompt: false };
@@ -21,6 +23,15 @@ export function readFlareaConsentState() {
 export function applyFlareaConsent(consent) {
   if (typeof window === 'undefined' || typeof consent !== 'boolean') return;
   window.__rtFlareaConsent = consent;
+  // Production Flarea versions before the platform withdrawal hardening only stopped future hits.
+  // Clear the first-party identifiers here as well so Risk Takers withdrawal is effective immediately;
+  // newer pixel versions repeat this cleanup safely inside srConsent(false).
+  if (!consent) {
+    try {
+      localStorage.removeItem(FLAREA_VISITOR_STORAGE_KEY);
+      localStorage.removeItem(FLAREA_EMAIL_STORAGE_KEY);
+    } catch (_) { /* storage may be disabled */ }
+  }
   if (typeof window.srConsent === 'function') window.srConsent(consent);
 }
 
