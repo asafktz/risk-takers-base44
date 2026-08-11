@@ -2,7 +2,14 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import { SHOWRUNNER_ORIGIN, showrunnerSlugFromUrl } from '../src/config/liveEvent.js';
-import { resolveFlareaConsent } from '../src/lib/flareaConsent.js';
+import {
+  disableOptionalFlarea,
+  FLAREA_ANALYTICS_CONSENT_KEY,
+  FLAREA_EMAIL_STORAGE_KEY,
+  FLAREA_VISITOR_STORAGE_KEY,
+  resolveFlareaConsent,
+  saveFlareaConsent,
+} from '../src/lib/flareaConsent.js';
 
 const EVENT_SLUG = 'ai-defense-stack-showcase-day-n4qd';
 
@@ -12,6 +19,45 @@ test('analytics consent defaults off and respects privacy suppression', () => {
   assert.deepEqual(resolveFlareaConsent({ saved: 'denied' }), { consent: false, prompt: false });
   assert.deepEqual(resolveFlareaConsent({ gpc: true, saved: 'granted' }), { consent: false, prompt: false });
   assert.deepEqual(resolveFlareaConsent({ optedOut: true, saved: 'granted' }), { consent: false, prompt: false });
+});
+
+test('grant, rejection, and withdrawal call both Flarea consent outcomes', () => {
+  const originalWindow = globalThis.window;
+  const originalStorage = globalThis.localStorage;
+  const values = new Map();
+  const decisions = [];
+  const events = [];
+  globalThis.localStorage = {
+    getItem: (key) => values.get(key) || null,
+    setItem: (key, value) => values.set(key, String(value)),
+    removeItem: (key) => values.delete(key),
+  };
+  globalThis.window = {
+    srConsent: (decision) => decisions.push(decision),
+    dispatchEvent: (event) => events.push(event.type),
+  };
+
+  try {
+    saveFlareaConsent(true);
+    assert.equal(values.get(FLAREA_ANALYTICS_CONSENT_KEY), 'granted');
+    assert.deepEqual(decisions, [true]);
+
+    values.set(FLAREA_VISITOR_STORAGE_KEY, 'visitor-1');
+    values.set(FLAREA_EMAIL_STORAGE_KEY, 'person@example.com');
+    saveFlareaConsent(false);
+    assert.equal(values.get(FLAREA_ANALYTICS_CONSENT_KEY), 'denied');
+    assert.equal(values.has(FLAREA_VISITOR_STORAGE_KEY), false);
+    assert.equal(values.has(FLAREA_EMAIL_STORAGE_KEY), false);
+    assert.deepEqual(decisions, [true, false]);
+
+    disableOptionalFlarea();
+    assert.equal(globalThis.window.__rtPrivacyOptOut, true);
+    assert.deepEqual(decisions, [true, false, false]);
+    assert.deepEqual(events, ['rt:privacy-opt-out']);
+  } finally {
+    globalThis.window = originalWindow;
+    globalThis.localStorage = originalStorage;
+  }
 });
 
 test('the site uses one consent-gated account pixel and the AI Defense persistent player', async () => {
@@ -27,15 +73,25 @@ test('the site uses one consent-gated account pixel and the AI Defense persisten
 });
 
 test('the consent choice is mounted site-wide and privacy opt-out disables Flarea', async () => {
-  const [layout, choices] = await Promise.all([
+  const [layout, banner, choices, privacy] = await Promise.all([
     readFile(new URL('../src/components/AppLayout.jsx', import.meta.url), 'utf8'),
+    readFile(new URL('../src/components/FlareaAnalyticsConsent.jsx', import.meta.url), 'utf8'),
     readFile(new URL('../src/pages/PrivacyChoices.jsx', import.meta.url), 'utf8'),
+    readFile(new URL('../src/pages/Privacy.jsx', import.meta.url), 'utf8'),
   ]);
   assert.match(layout, /<FlareaAnalyticsConsent \/>/);
+  assert.match(banner, /random first-party ID in Local Storage/);
+  assert.match(banner, /Rejecting keeps it off/);
+  assert.match(banner, /z-\[2147483646\]/);
   assert.match(choices, /disableOptionalFlarea\(\)/);
   assert.match(choices, /saveFlareaConsent\(consent\)/);
   assert.match(choices, /Allow analytics/);
   assert.match(choices, /Reject analytics/);
+  assert.match(privacy, /Flarea pixel is categorized as Analytics, not Strictly Necessary/);
+  assert.match(privacy, /sr_vid/);
+  assert.match(privacy, /sr_email/);
+  assert.match(privacy, /Risk Takers is the controller/);
+  assert.match(privacy, /Flarea acts as our processor/);
 });
 
 test('the split watch page forwards only personal and campaign parameters', async () => {

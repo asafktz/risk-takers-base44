@@ -2,7 +2,7 @@ import React from 'react';
 import LegalPageLayout, { LegalList, LegalSection } from '@/components/LegalPageLayout';
 import { setSEO } from '@/lib/seo';
 
-const EFFECTIVE_DATE = 'August 7, 2026';
+const EFFECTIVE_DATE = 'August 11, 2026';
 
 export default function Privacy() {
   React.useEffect(() => {
@@ -47,8 +47,10 @@ export default function Privacy() {
       </LegalSection>
 
       <LegalSection title="4. Analytics, cookies, and similar technologies">
-        <p>The site uses Google Tag Manager and may use analytics or marketing tags configured through it. It also loads a Showrunner visitor script and embeds Showrunner registration and viewing experiences. These technologies may store or read identifiers and collect usage, referral, device, and interaction information. Essential storage may also support authentication, security, preferences, and application operation.</p>
-        <p>You can limit cookies through your browser settings and, where presented, use the site&apos;s consent choices. Blocking some technologies may affect functionality. Browser privacy signals are honored where required by applicable law and technically supported.</p>
+        <p>The site may use Google Tag Manager and analytics or marketing tags configured through it. Risk Takers also uses an optional, account-level Flarea analytics pixel and embeds Flarea registration and viewing experiences. Risk Takers is the controller for visitor analytics collected on this site, and Flarea acts as our processor for that pixel data.</p>
+        <p>The Flarea pixel is categorized as Analytics, not Strictly Necessary. It stays dormant until you allow analytics. If allowed, Flarea stores a random first-party identifier named <code>sr_vid</code> in your browser&apos;s Local Storage and receives the page URL and path, referrer, normal request metadata, and our Risk Takers workspace identifier. If you identify yourself to us, such as by registering for an event or signing in, Flarea may also store <code>sr_email</code> and associate those visits with your email address. We use this information for audience and event analytics; broader sharing or commercial uses are described in Section 5 and remain subject to applicable law and your choices.</p>
+        <p>You can allow, reject, or later withdraw Flarea analytics through <a className="font-bold underline" href="/privacy-choices">Privacy &amp; analytics choices</a>. Rejecting or withdrawing stops later pixel collection and clears the Flarea identifiers from that browser. Global Privacy Control and our broader sale/share opt-out also keep optional Flarea analytics disabled. The browser identifiers remain until you withdraw consent or clear browser storage; server-side retention follows our Flarea agreement and the retention practices described in this policy.</p>
+        <p>Essential storage may still support authentication, security, preferences, and application operation. Blocking some technologies may affect functionality.</p>
       </LegalSection>
 
       <LegalSection title="5. When we sell, share, license, or disclose information">

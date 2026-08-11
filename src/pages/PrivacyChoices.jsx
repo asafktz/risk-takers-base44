@@ -81,7 +81,7 @@ export default function PrivacyChoices() {
         <section className="mt-10 border-t-2 border-[#1F1F1F] pt-8" aria-labelledby="analytics-choice-heading">
           <p className="text-sm font-black uppercase tracking-[0.16em] text-[#C0392B]">Analytics choice</p>
           <h2 id="analytics-choice-heading" className="mt-2 text-2xl font-black uppercase">Flarea audience analytics</h2>
-          <p className="mt-3 leading-7 text-[#49443D]">Choose whether Risk Takers may connect pages you visit with your event registration. You can change this choice here at any time.</p>
+          <p className="mt-3 leading-7 text-[#49443D]">Choose whether Risk Takers may use optional Flarea analytics. If allowed, Flarea stores a random first-party identifier (<code>sr_vid</code>) in Local Storage and receives page and referral information. After you register or sign in, those visits may be connected with your email address (<code>sr_email</code>). Rejecting or later withdrawing stops collection and clears those Flarea identifiers from this browser. You can change this choice here at any time.</p>
           <p role="status" className="mt-3 font-bold">
             Current choice: {privacyOptOut ? 'Disabled by your broader privacy opt-out' : analyticsConsent === true ? 'Allowed' : analyticsConsent === false ? 'Rejected' : 'Not chosen'}
           </p>
