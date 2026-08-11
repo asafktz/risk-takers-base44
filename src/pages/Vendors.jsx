@@ -24,6 +24,7 @@ const initialForm = {
 };
 
 const VENDOR_PACK_PATH = '/downloads/AI-Defense-Stack-Day-Vendor-Information-Pack.pdf';
+const APPLICATION_DEADLINE = 'September 1, 2026';
 
 const idealFit = [
   'Emerging companies with a new or recently launched AI-era security product.',
@@ -47,7 +48,7 @@ export default function Vendors() {
     setSEO({
       title: 'Apply as a Vendor — The AI Defense Stack',
       description:
-        'Apply for a demo slot at Risk Takers: The AI Defense Stack. We handpick 4-5 emerging cybersecurity companies with a clear role in the AI defense stack.',
+        `Applications close ${APPLICATION_DEADLINE}. Apply for a demo slot at Risk Takers: The AI Defense Stack Day on September 23, 2026.`,
       path: '/vendors',
       jsonLd: [organizationJsonLd]
     });
@@ -100,14 +101,17 @@ export default function Vendors() {
 
       <div className="vendors-page mx-auto grid max-w-5xl gap-10 px-4 py-12 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:py-16">
         <div className="flex flex-col justify-center">
-          <span className="inline-flex w-fit items-center gap-2 border-2 border-[#1F1F1F] bg-[#F1C40F] px-3 py-1 text-xs font-black uppercase tracking-[0.16em]">
+          <p className="inline-flex w-fit items-center gap-2 border-2 border-[#1F1F1F] bg-[#C0392B] px-4 py-2 text-sm font-black uppercase tracking-[0.1em] text-white shadow-[4px_4px_0_#1F1F1F]">
+            <CalendarCheck className="h-5 w-5" /> Applications close {APPLICATION_DEADLINE}
+          </p>
+          <span className="mt-4 inline-flex w-fit items-center gap-2 border-2 border-[#1F1F1F] bg-[#F1C40F] px-3 py-1 text-xs font-black uppercase tracking-[0.16em]">
             <ShieldCheck className="h-4 w-4" /> Vendor application
           </span>
           <h1 className="mt-5 text-[2.6rem] font-black uppercase leading-[0.95] tracking-tight sm:text-5xl">
             Apply for a demo slot
           </h1>
           <p className="mt-4 text-base font-black uppercase tracking-wide text-[#C0392B]">
-            {EVENT.dateLabel} · {EVENT.timeShort}
+            Event: {EVENT.dateLabel} · {EVENT.timeShort}
           </p>
           <p className="mt-5 max-w-xl text-lg leading-8 text-[#49443D]">
             We handpick 4-5 emerging cybersecurity companies with a clear role in the AI defense stack — a sharp technical

@@ -16,7 +16,7 @@ test('vendor applicant email includes the current event and information pack', (
     filename: 'AI-Defense-Stack-Day-Vendor-Information-Pack.pdf',
     path: VENDOR_PACK_URL,
   }]);
-  assert.match(email.html, /Tuesday, September 1, 2026/);
+  assert.match(email.html, /Wednesday, September 23, 2026/);
   assert.match(email.html, /download it here/);
   assert.match(email.html, new RegExp(VENDOR_PACK_URL.replaceAll('.', '\\.')));
 });
