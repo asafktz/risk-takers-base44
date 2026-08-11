@@ -1,0 +1,126 @@
+const field = (key, label, type = 'text') => ({ key, label, type });
+
+export const SUBMISSION_SOURCES = [
+  {
+    id: 'vendors',
+    label: 'Vendor applications',
+    shortLabel: 'Vendors',
+    table: 'vendor_applications',
+    timestamp: 'created_at',
+    headline: ['company', 'name'],
+    subhead: ['name', 'work_email'],
+    fields: [
+      field('name', 'Contact'), field('work_email', 'Work email', 'email'), field('phone', 'Phone', 'phone'),
+      field('company', 'Company'), field('website', 'Website', 'url'), field('presenter', 'Presenter'),
+      field('target_accounts', 'Target accounts', 'long'), field('note', 'Application note', 'long'),
+      field('site_summary', 'Site summary', 'long'), field('signals', 'Signals', 'list'),
+      field('suggested_band', 'Suggested band'), field('status', 'Status', 'status'),
+      field('privacy_opted_out', 'Privacy opt-out', 'boolean'),
+    ],
+  },
+  {
+    id: 'guest-applications',
+    label: 'Guest applications',
+    shortLabel: 'Guest applications',
+    table: 'guest_applications',
+    timestamp: 'created_at',
+    headline: ['full_name'],
+    subhead: ['title', 'email'],
+    fields: [
+      field('full_name', 'Name'), field('email', 'Email', 'email'), field('linkedin_url', 'LinkedIn', 'url'),
+      field('title', 'Title and company'), field('topic_pitch', 'Topic pitch', 'long'),
+      field('status', 'Status', 'status'), field('privacy_opted_out', 'Privacy opt-out', 'boolean'),
+    ],
+  },
+  {
+    id: 'sponsorships',
+    label: 'Sponsorship inquiries',
+    shortLabel: 'Sponsors',
+    table: 'sponsorship_leads',
+    timestamp: 'created_at',
+    headline: ['company', 'name'],
+    subhead: ['name', 'email'],
+    fields: [
+      field('name', 'Contact'), field('email', 'Email', 'email'), field('company', 'Company'),
+      field('message', 'Inquiry', 'long'), field('description', 'Description', 'long'),
+      field('status', 'Status', 'status'), field('privacy_opted_out', 'Privacy opt-out', 'boolean'),
+    ],
+  },
+  {
+    id: 'contact',
+    label: 'Contact messages',
+    shortLabel: 'Contact',
+    table: 'contact_messages',
+    timestamp: 'created_at',
+    headline: ['name'],
+    subhead: ['email'],
+    fields: [
+      field('name', 'Name'), field('email', 'Email', 'email'), field('message', 'Message', 'long'),
+      field('status', 'Status', 'status'), field('privacy_opted_out', 'Privacy opt-out', 'boolean'),
+    ],
+  },
+  {
+    id: 'registrations',
+    label: 'Registrations and subscriptions',
+    shortLabel: 'Registrations',
+    table: 'attendees',
+    timestamp: 'created_date',
+    headline: ['full_name'],
+    subhead: ['email', 'subscription_type'],
+    fields: [
+      field('full_name', 'Name'), field('email', 'Email', 'email'),
+      field('subscription_type', 'Subscription type', 'status'), field('episode_ids', 'Episode IDs', 'list'),
+      field('description', 'Description', 'long'), field('privacy_opted_out', 'Privacy opt-out', 'boolean'),
+    ],
+  },
+  {
+    id: 'ai-defense',
+    label: 'AI Defense leads',
+    shortLabel: 'AI Defense',
+    table: 'ai_defense_stack_leads',
+    timestamp: 'created_at',
+    headline: ['company', 'name'],
+    subhead: ['name', 'email', 'role'],
+    fields: [
+      field('name', 'Name'), field('email', 'Email', 'email'), field('company', 'Company'),
+      field('title', 'Title'), field('linkedin', 'LinkedIn', 'url'), field('role', 'Role', 'status'),
+      field('category', 'Category'), field('message', 'Message', 'long'), field('status', 'Status', 'status'),
+      field('privacy_opted_out', 'Privacy opt-out', 'boolean'),
+    ],
+  },
+  {
+    id: 'guest-intakes',
+    label: 'Guest profiles and intakes',
+    shortLabel: 'Guest intakes',
+    table: 'guests',
+    timestamp: 'created_date',
+    headline: ['name'],
+    subhead: ['title', 'preferred_name'],
+    fields: [
+      field('name', 'Name'), field('preferred_name', 'Preferred name'), field('title', 'Title'),
+      field('bio', 'Bio', 'long'), field('linkedin_link', 'LinkedIn', 'url'),
+      field('image_url', 'Photo', 'url'), field('photo_preference', 'Photo preference', 'status'),
+      field('shipping_address', 'Shipping address', 'address'), field('phone', 'Phone', 'phone'),
+      field('phone_extension', 'Extension'),
+    ],
+  },
+  {
+    id: 'privacy',
+    label: 'Privacy choices',
+    shortLabel: 'Privacy',
+    table: 'privacy_opt_outs',
+    timestamp: 'created_at',
+    headline: ['email'],
+    subhead: ['source'],
+    fields: [
+      field('email', 'Email', 'email'), field('sale_share_opt_out', 'Sale/share opt-out', 'boolean'),
+      field('targeted_advertising_opt_out', 'Targeted advertising opt-out', 'boolean'),
+      field('global_privacy_control', 'Global Privacy Control', 'boolean'), field('source', 'Source'),
+      field('updated_at', 'Last updated', 'date'),
+    ],
+  },
+];
+
+export function sourceById(id) {
+  return SUBMISSION_SOURCES.find((source) => source.id === id) || SUBMISSION_SOURCES[0];
+}

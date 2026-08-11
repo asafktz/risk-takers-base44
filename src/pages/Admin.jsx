@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import EpisodesManager from '../components/admin/EpisodesManager';
 import GuestsManager from '../components/admin/GuestsManager';
 import AIEpisodeCreator from '../components/admin/AIEpisodeCreator';
-import GuestIntakeManager from '../components/admin/GuestIntakeManager';
+import SubmissionsManager from '../components/admin/SubmissionsManager';
 import { setSEO } from '@/lib/seo';
 
 function LoginForm() {
@@ -117,7 +117,7 @@ export default function Admin() {
         <div className="mb-8 flex justify-between items-start">
           <div>
             <h1 className="text-4xl font-black text-[#111111] mb-2">Admin Dashboard</h1>
-            <p className="text-[#666666]">Manage episodes, guests, and create new episodes with AI</p>
+            <p className="text-[#666666]">Manage content and review every Risk Takers website submission</p>
           </div>
           <button onClick={() => base44.auth.logout()} className="text-sm underline text-[#666666] mt-2">Sign out</button>
         </div>
@@ -127,13 +127,13 @@ export default function Admin() {
             <TabsTrigger value="ai">🤖 AI Episode Creator</TabsTrigger>
             <TabsTrigger value="episodes">📺 Episodes</TabsTrigger>
             <TabsTrigger value="guests">👥 Guests</TabsTrigger>
-            <TabsTrigger value="intake">📋 Guest Intakes</TabsTrigger>
+            <TabsTrigger value="submissions">📥 Submissions</TabsTrigger>
           </TabsList>
 
           <TabsContent value="ai"><AIEpisodeCreator /></TabsContent>
           <TabsContent value="episodes"><EpisodesManager /></TabsContent>
           <TabsContent value="guests"><GuestsManager /></TabsContent>
-          <TabsContent value="intake"><GuestIntakeManager /></TabsContent>
+          <TabsContent value="submissions"><SubmissionsManager /></TabsContent>
         </Tabs>
       </div>
     </div>
