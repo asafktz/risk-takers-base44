@@ -14,19 +14,31 @@ const EXPECTED_TABLES = [
   'privacy_opt_outs',
 ];
 
-test('admin submissions inventory covers every Risk Takers website intake table', () => {
+test('admin workflow inventory covers every Risk Takers website record source without flattening its context', () => {
   assert.deepEqual(SUBMISSION_SOURCES.map((source) => source.table), EXPECTED_TABLES);
   for (const source of SUBMISSION_SOURCES) {
     assert.ok(source.fields.length > 0, `${source.table} must expose relevant fields`);
     assert.ok(source.timestamp, `${source.table} must have a timestamp for newest-first ordering`);
+    assert.ok(source.purpose, `${source.table} must explain the record's purpose`);
   }
 });
 
-test('admin dashboard mounts the unified submissions manager', async () => {
+test('admin dashboard separates registrations, applications, guest intake, leads, and privacy', async () => {
   const adminSource = await readFile(new URL('../src/pages/Admin.jsx', import.meta.url), 'utf8');
   assert.match(adminSource, /import SubmissionsManager/);
-  assert.match(adminSource, /value="submissions"/);
-  assert.match(adminSource, /<SubmissionsManager \/>/);
+  assert.match(adminSource, /value="registrations"/);
+  assert.match(adminSource, /sourceIds=\{\['registrations'\]\}/);
+  assert.match(adminSource, /value="vendor-applications"/);
+  assert.match(adminSource, /sourceIds=\{\['vendors'\]\}/);
+  assert.match(adminSource, /value="guest-applications"/);
+  assert.match(adminSource, /sourceIds=\{\['guest-applications'\]\}/);
+  assert.match(adminSource, /value="guest-intake"/);
+  assert.match(adminSource, /sourceIds=\{\['guest-intakes'\]\}/);
+  assert.match(adminSource, /value="leads"/);
+  assert.match(adminSource, /sourceIds=\{\['sponsorships', 'contact', 'ai-defense'\]\}/);
+  assert.match(adminSource, /value="privacy"/);
+  assert.match(adminSource, /sourceIds=\{\['privacy'\]\}/);
+  assert.doesNotMatch(adminSource, /value="submissions"/);
   assert.doesNotMatch(adminSource, /GuestIntakeManager/);
 });
 

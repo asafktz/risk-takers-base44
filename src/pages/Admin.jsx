@@ -8,6 +8,8 @@ import AIEpisodeCreator from '../components/admin/AIEpisodeCreator';
 import SubmissionsManager from '../components/admin/SubmissionsManager';
 import { setSEO } from '@/lib/seo';
 
+const ADMIN_TAB_CLASS = 'border-2 border-[#D4D0C8] bg-white px-4 py-2 data-[state=active]:border-[#1F1F1F] data-[state=active]:bg-[#F1C40F]';
+
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
@@ -117,23 +119,69 @@ export default function Admin() {
         <div className="mb-8 flex justify-between items-start">
           <div>
             <h1 className="text-4xl font-black text-[#111111] mb-2">Admin Dashboard</h1>
-            <p className="text-[#666666]">Manage content and review every Risk Takers website submission</p>
+            <p className="text-[#666666]">Manage content and review each operational workflow in its own context</p>
           </div>
           <button onClick={() => base44.auth.logout()} className="text-sm underline text-[#666666] mt-2">Sign out</button>
         </div>
 
         <Tabs defaultValue="ai" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
-            <TabsTrigger value="ai">🤖 AI Episode Creator</TabsTrigger>
-            <TabsTrigger value="episodes">📺 Episodes</TabsTrigger>
-            <TabsTrigger value="guests">👥 Guests</TabsTrigger>
-            <TabsTrigger value="submissions">📥 Submissions</TabsTrigger>
+          <TabsList className="mb-8 flex h-auto w-full flex-wrap justify-start gap-2 rounded-none bg-transparent p-0">
+            <TabsTrigger className={ADMIN_TAB_CLASS} value="ai">🤖 AI Creator</TabsTrigger>
+            <TabsTrigger className={ADMIN_TAB_CLASS} value="episodes">📺 Episodes</TabsTrigger>
+            <TabsTrigger className={ADMIN_TAB_CLASS} value="guests">👥 Guest directory</TabsTrigger>
+            <TabsTrigger className={ADMIN_TAB_CLASS} value="registrations">🎟️ Event registrations</TabsTrigger>
+            <TabsTrigger className={ADMIN_TAB_CLASS} value="vendor-applications">🏢 Vendor applications</TabsTrigger>
+            <TabsTrigger className={ADMIN_TAB_CLASS} value="guest-applications">🎙️ Guest applications</TabsTrigger>
+            <TabsTrigger className={ADMIN_TAB_CLASS} value="guest-intake">📝 Guest intake</TabsTrigger>
+            <TabsTrigger className={ADMIN_TAB_CLASS} value="leads">📬 Leads &amp; inquiries</TabsTrigger>
+            <TabsTrigger className={ADMIN_TAB_CLASS} value="privacy">🔒 Privacy choices</TabsTrigger>
           </TabsList>
 
           <TabsContent value="ai"><AIEpisodeCreator /></TabsContent>
           <TabsContent value="episodes"><EpisodesManager /></TabsContent>
           <TabsContent value="guests"><GuestsManager /></TabsContent>
-          <TabsContent value="submissions"><SubmissionsManager /></TabsContent>
+          <TabsContent value="registrations">
+            <SubmissionsManager
+              sourceIds={['registrations']}
+              title="Event registrations"
+              description="Registrations and subscriptions are kept separate from applications and lead forms."
+            />
+          </TabsContent>
+          <TabsContent value="vendor-applications">
+            <SubmissionsManager
+              sourceIds={['vendors']}
+              title="Vendor applications"
+              description="Commercial vendor applications, presenter details, and qualification context."
+            />
+          </TabsContent>
+          <TabsContent value="guest-applications">
+            <SubmissionsManager
+              sourceIds={['guest-applications']}
+              title="Guest applications"
+              description="Prospective guests and their topic pitches, before any guest intake process begins."
+            />
+          </TabsContent>
+          <TabsContent value="guest-intake">
+            <SubmissionsManager
+              sourceIds={['guest-intakes']}
+              title="Guest intake"
+              description="Confirmed guest profile, publishing, contact, and logistics details—not guest applications."
+            />
+          </TabsContent>
+          <TabsContent value="leads">
+            <SubmissionsManager
+              sourceIds={['sponsorships', 'contact', 'ai-defense']}
+              title="Leads &amp; inquiries"
+              description="Inbound business and event inquiries, separated by their original source and purpose."
+            />
+          </TabsContent>
+          <TabsContent value="privacy">
+            <SubmissionsManager
+              sourceIds={['privacy']}
+              title="Privacy choices"
+              description="Consent and opt-out records remain separate from operational applications and registrations."
+            />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ChevronLeft, ChevronRight, ExternalLink, Loader2, RefreshCw, Search } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
-import { SUBMISSION_SOURCES, sourceById } from '@/lib/submissionSources';
+import { SUBMISSION_SOURCES } from '@/lib/submissionSources';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -74,25 +74,39 @@ async function fetchSubmissionPage(source, page) {
   return { rows: data || [], total: count || 0 };
 }
 
-async function fetchSubmissionCounts() {
-  const entries = await Promise.all(SUBMISSION_SOURCES.map(async (source) => {
+async function fetchSubmissionCounts(sources) {
+  const entries = await Promise.all(sources.map(async (source) => {
     const { count, error } = await supabase.from(source.table).select('*', { count: 'exact', head: true });
     return [source.id, error ? null : (count || 0)];
   }));
   return Object.fromEntries(entries);
 }
 
-export default function SubmissionsManager() {
-  const [sourceId, setSourceId] = useState(SUBMISSION_SOURCES[0].id);
+export default function SubmissionsManager({
+  sourceIds = SUBMISSION_SOURCES.map((source) => source.id),
+  title = 'Workflow records',
+  description = 'Admin-only records shown with their original purpose and fields.',
+}) {
+  const availableSources = useMemo(
+    () => SUBMISSION_SOURCES.filter((source) => sourceIds.includes(source.id)),
+    [sourceIds],
+  );
+  const [sourceId, setSourceId] = useState(availableSources[0]?.id);
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState('');
-  const source = sourceById(sourceId);
+  const source = availableSources.find((item) => item.id === sourceId) || availableSources[0];
 
-  const countsQuery = useQuery({ queryKey: ['submission-counts'], queryFn: fetchSubmissionCounts });
+  const sourceKey = availableSources.map((item) => item.id).join('|');
+  const countsQuery = useQuery({
+    queryKey: ['workflow-record-counts', sourceKey],
+    queryFn: () => fetchSubmissionCounts(availableSources),
+    enabled: availableSources.length > 0,
+  });
   const submissionsQuery = useQuery({
-    queryKey: ['submissions', source.id, page],
+    queryKey: ['workflow-records', source?.id, page],
     queryFn: () => fetchSubmissionPage(source, page),
     placeholderData: (previous) => previous,
+    enabled: Boolean(source),
   });
 
   const rows = submissionsQuery.data?.rows || [];
@@ -114,20 +128,28 @@ export default function SubmissionsManager() {
     await Promise.all([submissionsQuery.refetch(), countsQuery.refetch()]);
   };
 
+  if (!source) {
+    return (
+      <Card className="rounded-none border-2 border-[#C0392B] bg-[#FFF4F2]">
+        <CardContent className="p-5 font-bold text-[#8E2B20]">This admin workflow has no configured record source.</CardContent>
+      </Card>
+    );
+  }
+
   return (
     <section className="space-y-6">
       <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
         <div>
-          <h2 className="text-3xl font-black text-[#111111]">Website submissions</h2>
-          <p className="mt-1 text-sm text-[#666666]">Admin-only review of every form stored by the Risk Takers website.</p>
+          <h2 className="text-3xl font-black text-[#111111]">{title}</h2>
+          <p className="mt-1 max-w-3xl text-sm text-[#666666]">{description}</p>
         </div>
         <Button onClick={refresh} disabled={submissionsQuery.isFetching} variant="outline" className="rounded-none border-2 border-[#1F1F1F] font-bold">
           <RefreshCw className={`mr-2 h-4 w-4 ${submissionsQuery.isFetching ? 'animate-spin' : ''}`} /> Refresh
         </Button>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 md:grid-cols-4" role="tablist" aria-label="Submission sources">
-        {SUBMISSION_SOURCES.map((item) => {
+      {availableSources.length > 1 && <div className="grid grid-cols-2 gap-2 md:grid-cols-3" role="tablist" aria-label={`${title} record types`}>
+        {availableSources.map((item) => {
           const selected = item.id === source.id;
           const count = countsQuery.data?.[item.id];
           return (
@@ -144,12 +166,13 @@ export default function SubmissionsManager() {
             </button>
           );
         })}
-      </div>
+      </div>}
 
       <div className="flex flex-col justify-between gap-3 border-y-2 border-[#1F1F1F] py-4 sm:flex-row sm:items-center">
         <div>
           <h3 className="text-xl font-black">{source.label}</h3>
           <p className="text-sm text-[#666666]">{total} total · newest first</p>
+          <p className="mt-1 max-w-3xl text-sm text-[#5E584F]">{source.purpose}</p>
         </div>
         <div className="relative w-full sm:w-80">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#777]" />
@@ -167,7 +190,7 @@ export default function SubmissionsManager() {
           </CardContent>
         </Card>
       ) : filteredRows.length === 0 ? (
-        <Card className="rounded-none border-2 border-[#D4D0C8]"><CardContent className="p-10 text-center text-[#666666]">No matching submissions.</CardContent></Card>
+        <Card className="rounded-none border-2 border-[#D4D0C8]"><CardContent className="p-10 text-center text-[#666666]">No matching records.</CardContent></Card>
       ) : (
         <div className="space-y-4" role="tabpanel">
           {filteredRows.map((record) => (
