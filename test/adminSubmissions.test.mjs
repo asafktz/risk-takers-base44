@@ -31,7 +31,7 @@ test('admin dashboard mounts the unified submissions manager', async () => {
 });
 
 test('admin read migration gates every private intake table through is_admin', async () => {
-  const migration = await readFile(new URL('../supabase/migrations/20260811044244_admin_submission_read_access.sql', import.meta.url), 'utf8');
+  const migration = await readFile(new URL('../supabase/migrations/20260811044642_admin_submission_read_access.sql', import.meta.url), 'utf8');
   for (const table of EXPECTED_TABLES.filter((name) => name !== 'guests')) {
     assert.match(migration, new RegExp(`'${table}'`));
   }
