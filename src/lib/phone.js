@@ -3,6 +3,10 @@
 import { isValidPhoneNumber, parsePhoneNumber } from 'libphonenumber-js';
 
 // True only for a genuinely valid number. If no country code is given, assume US.
+/**
+ * @param {string} value
+ * @param {import('libphonenumber-js').CountryCode} [defaultCountry='US']
+ */
 export function isValidPhone(value, defaultCountry = 'US') {
   const v = (value || '').trim();
   if (!v) return false;
@@ -14,6 +18,10 @@ export function isValidPhone(value, defaultCountry = 'US') {
 }
 
 // Normalize to E.164 (e.g. +14155550123) for storage; falls back to the raw value.
+/**
+ * @param {string} value
+ * @param {import('libphonenumber-js').CountryCode} [defaultCountry='US']
+ */
 export function normalizePhone(value, defaultCountry = 'US') {
   const v = (value || '').trim();
   try {

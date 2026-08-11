@@ -1,4 +1,3 @@
-import React from 'react';
 import TornPaper from '../TornPaper';
 
 const questions = [

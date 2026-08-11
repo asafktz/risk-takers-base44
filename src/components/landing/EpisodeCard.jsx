@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { episodePath } from '@/lib/seo';
 import TornPaper from '../TornPaper';

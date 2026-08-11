@@ -1,7 +1,3 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import TornPaper from '../TornPaper';
-import { Calendar, Clock, Radio, ArrowRight, Linkedin } from 'lucide-react';
 
 /**
  * FeaturedShow — the homepage slot for the current live Risk Takers show, hosted on

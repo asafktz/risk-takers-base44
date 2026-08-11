@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowUpRight, Check, Eye, LayoutTemplate, ShieldCheck, Sparkles } from 'lucide-react';
 import { setSEO } from '@/lib/seo';
 import { SHOWRUNNER_ORIGIN } from '@/config/liveEvent';
