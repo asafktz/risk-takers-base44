@@ -237,7 +237,7 @@ export default function GiftStore() {
               </h2>
             </div>
             <p className="max-w-xl text-base leading-7 text-[#4B4943] lg:justify-self-end">
-              Six sharp, useful pieces with a credible retail price—not generic swag with a logo pasted on. Each design has a print-ready production file and a matching storefront mockup.
+              Six sharp, useful pieces built around the original Risk Takers mark and a credible retail price. Each design has a print-ready production file and a matching storefront mockup.
             </p>
           </div>
 

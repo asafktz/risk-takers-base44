@@ -21,7 +21,7 @@ Proposed retail prices are the actual intended checkout prices. They are not pri
 
 The control layer is still human.
 
-The Human in the Loop Tee is built for operators who use AI without outsourcing judgment. The front artwork pairs industrial hazard marks with the reminder to keep the judgment and automate the drag.
+The Human in the Loop Tee is built for operators who use AI without outsourcing judgment. The front artwork pairs the original Risk Takers mark with industrial hazard bars and the reminder to keep the judgment and automate the drag.
 
 - Garment-dyed heavyweight cotton target
 - Unisex fit
@@ -47,7 +47,7 @@ Review the live size guide before ordering. Fabric, weight, and available sizes 
 
 Verify the system. Trust the operator.
 
-The Zero Trust / High Agency Hoodie is field gear for people who test assumptions, protect the boundary, and still own the outcome. A networked shield graphic anchors the front design in Risk Takers black, cream, and signal yellow.
+The Zero Trust / High Agency Hoodie is field gear for people who test assumptions, protect the boundary, and still own the outcome. The original Risk Takers mark anchors the front design in washed gray, black, cream, and signal yellow.
 
 - Premium midweight fleece target
 - Unisex fit
@@ -98,7 +98,7 @@ Care instructions and exact material claims must match the selected live product
 
 Map the surface. Make the move. Verify everything.
 
-The Attack Surface Desk Mat turns the operator's daily workspace into a network map. It is the strongest giveaway in the first Risk Takers drop: useful, visible on every call, and free of apparel-sizing friction.
+The Attack Surface Desk Mat turns the operator's daily workspace into a bold Risk Takers field sign. It is the strongest giveaway in the first drop: useful, visible on every call, and free of apparel-sizing friction.
 
 - Extended desk-mat format
 - Stitched-edge target
@@ -108,9 +108,9 @@ The Attack Surface Desk Mat turns the operator's daily workspace into a network 
 
 Exact dimensions, materials, and edge construction must match the selected live product.
 
-## 5. Take the Risk / Own the Outcome Sticker
+## 5. Risk Takers Logo Sticker
 
-- **Slug:** `take-the-risk-own-the-outcome-sticker`
+- **Slug:** `risk-takers-logo-sticker`
 - **Retail price:** `$8`
 - **Planning cost / ceiling:** `$2.29` starting cost / pause above `$3.50` before shipping
 - **Recommended blank:** Approximately 3 inch kiss-cut or die-cut vinyl sticker
@@ -119,13 +119,13 @@ Exact dimensions, materials, and edge construction must match the selected live 
 - **Artwork:** `public/merch/artwork/take-the-risk-sticker-print-3000x3000.png`
 - **Primary mockup:** `public/merch/mockups/sticker-take-the-risk.jpg`
 - **Placement:** Centered; preserve the cream outer border inside the cut line
-- **Tags:** `take the risk`, `own the outcome`, `cybersecurity`, `AI`, `operator`, `sticker`
+- **Tags:** `Risk Takers`, `AI`, `operator`, `logo`, `sticker`
 
 **Listing description**
 
-Take the risk. Own the outcome.
+The original Risk Takers mark.
 
-A compact field mark for laptops, cases, notebooks, and the equipment that follows you into consequential work.
+A compact piece of the yellow, washed-gray, cream, and black identity for laptops, cases, notebooks, and the equipment that follows you into consequential work.
 
 - Approximately 3 inches
 - Weather-resistant vinyl target

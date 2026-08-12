@@ -5,6 +5,7 @@ import test from 'node:test';
 
 const requiredAssets = [
   'public/merch/hero/risk-takers-gift-store-hero.png',
+  'public/merch/brand/risk-takers-logo-source.png',
   'public/merch/artwork/human-in-the-loop-print-4500x5400.png',
   'public/merch/artwork/zero-trust-high-agency-print-4500x5400.png',
   'public/merch/artwork/prompt-injection-fuel-mug-print-4800x2000.png',
@@ -41,6 +42,15 @@ test('checkout remains visibly gated until Fourthwall is configured', async () =
 
 test('every core product has a print-ready artwork file', async () => {
   await Promise.all(requiredAssets.map((path) => access(path)));
+});
+
+
+test('print artwork is built from the approved Risk Takers logo', async () => {
+  const generator = await readFile('scripts/build_merch_art.py', 'utf8');
+
+  assert.match(generator, /BRAND_LOGO/);
+  assert.match(generator, /paste_brand_logo/);
+  assert.doesNotMatch(generator, /\b(?:shield|padlock|keyhole|circuit)\b/i);
 });
 
 

@@ -46,7 +46,7 @@ All figures are USD estimates from Fourthwall's public "from" catalog prices che
 | Zero Trust / High Agency Hoodie | Cotton Heritage M2580 printed | $27.29 | $79 | $51.71 | 2.89× |
 | Prompt Injection Fuel Mug | Ceramic mug with color inside | $8.95 | $28 | $19.05 | 3.13× |
 | Attack Surface Desk Mat | 15.5 × 31.5 in sublimated | $13.00 | $49 | $36.00 | 3.77× |
-| Take the Risk Sticker | Kiss-cut or die-cut sticker | $2.29 | $8 | $5.71 | 3.49× |
+| Risk Takers Logo Sticker | Kiss-cut or die-cut sticker | $2.29 | $8 | $5.71 | 3.49× |
 | Operator's Desk Kit | Desk mat + mug retail bundle | $21.95 | $77 | $55.05 | 3.51× |
 
 For paid orders, subtract payment processing and any applicable product/options cost from the gross spread. For a physical-product giveaway link, Fourthwall documents the cash cost as the item cost plus destination-based shipping, with no additional giveaway-link fee.
@@ -75,7 +75,7 @@ The script uses local system fonts only to rasterize exact text; no font file is
 | Zero Trust Hoodie | `public/merch/artwork/zero-trust-high-agency-print-4500x5400.png` | `public/merch/mockups/hoodie-zero-trust-high-agency.jpg` |
 | Prompt Injection Mug | `public/merch/artwork/prompt-injection-fuel-mug-print-4800x2000.png` | `public/merch/mockups/mug-prompt-injection-fuel.jpg` |
 | Attack Surface Desk Mat | `public/merch/artwork/attack-surface-desk-mat-print-6000x2600.png` | `public/merch/mockups/deskmat-attack-surface.jpg` |
-| Take the Risk Sticker | `public/merch/artwork/take-the-risk-sticker-print-3000x3000.png` | `public/merch/mockups/sticker-take-the-risk.jpg` |
+| Risk Takers Logo Sticker | `public/merch/artwork/take-the-risk-sticker-print-3000x3000.png` | `public/merch/mockups/sticker-take-the-risk.jpg` |
 
 The generated collection hero is `public/merch/hero/risk-takers-gift-store-hero.png`. It was created with the built-in image generator from the Risk Takers logo source as a style reference; the exact product wording is kept in deterministic print artwork instead of relying on generated text.
 
