@@ -2,6 +2,8 @@
 
 Use this document to create the Risk Takers products in Fourthwall. Create every listing as **Hidden** until the live catalog cost, all variants, artwork placement, and physical samples have been approved.
 
+Design approval: the owner approved this logo-led collection on August 12, 2026. This approval covers the creative baseline and retail prices; it does not authorize publishing, billing setup, sample spend, or production deployment.
+
 Proposed retail prices are the actual intended checkout prices. They are not prior-sale prices, comparative MSRPs, or savings claims. Starting product costs are planning estimates from Fourthwall's public catalog checked August 12, 2026; the product editor is authoritative.
 
 ## 1. Human in the Loop Tee

@@ -1,6 +1,6 @@
 # Risk Takers Gift Store: launch brief
 
-Status: the branded site page, product concepts, print-ready artwork, storefront mockups, price architecture, and provider integration points are built. External account creation, product proofing, billing, payout verification, checkout activation, and production deployment remain gated.
+Status: the branded site page, logo-led product concepts, print-ready artwork, storefront mockups, price architecture, and provider integration points are built. The owner approved the revised logo-led collection on August 12, 2026. External account creation, product proofing, billing, payout verification, checkout activation, and production deployment remain gated.
 
 ## Recommendation
 
