@@ -19,9 +19,12 @@ Primary references:
 - [Fourthwall pricing and product catalog](https://fourthwall.com/pricing/)
 - [Fourthwall shop and fulfillment features](https://fourthwall.com/shops)
 - [Giveaway links and creator-cost gifting](https://help.fourthwall.com/manage-my-shop/apps-features-and-integrations/share-free-products-with-giveaway-links/)
+- [Bundle behavior and giveaway limitation](https://help.fourthwall.com/create-and-sell-products/how-to-guides/create-bundle-listing/)
 - [Connecting an existing site](https://help.fourthwall.com/manage-my-shop/shop-settings/embedding-your-store-on-an-external-website/)
 - [Storefront API](https://help.fourthwall.com/manage-my-shop/apps-features-and-integrations/storefront-api-for-custom-storefronts/)
 - [International payout fallback](https://help.fourthwall.com/frequently-asked-questions/payments-and-pricing/country-not-supported-by-stripe/)
+- [Shipping and delivery expectations](https://help.fourthwall.com/frequently-asked-questions/shipping-and-orders/shipping-and-delivery-expectations/)
+- [Returns, refunds, and quality issues](https://help.fourthwall.com/frequently-asked-questions/shipping-and-orders/returns-refunds-and-quality-issues/)
 
 ### Why not Shopify first
 
@@ -44,15 +47,17 @@ All figures are USD estimates from Fourthwall's public "from" catalog prices che
 | Prompt Injection Fuel Mug | Ceramic mug with color inside | $8.95 | $28 | $19.05 | 3.13× |
 | Attack Surface Desk Mat | 15.5 × 31.5 in sublimated | $13.00 | $49 | $36.00 | 3.77× |
 | Take the Risk Sticker | Kiss-cut or die-cut sticker | $2.29 | $8 | $5.71 | 3.49× |
-| Operator's Desk Kit | Desk mat + mug bundle | $21.95 | $77 | $55.05 | 3.51× |
+| Operator's Desk Kit | Desk mat + mug retail bundle | $21.95 | $77 | $55.05 | 3.51× |
 
 For paid orders, subtract payment processing and any applicable product/options cost from the gross spread. For a physical-product giveaway link, Fourthwall documents the cash cost as the item cost plus destination-based shipping, with no additional giveaway-link fee.
 
 Best giveaway choices:
 
-1. Operator's Desk Kit — $77 retail value, no sizing risk, useful on every work call.
-2. Attack Surface Desk Mat — $49 retail value with the strongest product-cost multiple.
-3. Zero Trust / High Agency Hoodie — highest single-item retail value, but size choice and shipping weight increase cost.
+1. Attack Surface Desk Mat — $49 retail value with the strongest product-cost multiple and no sizing risk.
+2. Zero Trust / High Agency Hoodie — highest eligible single-item retail value, but size choice and shipping weight increase cost.
+3. Prompt Injection Fuel Mug — $28 retail value, low starting product cost, and no apparel sizing.
+
+The Operator's Desk Kit remains a strong $77 retail bundle for paid checkout. Fourthwall's current bundle documentation says bundles cannot be used with giveaway links. Gifting both pieces would require two individual claim links and potentially separate shipping, so the site does not present the bundle as the recommended giveaway.
 
 ## Product files
 
@@ -78,13 +83,13 @@ The generated collection hero is `public/merch/hero/risk-takers-gift-store-hero.
 
 1. Confirm the account-owner email and the legal entity/individual that should receive payouts.
 2. Create a free Fourthwall account using **Business**, creator name **Risk Takers**, and site title **Risk Takers Gift Store**. Enable two-factor authentication.
-3. Create the five products and one bundle from the approved blanks. Upload the matching production PNGs. Keep every item hidden or the site password-protected while proofs are under review.
+3. Create the five products and one paid-checkout bundle from the approved blanks. Upload the matching production PNGs. Keep every item hidden or the site password-protected while proofs are under review.
 4. Enter the recommended retail prices. Confirm live base cost, size surcharges, fulfillment regions, shipping estimates, and return behavior for each listing.
 5. Order one apparel sample and one hard-goods sample only after spend approval. Review print placement, text legibility, black density, yellow reproduction, mug wrap, mat edge safety, garment sizing, packaging, and delivery time.
 6. Complete payout identity and tax onboarding. Fourthwall says Israel is not on its hard-blocked-country list and provides a `bill.com` exception flow when Stripe Connect cannot onboard a country/bank, but the live onboarding result is the authority.
 7. Add a billing card only after approval. A card or sufficient store balance is required for gift-link redemptions because product and shipping are charged when claimed.
 8. Publish the products and copy their exact product URLs into Vercel using the variables in `config/merch.env.example`.
-9. Run a paid-checkout test and a one-use giveaway-link test only after approval for the test spend. Verify size/color selection, recipient $0 checkout, shipping charge, confirmation email, order visibility, and support path.
+9. Run a paid-checkout test and a one-use giveaway-link test on an eligible individual product only after approval for the test spend. Verify size/color selection, recipient $0 checkout, shipping charge, confirmation email, order visibility, and support path.
 10. Deploy the Risk Takers branch only after approval, then verify `/gift-store`, navigation, SEO, product links, and checkout return behavior on the production domain.
 
 ## Integration behavior

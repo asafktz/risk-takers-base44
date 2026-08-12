@@ -43,3 +43,32 @@ test('every core product has a print-ready artwork file', async () => {
   await Promise.all(requiredAssets.map((path) => access(path)));
 });
 
+
+test('giveaway guidance uses an eligible single product instead of the retail bundle', async () => {
+  const [page, config, brief, listings] = await Promise.all([
+    readFile('src/pages/GiftStore.jsx', 'utf8'),
+    readFile('src/config/merch.js', 'utf8'),
+    readFile('docs/merch-store-launch.md', 'utf8'),
+    readFile('docs/fourthwall-product-listings.md', 'utf8'),
+  ]);
+
+  assert.match(page, /RECOMMENDED GIVEAWAY[\s\S]*Attack Surface Desk Mat/);
+  assert.match(config, /category: 'Retail bundle'/);
+  assert.match(config, /details: \['Two-piece retail bundle', 'One bundle checkout', 'May ship separately'\]/);
+  assert.match(brief, /bundles cannot be used with giveaway links/i);
+  assert.match(listings, /Giveaway eligible:\*\* \*\*No\./);
+});
+
+
+test('merchandise policies disclose seller, payment, fulfillment, and order-data handoff', async () => {
+  const [privacy, terms] = await Promise.all([
+    readFile('src/pages/Privacy.jsx', 'utf8'),
+    readFile('src/pages/Terms.jsx', 'utf8'),
+  ]);
+
+  assert.match(privacy, /Merchandise and order information/);
+  assert.match(privacy, /Full payment-card details[\s\S]*not collected by Risk Takers/);
+  assert.match(terms, /Fourthwall—not Risk Takers—is the seller/);
+  assert.match(terms, /made to order/);
+  assert.match(terms, /consumer law/);
+});

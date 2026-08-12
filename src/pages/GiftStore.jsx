@@ -266,14 +266,14 @@ export default function GiftStore() {
 
               <div className="mt-9 border-l-4 border-[#F1C40F] bg-[#292926] p-5">
                 <p className="font-mono text-xs font-black tracking-[0.16em] text-[#F1C40F]">RECOMMENDED GIVEAWAY</p>
-                <p className="mt-2 text-2xl font-black">Operator&apos;s Desk Kit</p>
-                <p className="mt-1 text-sm leading-6 text-[#BEB9AF]">A $77 retail gift built from a useful desk mat and mug—high visibility, no sizing risk.</p>
+                <p className="mt-2 text-2xl font-black">Attack Surface Desk Mat</p>
+                <p className="mt-1 text-sm leading-6 text-[#BEB9AF]">A $49 retail gift with a roughly $13 starting product cost—high visibility, useful, and no sizing risk.</p>
               </div>
             </div>
 
             <ol className="space-y-4">
               {[
-                ['Create the claim', 'Choose one product or bundle and generate a unique one-use giveaway link.'],
+                ['Create the claim', 'Choose one eligible product and generate a unique one-use giveaway link.'],
                 ['They choose the details', 'The recipient selects size or color and enters their own delivery address.'],
                 ['The partner fulfills', 'The recipient pays nothing. Your account covers product cost and destination-based shipping.'],
               ].map(([title, body], index) => (
@@ -295,7 +295,32 @@ export default function GiftStore() {
           <SupplyStamp icon={PackageCheck} title="Made on demand" body="No inventory or minimum order quantity." />
           <SupplyStamp icon={Truck} title="Worldwide delivery" body="Shipping options are calculated for the destination." />
           <SupplyStamp icon={ShieldCheck} title="Partner checkout" body="Payments, tax calculation, and order confirmation are handled securely." />
-          <SupplyStamp icon={Gift} title="Gift ready" body="Single-use claim links can cover the item and shipping." />
+          <SupplyStamp icon={Gift} title="Gift ready" body="One-use links let recipients claim eligible products at $0." />
+        </div>
+      </section>
+
+      <section id="order-info" className="border-b-2 border-[#1B1B19] bg-[#E8E3D7] px-4 py-16 sm:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid gap-8 lg:grid-cols-[.7fr_1.3fr] lg:items-start">
+            <div>
+              <p className="font-mono text-xs font-black tracking-[0.18em] text-[#806C12]">BEFORE YOU ORDER</p>
+              <h2 className="mt-3 text-3xl font-black uppercase leading-none tracking-[-0.04em] sm:text-4xl">Made for you, not pulled from a warehouse.</h2>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-3">
+              <div className="border-t-2 border-[#1B1B19] pt-4">
+                <p className="font-black uppercase">Production</p>
+                <p className="mt-2 text-sm leading-6 text-[#555249]">On-demand items typically take 3–5 business days to produce before transit.</p>
+              </div>
+              <div className="border-t-2 border-[#1B1B19] pt-4">
+                <p className="font-black uppercase">Returns</p>
+                <p className="mt-2 text-sm leading-6 text-[#555249]">Made-to-order items are not returned for sizing preference or a change of mind. Verified damage, defects, or fulfillment errors are covered.</p>
+              </div>
+              <div className="border-t-2 border-[#1B1B19] pt-4">
+                <p className="font-black uppercase">International</p>
+                <p className="mt-2 text-sm leading-6 text-[#555249]">Delivery times vary. Import duties may be due at checkout or on delivery depending on the route.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -342,6 +367,7 @@ export default function GiftStore() {
               <p className="text-xs font-black uppercase tracking-[0.14em]">Store</p>
               <a href="#collection" className="mt-3 block text-sm text-[#555249] hover:text-black">Collection</a>
               <a href="#gift-it" className="mt-2 block text-sm text-[#555249] hover:text-black">Gift it</a>
+              <a href="#order-info" className="mt-2 block text-sm text-[#555249] hover:text-black">Shipping &amp; returns</a>
             </div>
             <div>
               <p className="text-xs font-black uppercase tracking-[0.14em]">Policies</p>

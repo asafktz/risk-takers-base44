@@ -2,7 +2,7 @@ import React from 'react';
 import LegalPageLayout, { LegalList, LegalSection } from '@/components/LegalPageLayout';
 import { setSEO } from '@/lib/seo';
 
-const EFFECTIVE_DATE = 'August 11, 2026';
+const EFFECTIVE_DATE = 'August 12, 2026';
 
 export default function Privacy() {
   React.useEffect(() => {
@@ -28,6 +28,7 @@ export default function Privacy() {
           <li><strong>Guest information:</strong> professional biography, role, company, contact details, headshot, LinkedIn profile, and production information supplied for an appearance.</li>
           <li><strong>Usage and device information:</strong> pages visited, referral information, browser or device information, approximate location derived from network information, and interactions with site or event features.</li>
           <li><strong>Communications:</strong> messages, support requests, preferences, and responses you send to us.</li>
+          <li><strong>Merchandise and order information:</strong> products and variants selected, gift-link redemption, order and shipment status, delivery address, billing contact details, and support or quality-issue records. Full payment-card details are submitted to Fourthwall or its payment processors and are not collected by Risk Takers.</li>
           <li><strong>Event media:</strong> recordings, chat, questions, photographs, and other contributions when an event is recorded or documented.</li>
         </LegalList>
       </LegalSection>
@@ -41,6 +42,7 @@ export default function Privacy() {
           <li>Match attendees, applicants, viewers, and other audience members with sponsors, advertisers, vendors, event partners, and businesses that may want to contact them.</li>
           <li>Advertise, measure campaigns, generate revenue, and sell, license, share, or otherwise provide eligible information to third parties for their own marketing, sales, analytics, research, advertising, event, and business-development purposes.</li>
           <li>Produce, edit, distribute, and promote event recordings and related Risk Takers content.</li>
+          <li>Display merchandise and enable paid or giveaway checkout, product manufacture and delivery, order administration, support, fraud prevention, and transaction records through our commerce and fulfillment providers.</li>
           <li>Understand audience interest, measure performance, improve our services, prevent abuse, maintain security, and comply with law.</li>
         </LegalList>
         <p>Where a legal basis is required, we rely on consent, performance of a requested service, legitimate interests such as operating and improving Risk Takers, and compliance with legal obligations, as applicable.</p>
@@ -60,6 +62,7 @@ export default function Privacy() {
           <li>Hosting, database, form-processing, email, analytics, security, and production providers working for us.</li>
           <li>Showrunner or another event platform when you view, register for, or attend an embedded event.</li>
           <li>Google and other providers whose tags are enabled through our tag-management setup.</li>
+          <li>Fourthwall and its payment, manufacturing, shipping, tax, fraud-prevention, and customer-support providers when you open a merchandise checkout, place or receive an order, redeem a giveaway link, or request order support.</li>
           <li>Event sponsors, exhibitors, advertisers, speakers, vendors, and partners, including attendee or registrant contact details and engagement information, so they can follow up, market, sell, measure sponsorship value, or plan future events.</li>
           <li>Business-data, advertising, analytics, research, demand-generation, lead-generation, and marketing companies, including data platforms and other commercial partners.</li>
           <li>Other third parties that acquire, license, sponsor, distribute, analyze, promote, or monetize Risk Takers content, events, audiences, or business information.</li>
@@ -88,6 +91,7 @@ export default function Privacy() {
       </LegalSection>
 
       <LegalSection title="9. Third-party services and updates">
+        <p>The Risk Takers Gift Store links to Fourthwall-hosted product and checkout pages. Fourthwall receives the information needed to process payment, calculate tax and shipping, manufacture and deliver products, administer giveaway claims, prevent fraud, provide order support, and handle returns or replacements. Fourthwall&apos;s current privacy notice says it processes creator-shop customer information as a service provider on the creator&apos;s behalf and separately uses payment providers such as Stripe and PayPal. Fourthwall&apos;s <a className="font-bold underline" href="https://fourthwall.com/privacy-policy" target="_blank" rel="noreferrer">Privacy Policy</a> also applies to its service.</p>
         <p>Links, embedded players, registration widgets, LinkedIn, and other third-party services operate under their own terms and privacy policies. We may update this policy as our practices or legal requirements change. The effective date above shows the latest version; material changes may receive additional notice when appropriate.</p>
       </LegalSection>
     </LegalPageLayout>
