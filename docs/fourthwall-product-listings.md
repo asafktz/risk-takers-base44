@@ -4,7 +4,7 @@ Use this document to create the Risk Takers products in Fourthwall. Create every
 
 Design approval: the owner approved this logo-led collection on August 12, 2026. This approval covers the creative baseline and retail prices; it does not authorize publishing, billing setup, sample spend, or production deployment.
 
-Proposed retail prices are the actual intended checkout prices. They are not prior-sale prices, comparative MSRPs, or savings claims. Starting product costs are planning estimates from Fourthwall's public catalog checked August 12, 2026; the product editor is authoritative.
+Retail prices are the actual intended checkout prices. They are not prior-sale prices, comparative MSRPs, or savings claims. The products below were entered in Fourthwall and verified Hidden on August 12, 2026; their live base costs were within the approved ceilings.
 
 ## 1. Human in the Loop Tee
 
@@ -12,7 +12,7 @@ Proposed retail prices are the actual intended checkout prices. They are not pri
 - **Retail price:** `$39`
 - **Planning cost / ceiling:** `$15.45` starting cost / pause if the chosen base exceeds `$19.50` before shipping
 - **Recommended blank:** Comfort Colors 1717 or the closest currently available garment-dyed heavyweight unisex tee
-- **Variants:** Black; S–3XL where available
+- **Variants:** Black; S–4XL currently enabled
 - **Giveaway eligible:** Yes
 - **Artwork:** `public/merch/artwork/human-in-the-loop-print-4500x5400.png`
 - **Primary mockup:** `public/merch/mockups/tee-human-in-the-loop.jpg`
@@ -68,7 +68,7 @@ Review the live size guide before ordering. Fabric, weight, and available sizes 
 - **Giveaway eligible:** Yes
 - **Artwork:** `public/merch/artwork/prompt-injection-fuel-mug-print-4800x2000.png`
 - **Primary mockup:** `public/merch/mockups/mug-prompt-injection-fuel.jpg`
-- **Placement:** Full wrap; verify both sides and every mug-size template independently
+- **Placement:** Front-facing panel; 11 oz only. A full wrap was not used because the submitted artwork could not fill the wrap template without quality loss.
 - **Tags:** `prompt injection`, `AI security`, `coffee`, `operator`, `Risk Takers`, `mug`
 
 **Listing description**
@@ -115,7 +115,7 @@ Exact dimensions, materials, and edge construction must match the selected live 
 - **Slug:** `risk-takers-logo-sticker`
 - **Retail price:** `$8`
 - **Planning cost / ceiling:** `$2.29` starting cost / pause above `$3.50` before shipping
-- **Recommended blank:** Approximately 3 inch kiss-cut or die-cut vinyl sticker
+- **Recommended blank:** Allcolor 5493 3 × 3 inch kiss-cut vinyl sticker
 - **Variants:** One design
 - **Giveaway eligible:** Yes, but shipping economics should be checked before using it alone
 - **Artwork:** `public/merch/artwork/take-the-risk-sticker-print-3000x3000.png`
@@ -130,7 +130,7 @@ The original Risk Takers mark.
 A compact piece of the yellow, washed-gray, cream, and black identity for laptops, cases, notebooks, and the equipment that follows you into consequential work.
 
 - Approximately 3 inches
-- Weather-resistant vinyl target
+- Durable indoor vinyl
 - Made on demand
 - Original Risk Takers artwork
 
@@ -168,7 +168,7 @@ For each product:
 2. Upload the production artwork, review every variant, and capture a screenshot showing placement, orientation, dimensions, color, and selected blank.
 3. Upload the supplied storefront mockup as the first custom image, but retain provider-generated variant images for accuracy.
 4. Paste the listing copy, then revise every material, care, fit, durability, and dimension claim to match the selected live catalog record.
-5. Set the product to **Hidden** and copy the exact preview URL into `config/merch.env.example` only after the slug is confirmed.
+5. Set the product to **Hidden** and preserve the stable provider ID in `src/config/merch.js`; configure the public product URL only after the final shop domain is approved.
 6. Order and approve physical samples before changing visibility to Published.
 
 Current provider references:

@@ -1,6 +1,21 @@
 # Risk Takers Gift Store: launch brief
 
-Status: the branded site page, logo-led product concepts, print-ready artwork, storefront mockups, price architecture, and provider integration points are built. The owner approved the revised logo-led collection on August 12, 2026. External account creation, product proofing, billing, payout verification, checkout activation, and production deployment remain gated.
+Status: the branded site page, logo-led product concepts, print-ready artwork, storefront mockups, price architecture, and provider integration points are built. The owner approved the revised logo-led collection on August 12, 2026. A Fourthwall account now exists and all five products plus the paid-checkout bundle have been created and verified **Hidden**. Store identity, billing, payout verification, physical samples, checkout tests, publishing, and production deployment remain gated.
+
+## Live hidden catalog
+
+Verified in the Fourthwall product manager on August 12, 2026. Product IDs remain stable if the shop domain changes.
+
+| Item | Fourthwall ID | Live variant | Base | Retail | Gross spread | Status |
+|---|---|---|---:|---:|---:|---|
+| Human in the Loop Tee | `a59b182f-02b8-4703-989c-1c59701eed8e` | Comfort Colors 1717, black, S–4XL | $15.45 | $39 | $23.55 | Hidden |
+| Zero Trust / High Agency Hoodie | `afe610ca-33ff-4322-a9a0-38564bac7165` | Cotton Heritage M2580, black, S–3XL | $27.29 | $79 | $51.71 | Hidden |
+| Prompt Injection Fuel Mug | `e9b888e4-d70e-41ab-91e8-6b3e033c48d6` | Ceramic mug with black interior, 11 oz | $8.95 | $28 | $19.05 | Hidden |
+| Attack Surface Desk Mat | `7384f894-1818-42fd-a813-9c734a30df3c` | Allcolor SP70018, 15.5 × 31.5 in | $13.00 | $49 | $36.00 | Hidden |
+| Risk Takers Logo Sticker | `c572a824-9f8e-4939-8722-df3780e910ba` | Allcolor 5493 kiss-cut, 3 × 3 in | $2.29 | $8 | $5.71 | Hidden |
+| Operator's Desk Kit | `1005793e-b740-4a47-ba63-ba74c7c0f652` | Mug + desk mat bundle | $21.95 | $77 | $55.05 | Hidden |
+
+Fourthwall's automatic bundle-image generator returned an error, so the hidden bundle currently uses the first provider image from each component. The branded Risk Takers site supplies the collection-level merchandising image.
 
 ## Recommendation
 
@@ -38,7 +53,7 @@ Printful Quick Stores are free, but the current service is restricted to US tax 
 
 ## Collection and economics
 
-All figures are USD estimates from Fourthwall's public "from" catalog prices checked on August 12, 2026. They exclude shipping, tax, additional print placements, premium sizes, and any product-specific options. The retail column contains proposed public checkout prices—not comparative MSRP or prior-sale claims. Approve final blanks and costs in the live catalog before publishing.
+All figures are USD values confirmed in the live Fourthwall product editor on August 12, 2026. They exclude shipping, tax, payment processing, premium sizes, and future product-specific changes. The retail column contains intended public checkout prices—not comparative MSRP or prior-sale claims. Recheck costs before publishing if the launch occurs later.
 
 | Item | Suggested blank / method | Est. base | Retail | Gross spread before payment/shipping | Retail-to-base |
 |---|---|---:|---:|---:|---:|
@@ -82,9 +97,9 @@ The generated collection hero is `public/merch/hero/risk-takers-gift-store-hero.
 ## External setup sequence
 
 1. Confirm the account-owner email and the legal entity/individual that should receive payouts.
-2. Create a free Fourthwall account using **Business**, creator name **Risk Takers**, and site title **Risk Takers Gift Store**. Enable two-factor authentication.
-3. Create the five products and one paid-checkout bundle from the approved blanks. Upload the matching production PNGs. Keep every item hidden or the site password-protected while proofs are under review.
-4. Enter the recommended retail prices. Confirm live base cost, size surcharges, fulfillment regions, shipping estimates, and return behavior for each listing.
+2. ~~Create a free Fourthwall account.~~ Completed; the account currently retains the default LinkedOtter shop identity until the owner confirms it should be renamed to **Risk Takers Gift Store** and the free domain should change to `risk-takers-shop.fourthwall.com`.
+3. ~~Create the five products and one paid-checkout bundle from the approved blanks. Upload the matching production PNGs and keep every item hidden.~~ Completed.
+4. ~~Enter the recommended retail prices and confirm live base costs.~~ Completed. Fulfillment regions, destination shipping estimates, and apparel size surcharges still need final review before publishing.
 5. Order one apparel sample and one hard-goods sample only after spend approval. Review print placement, text legibility, black density, yellow reproduction, mug wrap, mat edge safety, garment sizing, packaging, and delivery time.
 6. Complete payout identity and tax onboarding. Fourthwall says Israel is not on its hard-blocked-country list and provides a `bill.com` exception flow when Stripe Connect cannot onboard a country/bank, but the live onboarding result is the authority.
 7. Add a billing card only after approval. A card or sufficient store balance is required for gift-link redemptions because product and shipping are charged when claimed.
@@ -102,7 +117,8 @@ The generated collection hero is `public/merch/hero/risk-takers-gift-store-hero.
 ## Launch acceptance checklist
 
 - [ ] Account owner, entity, creator name, and public support email approved.
-- [ ] Every base cost and shipping region rechecked in Fourthwall.
+- [x] Every base cost rechecked in Fourthwall.
+- [ ] Shipping regions, destination estimates, and size surcharges rechecked in Fourthwall.
 - [ ] Apparel and hard-goods samples approved from physical inspection.
 - [ ] Billing card and payout onboarding complete.
 - [ ] Product URLs configured in a preview deployment.
