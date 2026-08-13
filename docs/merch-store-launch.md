@@ -1,6 +1,6 @@
 # Risk Takers Gift Store: launch brief
 
-Status: the branded site page, logo-led product concepts, print-ready artwork, storefront mockups, price architecture, and provider integration points are built. The owner approved the revised logo-led collection on August 12, 2026. A Fourthwall account now exists and all five products plus the paid-checkout bundle have been created and verified **Hidden**. Store identity, billing, payout verification, physical samples, checkout tests, publishing, and production deployment remain gated.
+Status: the branded site page, logo-led product concepts, print-ready artwork, storefront mockups, price architecture, and provider integration points are built. The owner approved the revised logo-led collection on August 12, 2026. A Fourthwall account now exists and all five products plus the paid-checkout bundle have been created and verified **Hidden**. The shop title is **Risk Takers Gift Store**, `risk-takers-shop.fourthwall.com` is active behind Fourthwall's **Coming soon** gate, and the yellow/washed-gray/cream/black palette is saved in the hosted theme. Billing, payout verification, physical samples, checkout tests, publishing, and production deployment remain gated.
 
 ## Live hidden catalog
 
@@ -97,7 +97,7 @@ The generated collection hero is `public/merch/hero/risk-takers-gift-store-hero.
 ## External setup sequence
 
 1. Confirm the account-owner email and the legal entity/individual that should receive payouts.
-2. ~~Create a free Fourthwall account.~~ Completed; the account currently retains the default LinkedOtter shop identity until the owner confirms it should be renamed to **Risk Takers Gift Store** and the free domain should change to `risk-takers-shop.fourthwall.com`.
+2. ~~Create a free Fourthwall account and apply the Risk Takers shop identity.~~ Completed. Shop title: **Risk Takers Gift Store**. Free domain: `risk-takers-shop.fourthwall.com` (active behind the Coming soon gate).
 3. ~~Create the five products and one paid-checkout bundle from the approved blanks. Upload the matching production PNGs and keep every item hidden.~~ Completed.
 4. ~~Enter the recommended retail prices and confirm live base costs.~~ Completed. Fulfillment regions, destination shipping estimates, and apparel size surcharges still need final review before publishing.
 5. Order one apparel sample and one hard-goods sample only after spend approval. Review print placement, text legibility, black density, yellow reproduction, mug wrap, mat edge safety, garment sizing, packaging, and delivery time.
@@ -117,6 +117,8 @@ The generated collection hero is `public/merch/hero/risk-takers-gift-store-hero.
 ## Launch acceptance checklist
 
 - [ ] Account owner, entity, creator name, and public support email approved.
+- [x] Shop title, description, and free Fourthwall domain changed from the signup defaults to Risk Takers.
+- [x] Hosted storefront palette saved in signal yellow, washed gray, cream, and black.
 - [x] Every base cost rechecked in Fourthwall.
 - [ ] Shipping regions, destination estimates, and size surcharges rechecked in Fourthwall.
 - [ ] Apparel and hard-goods samples approved from physical inspection.
