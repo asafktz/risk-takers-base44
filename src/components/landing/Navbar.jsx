@@ -85,7 +85,7 @@ export default function Navbar() {
             <X className="hidden h-5 w-5 group-open:block" aria-hidden="true" />
           </summary>
 
-          <div id="mobile-navigation" className="fixed left-0 right-0 top-14 bg-[#1F1F1F] border-t border-[#333] px-4 pb-4">
+          <div id="mobile-navigation" className="fixed left-0 right-0 top-14 hidden bg-[#1F1F1F] border-t border-[#333] px-4 pb-4 group-open:block">
             {scrollLinks.map(l => (
               <button
                 key={l.label}
