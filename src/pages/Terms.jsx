@@ -2,7 +2,7 @@ import React from 'react';
 import LegalPageLayout, { LegalList, LegalSection } from '@/components/LegalPageLayout';
 import { setSEO } from '@/lib/seo';
 
-const EFFECTIVE_DATE = 'August 7, 2026';
+const EFFECTIVE_DATE = 'August 13, 2026';
 
 export default function Terms() {
   React.useEffect(() => {
@@ -37,12 +37,22 @@ export default function Terms() {
         </LegalList>
       </LegalSection>
 
-      <LegalSection title="5. Recordings and participant contributions">
+      <LegalSection title="5. Merchandise previews and waitlist">
+        <p>The Risk Takers merch page displays concepts and collects interest through a waitlist. It is not a store or checkout. Joining the waitlist does not create an order, reserve a product, guarantee availability, guarantee a gift, or require payment.</p>
+        <LegalList>
+          <li>Images are product concepts and may change before anything becomes available.</li>
+          <li>Stated retail values are planned launch values, not current offers for sale, prior prices, or claims about market value.</li>
+          <li>Waitlist responses may be used to decide which concepts move into production.</li>
+          <li>If a later sale or giveaway opens, its availability, eligibility, price, fulfillment, and other terms will be disclosed separately.</li>
+        </LegalList>
+      </LegalSection>
+
+      <LegalSection title="6. Recordings and participant contributions">
         <p>Events may be photographed, recorded, transcribed, streamed, clipped, edited, and distributed. When this is disclosed during registration or at the event, your attendance or participation acknowledges that recording. Speakers, guests, and featured participants may be asked to sign separate release terms.</p>
         <p>You retain ownership of material you submit. You grant Risk Takers a non-exclusive, worldwide, royalty-free license to host, reproduce, edit for length or format, display, and distribute contributions you intentionally provide for publication, event participation, or promotion, solely in connection with Risk Takers and its related content and promotion. You represent that you have the rights needed to provide that material.</p>
       </LegalSection>
 
-      <LegalSection title="6. Acceptable use">
+      <LegalSection title="7. Acceptable use">
         <LegalList>
           <li>Do not break the law, infringe rights, impersonate others, misrepresent affiliation, or submit confidential information without authorization.</li>
           <li>Do not harass participants, disrupt events, distribute malware, probe security, scrape restricted areas, bypass access controls, or overload the services.</li>
@@ -51,28 +61,28 @@ export default function Terms() {
         </LegalList>
       </LegalSection>
 
-      <LegalSection title="7. Intellectual property">
+      <LegalSection title="8. Intellectual property">
         <p>The site, Risk Takers branding, graphics, formats, edited recordings, and original content are owned by LinkedOtter LLC or its licensors and protected by applicable law. You may access public content for personal or internal business learning. No other license is granted. Third-party names and content remain the property of their respective owners.</p>
       </LegalSection>
 
-      <LegalSection title="8. Educational content; no professional advice">
+      <LegalSection title="9. Educational content; no professional advice">
         <p>Risk Takers content is general information and discussion, not legal, cybersecurity, financial, investment, insurance, compliance, medical, or other professional advice. Guests speak for themselves. Views expressed do not necessarily represent Risk Takers, its partners, or other participants. You are responsible for evaluating information and obtaining appropriate professional advice before acting.</p>
       </LegalSection>
 
-      <LegalSection title="9. Third-party services">
+      <LegalSection title="10. Third-party services">
         <p>The services may link to or embed third-party platforms such as LinkedIn, Showrunner, video hosts, registration providers, or other websites. We do not control those services and are not responsible for their availability, content, security, or practices. Their own terms and privacy policies apply.</p>
       </LegalSection>
 
-      <LegalSection title="10. Disclaimers and limitation of liability">
+      <LegalSection title="11. Disclaimers and limitation of liability">
         <p>To the maximum extent permitted by law, the services and content are provided “as is” and “as available,” without warranties of uninterrupted availability, accuracy, fitness for a particular purpose, non-infringement, or specific results. Nothing in these terms excludes rights that cannot lawfully be excluded.</p>
         <p>To the maximum extent permitted by law, LinkedOtter LLC and the Risk Takers team will not be liable for indirect, incidental, special, consequential, exemplary, or lost-profit damages arising from the services, events, content, or third-party platforms. Where liability cannot be excluded, it is limited to the greater of the amount you paid LinkedOtter LLC for the specific service giving rise to the claim during the preceding twelve months or US$100. This limitation does not apply where prohibited by law.</p>
       </LegalSection>
 
-      <LegalSection title="11. Suspension, termination, and changes">
+      <LegalSection title="12. Suspension, termination, and changes">
         <p>We may suspend or terminate access for a material breach, security risk, unlawful activity, or serious event disruption. Provisions that by their nature should survive will survive. We may update these terms; the effective date above identifies the latest version. Continuing to use the services after an update means you accept the revised terms to the extent permitted by law.</p>
       </LegalSection>
 
-      <LegalSection title="12. General terms and contact">
+      <LegalSection title="13. General terms and contact">
         <p>If any provision is unenforceable, the remaining provisions remain effective. A failure to enforce a provision is not a waiver. These terms are governed by the laws applicable to LinkedOtter LLC, without overriding mandatory rights you may have under applicable consumer law. Before filing a claim, contact us so we can try to resolve the issue informally.</p>
         <p>Questions can be sent to <a className="font-bold underline" href="mailto:hello@risktakers.live">hello@risktakers.live</a>.</p>
       </LegalSection>

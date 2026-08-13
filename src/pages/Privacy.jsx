@@ -2,7 +2,7 @@ import React from 'react';
 import LegalPageLayout, { LegalList, LegalSection } from '@/components/LegalPageLayout';
 import { setSEO } from '@/lib/seo';
 
-const EFFECTIVE_DATE = 'August 11, 2026';
+const EFFECTIVE_DATE = 'August 13, 2026';
 
 export default function Privacy() {
   React.useEffect(() => {
@@ -28,6 +28,7 @@ export default function Privacy() {
           <li><strong>Guest information:</strong> professional biography, role, company, contact details, headshot, LinkedIn profile, and production information supplied for an appearance.</li>
           <li><strong>Usage and device information:</strong> pages visited, referral information, browser or device information, approximate location derived from network information, and interactions with site or event features.</li>
           <li><strong>Communications:</strong> messages, support requests, preferences, and responses you send to us.</li>
+          <li><strong>Merch waitlist information:</strong> your name, email address, selected product interest, and the source page used to join the waitlist.</li>
           <li><strong>Event media:</strong> recordings, chat, questions, photographs, and other contributions when an event is recorded or documented.</li>
         </LegalList>
       </LegalSection>
@@ -41,6 +42,7 @@ export default function Privacy() {
           <li>Match attendees, applicants, viewers, and other audience members with sponsors, advertisers, vendors, event partners, and businesses that may want to contact them.</li>
           <li>Advertise, measure campaigns, generate revenue, and sell, license, share, or otherwise provide eligible information to third parties for their own marketing, sales, analytics, research, advertising, event, and business-development purposes.</li>
           <li>Produce, edit, distribute, and promote event recordings and related Risk Takers content.</li>
+          <li>Record interest in merchandise concepts and send requested updates about future Risk Takers drops or giveaways.</li>
           <li>Understand audience interest, measure performance, improve our services, prevent abuse, maintain security, and comply with law.</li>
         </LegalList>
         <p>Where a legal basis is required, we rely on consent, performance of a requested service, legitimate interests such as operating and improving Risk Takers, and compliance with legal obligations, as applicable.</p>

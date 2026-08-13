@@ -20,6 +20,7 @@ import AnalyticsJourneyQAPage from '@/pages/AnalyticsJourneyQA';
 import PrivacyPage from '@/pages/Privacy';
 import TermsPage from '@/pages/Terms';
 import PrivacyChoicesPage from '@/pages/PrivacyChoices';
+import GiftStorePage from '@/pages/GiftStore';
 // PreviousEpisodesPage hidden until episode videos are uploaded — see /episodes route below.
 // import PreviousEpisodesPage from '@/pages/PreviousEpisodes';
 
@@ -116,6 +117,11 @@ const AuthenticatedApp = () => {
         <Route path="/privacy-choices" element={
           <LayoutWrapper currentPageName="PrivacyChoices">
             <PrivacyChoicesPage />
+          </LayoutWrapper>
+        } />
+        <Route path="/gift-store" element={
+          <LayoutWrapper currentPageName="GiftStore">
+            <GiftStorePage />
           </LayoutWrapper>
         } />
         {/* Previous Episodes hidden until episode videos are uploaded — redirects home for now.
