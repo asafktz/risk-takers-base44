@@ -28,7 +28,7 @@ export default function Privacy() {
           <li><strong>Guest information:</strong> professional biography, role, company, contact details, headshot, LinkedIn profile, and production information supplied for an appearance.</li>
           <li><strong>Usage and device information:</strong> pages visited, referral information, browser or device information, approximate location derived from network information, and interactions with site or event features.</li>
           <li><strong>Communications:</strong> messages, support requests, preferences, and responses you send to us.</li>
-          <li><strong>Merch waitlist information:</strong> your name, email address, selected product interest, and the source page used to join the waitlist.</li>
+          <li><strong>Merchandise information:</strong> waitlist contact details and product interest, or order, item, shipping, fulfillment, and support information made available to us by our hosted checkout and fulfillment providers. Payment-card details are collected by the checkout provider, not through risktakers.show.</li>
           <li><strong>Event media:</strong> recordings, chat, questions, photographs, and other contributions when an event is recorded or documented.</li>
         </LegalList>
       </LegalSection>
@@ -42,7 +42,7 @@ export default function Privacy() {
           <li>Match attendees, applicants, viewers, and other audience members with sponsors, advertisers, vendors, event partners, and businesses that may want to contact them.</li>
           <li>Advertise, measure campaigns, generate revenue, and sell, license, share, or otherwise provide eligible information to third parties for their own marketing, sales, analytics, research, advertising, event, and business-development purposes.</li>
           <li>Produce, edit, distribute, and promote event recordings and related Risk Takers content.</li>
-          <li>Record interest in merchandise concepts and send requested updates about future Risk Takers drops or giveaways.</li>
+          <li>Record interest in merchandise, send requested drop or giveaway updates, and support merchandise orders, delivery, returns, refunds, and customer service.</li>
           <li>Understand audience interest, measure performance, improve our services, prevent abuse, maintain security, and comply with law.</li>
         </LegalList>
         <p>Where a legal basis is required, we rely on consent, performance of a requested service, legitimate interests such as operating and improving Risk Takers, and compliance with legal obligations, as applicable.</p>
@@ -59,7 +59,7 @@ export default function Privacy() {
         <p>Subject to applicable law and the choices described below, we may disclose information for monetary or other valuable consideration, or permit a recipient to use it for its own purposes. Recipients may use eligible information to contact you, market products or services, measure campaigns, build or enhance business records, conduct research, or identify prospective customers and event participants.</p>
         <p>We may sell, license, share, or disclose information to:</p>
         <LegalList>
-          <li>Hosting, database, form-processing, email, analytics, security, and production providers working for us.</li>
+          <li>Hosting, database, form-processing, email, analytics, security, merchandise checkout, payment, print-on-demand, shipping, and production providers working for us.</li>
           <li>Showrunner or another event platform when you view, register for, or attend an embedded event.</li>
           <li>Google and other providers whose tags are enabled through our tag-management setup.</li>
           <li>Event sponsors, exhibitors, advertisers, speakers, vendors, and partners, including attendee or registrant contact details and engagement information, so they can follow up, market, sell, measure sponsorship value, or plan future events.</li>

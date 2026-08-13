@@ -37,13 +37,15 @@ export default function Terms() {
         </LegalList>
       </LegalSection>
 
-      <LegalSection title="5. Merchandise previews and waitlist">
-        <p>The Risk Takers merch page displays concepts and collects interest through a waitlist. It is not a store or checkout. Joining the waitlist does not create an order, reserve a product, guarantee availability, guarantee a gift, or require payment.</p>
+      <LegalSection title="5. Merchandise, checkout, and waitlist">
+        <p>The Risk Takers gift-store page may operate either as a preview and waitlist or as a live store. The status shown on the page controls: a waitlist submission does not create an order, while a live-store order is created only after you submit payment through the hosted checkout and receive confirmation.</p>
         <LegalList>
-          <li>Images are product concepts and may change before anything becomes available.</li>
-          <li>Stated retail values are planned launch values, not current offers for sale, prior prices, or claims about market value.</li>
-          <li>Waitlist responses may be used to decide which concepts move into production.</li>
-          <li>If a later sale or giveaway opens, its availability, eligibility, price, fulfillment, and other terms will be disclosed separately.</li>
+          <li>Product images are representative. Color, placement, scale, materials, and finish may vary within normal print-on-demand and screen-display tolerances.</li>
+          <li>Live prices are shown in U.S. dollars unless checkout states otherwise. Shipping, taxes, delivery estimates, and available destinations are shown before payment.</li>
+          <li>Products are made and fulfilled on demand by third-party providers. The hosted checkout may apply additional provider terms and policies disclosed there.</li>
+          <li>Availability and product options can change. We may cancel and refund an order if an item becomes unavailable or an obvious pricing or catalog error occurs.</li>
+          <li>Waitlist responses may be used to decide which products move into production. Joining does not reserve a product, guarantee a gift, or require payment.</li>
+          <li>A giveaway has no cash value and is subject to any eligibility, shipping, redemption, and expiration terms shown with that giveaway.</li>
         </LegalList>
       </LegalSection>
 

@@ -1,6 +1,6 @@
 # Fourthwall product-entry pack
 
-> Internal fulfillment reference only. These hidden listings are not public-page copy and are not a current purchase destination. The live-site phase is a native waitlist at `risktakers.show/gift-store`.
+> Internal fulfillment reference. The listings remain hidden until the server integration, private checkout, and launch checks pass; the native page fails closed to its waitlist meanwhile.
 
 Use this document to create the Risk Takers products in Fourthwall. Create every listing as **Hidden** until the live catalog cost, all variants, artwork placement, and physical samples have been approved.
 
@@ -16,16 +16,16 @@ Retail prices are the actual intended checkout prices. They are not prior-sale p
 - **Recommended blank:** Comfort Colors 1717 or the closest currently available garment-dyed heavyweight unisex tee
 - **Variants:** Black; S–4XL currently enabled
 - **Giveaway eligible:** Yes
-- **Artwork:** `public/merch/artwork/human-in-the-loop-print-4500x5400.png`
-- **Primary mockup:** `public/merch/mockups/tee-human-in-the-loop.jpg`
-- **Placement:** Front center; confirm each size in the product designer
+- **Artwork:** private local brand storage, `Brand Assets/Merch/Production/Edition 01/human-in-the-loop-left-chest-v2-1500x1500.png`
+- **Primary mockup:** `public/merch/mockups/tee-human-in-the-loop-v2.avif`
+- **Placement:** Wearer's left chest; confirm each size in the product designer
 - **Tags:** `AI`, `cybersecurity`, `human-in-the-loop`, `operator`, `Risk Takers`, `tee`
 
 **Listing description**
 
 The control layer is still human.
 
-The Human in the Loop Tee is built for operators who use AI without outsourcing judgment. The front artwork pairs the original Risk Takers mark with industrial hazard bars and the reminder to keep the judgment and automate the drag.
+The Human in the Loop Tee is built for operators who use AI without outsourcing judgment. A restrained left-chest Risk Takers mark and Human in the Loop line keep the design wearable outside a conference hall.
 
 - Garment-dyed heavyweight cotton target
 - Unisex fit
@@ -42,9 +42,9 @@ Review the live size guide before ordering. Fabric, weight, and available sizes 
 - **Recommended blank:** Cotton Heritage M2580 or the closest currently available premium midweight unisex hoodie
 - **Variants:** Black; S–3XL where available
 - **Giveaway eligible:** Yes
-- **Artwork:** `public/merch/artwork/zero-trust-high-agency-print-4500x5400.png`
-- **Primary mockup:** `public/merch/mockups/hoodie-zero-trust-high-agency.jpg`
-- **Placement:** Front center; verify drawstrings and pocket do not intersect the print area
+- **Artwork:** private local brand storage, `Brand Assets/Merch/Production/Edition 01/zero-trust-high-agency-left-chest-v2-1500x1500.png`
+- **Primary mockup:** `public/merch/mockups/hoodie-zero-trust-high-agency-v2.avif`
+- **Placement:** Wearer's left chest; verify drawstrings and pocket do not intersect the print area
 - **Tags:** `zero trust`, `AI security`, `cybersecurity`, `high agency`, `operator`, `hoodie`
 
 **Listing description**
@@ -68,9 +68,9 @@ Review the live size guide before ordering. Fabric, weight, and available sizes 
 - **Recommended blank:** 11 oz ceramic mug with black or yellow interior, subject to live catalog availability
 - **Variants:** Warm white exterior; dark interior/handle where available
 - **Giveaway eligible:** Yes
-- **Artwork:** `public/merch/artwork/prompt-injection-fuel-mug-print-4800x2000.png`
-- **Primary mockup:** `public/merch/mockups/mug-prompt-injection-fuel.jpg`
-- **Placement:** Front-facing panel; 11 oz only. A full wrap was not used because the submitted artwork could not fill the wrap template without quality loss.
+- **Artwork:** private local brand storage, `Brand Assets/Merch/Production/Edition 01/operator-fuel-mug-wrap-v2-4800x2000.png`
+- **Primary mockup:** `public/merch/mockups/mug-prompt-injection-fuel-v2.avif`
+- **Placement:** Center-facing printable wrap; confirm the mark faces outward with the handle on the right.
 - **Tags:** `prompt injection`, `AI security`, `coffee`, `operator`, `Risk Takers`, `mug`
 
 **Listing description**
@@ -93,9 +93,9 @@ Care instructions and exact material claims must match the selected live product
 - **Recommended blank:** 15.5 × 31.5 inch extended desk mat
 - **Variants:** Black
 - **Giveaway eligible:** **Yes — primary giveaway recommendation**
-- **Artwork:** `public/merch/artwork/attack-surface-desk-mat-print-6000x2600.png`
-- **Primary mockup:** `public/merch/mockups/deskmat-attack-surface.jpg`
-- **Placement:** Full bleed; keep the border and all text inside the product designer's safe area
+- **Artwork:** private local brand storage, `Brand Assets/Merch/Production/Edition 01/attack-surface-desk-mat-full-bleed-v3-9921x5196.png`
+- **Primary mockup:** `public/merch/mockups/deskmat-attack-surface-v2.avif`
+- **Placement:** Exact 33.07 × 17.32 inch full-bleed canvas at 300 DPI; upload at native size without scaling
 - **Tags:** `attack surface`, `AI security`, `cybersecurity`, `desk setup`, `operator`, `desk mat`
 
 **Listing description**
@@ -120,9 +120,9 @@ Exact dimensions, materials, and edge construction must match the selected live 
 - **Recommended blank:** Allcolor 5493 3 × 3 inch kiss-cut vinyl sticker
 - **Variants:** One design
 - **Giveaway eligible:** Yes, but shipping economics should be checked before using it alone
-- **Artwork:** `public/merch/artwork/take-the-risk-sticker-print-3000x3000.png`
-- **Primary mockup:** `public/merch/mockups/sticker-take-the-risk.jpg`
-- **Placement:** Centered; preserve the cream outer border inside the cut line
+- **Artwork:** private local brand storage, `Brand Assets/Merch/Production/Edition 01/risk-takers-sticker-v2-3000x3000.png`
+- **Primary mockup:** `public/merch/mockups/sticker-risk-takers-v2.avif`
+- **Placement:** Centered; preserve the printed charcoal field and cut margin
 - **Tags:** `Risk Takers`, `AI`, `operator`, `logo`, `sticker`
 
 **Listing description**
@@ -145,7 +145,7 @@ Exact dimensions, finish, and durability claims must match the selected live pro
 - **Planning cost / ceiling:** `$21.95` combined starting cost / pause above `$30.00` before shipping
 - **Included products:** Attack Surface Desk Mat + Prompt Injection Fuel Mug
 - **Giveaway eligible:** **No. Fourthwall currently excludes bundles from giveaway links.**
-- **Primary mockup:** `public/merch/hero/risk-takers-gift-store-hero.png`
+- **Primary mockup:** `public/merch/mockups/operators-desk-set-v2.avif`
 - **Tags:** `operator gift`, `AI security`, `cybersecurity`, `desk setup`, `Risk Takers`, `bundle`
 
 **Listing description**
