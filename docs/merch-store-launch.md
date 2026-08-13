@@ -15,7 +15,7 @@ Verified in the Fourthwall product manager on August 12, 2026. Product IDs remai
 | Risk Takers Logo Sticker | `c572a824-9f8e-4939-8722-df3780e910ba` | Allcolor 5493 kiss-cut, 3 × 3 in | $2.29 | $8 | $5.71 | Hidden |
 | Operator's Desk Kit | `1005793e-b740-4a47-ba63-ba74c7c0f652` | Mug + desk mat bundle | $21.95 | $77 | $55.05 | Hidden |
 
-Fourthwall's automatic bundle-image generator returned an error, so the hidden bundle currently uses the first provider image from each component. The branded Risk Takers site supplies the collection-level merchandising image.
+Fourthwall's automatic bundle-image generator returned an error and its Open API record is not usable for checkout. That provider-native bundle is now a hidden legacy record only. The branded Risk Takers site presents the **Operator Desk Set** as a native `$77` composite and expands it into the existing `$28` mug plus `$49` desk-mat variants server-side. It does not advertise a discount and does not depend on the legacy bundle's state, variants, access, or images.
 
 ## Recommendation
 
@@ -64,7 +64,7 @@ All figures are USD values confirmed in the live Fourthwall product editor on Au
 | Prompt Injection Fuel Mug | Ceramic mug with color inside | $8.95 | $28 | $19.05 | 3.13× |
 | Attack Surface Desk Mat | 15.5 × 31.5 in sublimated | $13.00 | $49 | $36.00 | 3.77× |
 | Risk Takers Logo Sticker | Kiss-cut or die-cut sticker | $2.29 | $8 | $5.71 | 3.49× |
-| Operator's Desk Kit | Desk mat + mug retail bundle | $21.95 | $77 | $55.05 | 3.51× |
+| Operator Desk Set | Native desk mat + mug composite | $21.95 | $77 | $55.05 | 3.51× |
 
 For paid orders, subtract payment processing and any applicable product/options cost from the gross spread. For a physical-product giveaway link, Fourthwall documents the cash cost as the item cost plus destination-based shipping, with no additional giveaway-link fee.
 
@@ -74,7 +74,7 @@ Best giveaway choices:
 2. Zero Trust / High Agency Hoodie — highest eligible single-item retail value, but size choice and shipping weight increase cost.
 3. Prompt Injection Fuel Mug — $28 retail value, low starting product cost, and no apparel sizing.
 
-The Operator's Desk Kit remains a strong $77 retail bundle for paid checkout. Fourthwall's current bundle documentation says bundles cannot be used with giveaway links. Gifting both pieces would require two individual claim links and potentially separate shipping, so the site does not present the bundle as the recommended giveaway.
+The Operator Desk Set remains a `$77` two-piece product for paid checkout, exactly equal to its `$49` mat and `$28` mug retail values. It is not a provider-native bundle and therefore has no single Fourthwall giveaway link. Gifting both pieces requires two individual component claim links and may produce separate shipping.
 
 ## Product files
 
@@ -100,7 +100,7 @@ The generated collection hero is `public/merch/hero/risk-takers-gift-store-hero.
 
 1. Confirm the account-owner email and the legal entity/individual that should receive payouts.
 2. ~~Create a free Fourthwall account and apply the Risk Takers shop identity.~~ Completed. Shop title: **Risk Takers Gift Store**. Free domain: `risk-takers-shop.fourthwall.com` (active behind the Coming soon gate).
-3. ~~Create the five products and one paid-checkout bundle from the approved blanks. Upload the matching production PNGs and keep every item hidden.~~ Completed.
+3. ~~Create the five direct products from the approved blanks and upload the matching production PNGs.~~ Completed. The old provider-native bundle can remain hidden; the site-native Operator Desk Set uses the mug and desk-mat listings directly.
 4. ~~Enter the recommended retail prices and confirm live base costs.~~ Completed. Fulfillment regions, destination shipping estimates, and apparel size surcharges still need final review before publishing.
 5. Order one apparel sample and one hard-goods sample only after spend approval. Review print placement, text legibility, black density, yellow reproduction, mug wrap, mat edge safety, garment sizing, packaging, and delivery time.
 6. ~~Connect the payout bank account and billing card.~~ Completed. Recheck payout identity/tax readiness before the first withdrawal.
@@ -111,6 +111,7 @@ The generated collection hero is `public/merch/hero/risk-takers-gift-store-hero.
 
 - `src/config/merch.js` contains public presentation data only: product names, descriptions, planned retail values, details, and local mockup paths.
 - `src/pages/GiftStore.jsx` fails closed to the native preview/waitlist, then exposes product options, a first-party bag, and hosted checkout only after the server confirms the exact live Fourthwall catalog and configuration.
+- `api/_merch.js` keeps all provider IDs and the Operator Desk Set component mapping server-side. Catalog reads cover only the five direct products; one set becomes one mug plus one desk mat in the provider cart.
 - `api/submitMerchWaitlist.js` validates and normalizes submissions, records `subscription_type = merch_waitlist`, stores the chosen interest in `description`, and treats a repeated email as an update rather than a second signup.
 - The browser bundle contains no Fourthwall IDs, base costs, shop domain, provider URLs, or purchase integration variables.
 

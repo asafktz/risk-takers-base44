@@ -138,21 +138,23 @@ A compact piece of the yellow, washed-gray, cream, and black identity for laptop
 
 Exact dimensions, finish, and durability claims must match the selected live product.
 
-## 6. Operator's Desk Kit
+## 6. Operator Desk Set (site-native composite)
 
 - **Slug:** `operators-desk-kit`
-- **Retail price:** `$77` fixed bundle price
+- **Retail price:** `$77`, exactly the `$49` mat plus `$28` mug retail values
 - **Planning cost / ceiling:** `$21.95` combined starting cost / pause above `$30.00` before shipping
 - **Included products:** Attack Surface Desk Mat + Prompt Injection Fuel Mug
-- **Giveaway eligible:** **No. Fourthwall currently excludes bundles from giveaway links.**
+- **Giveaway eligible:** **Not as one set link.** Use the two direct component giveaway links when gifting both pieces.
 - **Primary mockup:** `public/merch/mockups/operators-desk-set-v2.avif`
 - **Tags:** `operator gift`, `AI security`, `cybersecurity`, `desk setup`, `Risk Takers`, `bundle`
 
-**Listing description**
+**Store description**
 
 Two pieces of field gear for the operator's most-used environment.
 
-The Operator's Desk Kit pairs the Attack Surface Desk Mat with the Prompt Injection Fuel Mug at a fixed `$77` public checkout price. The bundle is intended for normal paid checkout; its products may be manufactured in different facilities, charged shipping per facility, and arrive separately.
+The Operator Desk Set pairs the Attack Surface Desk Mat with the Prompt Injection Fuel Mug at a fixed `$77` public checkout price. It is a native `risktakers.show` product, not a provider-native bundle: checkout expands the set into the two existing Fourthwall component variants. The products may be manufactured in different facilities, charged shipping per facility, and arrive separately.
+
+Do not publish or map a separate Fourthwall bundle listing for this product. Its component relationship and provider identifiers live only in the server adapter.
 
 ## Shared shipping and returns copy
 
@@ -170,12 +172,11 @@ For each product:
 2. Upload the production artwork, review every variant, and capture a screenshot showing placement, orientation, dimensions, color, and selected blank.
 3. Upload the supplied storefront mockup as the first custom image, but retain provider-generated variant images for accuracy.
 4. Paste the listing copy, then revise every material, care, fit, durability, and dimension claim to match the selected live catalog record.
-5. Set the product to **Hidden** and preserve the stable provider ID in `src/config/merch.js`; configure the public product URL only after the final shop domain is approved.
+5. For the five direct products, set the product to **Hidden** and preserve its stable provider ID only in the server mapping in `api/_merch.js`; configure the public product URL only after the final shop domain is approved. The site-native set has no provider ID.
 6. Order and approve physical samples before changing visibility to Published.
 
 Current provider references:
 
-- [Create a bundle product listing](https://help.fourthwall.com/create-and-sell-products/how-to-guides/create-bundle-listing/)
 - [Upload custom product images](https://help.fourthwall.com/hc/en-us/articles/39801334179355-Upload-Your-Own-Product-Images-or-Mockups-to-Product-Listings)
 - [Shipping and delivery expectations](https://help.fourthwall.com/frequently-asked-questions/shipping-and-orders/shipping-and-delivery-expectations/)
 - [Returns, refunds, and quality issues](https://help.fourthwall.com/frequently-asked-questions/shipping-and-orders/returns-refunds-and-quality-issues/)
