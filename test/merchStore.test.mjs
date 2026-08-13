@@ -43,6 +43,12 @@ test('gift store is routed, discoverable, and indexable on risktakers.show', asy
   assert.match(sitemap, /https:\/\/risktakers\.show\/gift-store/);
 });
 
+test('closed mobile navigation is removed from layout and keyboard order', async () => {
+  const navbarSource = await readFile('src/components/landing/Navbar.jsx', 'utf8');
+  assert.match(navbarSource, /id="mobile-navigation"[^>]*className="[^"]*\bhidden\b[^"]*\bgroup-open:block\b/);
+  assert.match(navbarSource, /aria-label="Toggle navigation menu"/);
+});
+
 
 test('gift store fails closed to its waitlist while supporting live backend commerce', async () => {
   const [page, config] = await Promise.all([
