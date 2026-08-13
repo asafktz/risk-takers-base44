@@ -3,12 +3,10 @@ import { Link } from 'react-router-dom';
 import {
   AlertCircle,
   ArrowDown,
-  Check,
+  ArrowRight,
   CheckCircle2,
-  Gift,
   Loader2,
   Mail,
-  Sparkles,
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import PrivacyCollectionNotice from '@/components/PrivacyCollectionNotice';
@@ -35,65 +33,49 @@ const collectionJsonLd = {
 
 
 function ProductCard({ product, index, onJoin }) {
-  const isWide = index === 0 || index === 3 || index === 5;
-
   return (
-    <article
-      id={product.id}
-      className={`group relative overflow-hidden border-2 border-[#1B1B19] bg-[#F5F0E4] shadow-[7px_7px_0_#1B1B19] transition-transform duration-300 hover:-translate-y-1 ${
-        isWide ? 'lg:col-span-7' : 'lg:col-span-5'
-      }`}
-    >
-      <div className="relative aspect-[7/6] overflow-hidden border-b-2 border-[#1B1B19] bg-[#E8E3D7]">
+    <article id={product.id} className="group scroll-mt-24">
+      <div className="relative aspect-[4/5] overflow-hidden bg-[#D9D7D1]">
         <img
           src={product.image}
           alt={`${product.name} product concept`}
-          className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.025]"
-          loading={index < 2 ? 'eager' : 'lazy'}
+          className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.018]"
+          loading={index < 3 ? 'eager' : 'lazy'}
         />
-        <span className="absolute left-4 top-4 border-2 border-[#1B1B19] bg-[#F1C40F] px-3 py-1 font-mono text-[11px] font-black tracking-[0.14em] text-[#1B1B19]">
-          {product.badge}
-        </span>
-        <span className="absolute bottom-4 right-4 border-2 border-[#1B1B19] bg-[#F5F0E4] px-3 py-1 text-sm font-black text-[#1B1B19]">
-          WAITLIST ONLY
-        </span>
       </div>
 
-      <div className="p-5 sm:p-7">
-        <div className="mb-4 flex items-start justify-between gap-5">
+      <div className="border-t border-[#1B1B19]/15 pt-5">
+        <div className="flex items-start justify-between gap-6">
           <div>
-            <p className="mb-2 font-mono text-[11px] font-bold tracking-[0.18em] text-[#806C12]">
-              FIELD SUPPLY / {String(index + 1).padStart(2, '0')}
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#6D695F]">
+              {product.category}
             </p>
-            <h3 className="max-w-xl text-2xl font-black uppercase leading-[1.05] tracking-[-0.03em] text-[#1B1B19] sm:text-3xl">
+            <h3 className="mt-2 text-2xl font-semibold leading-tight tracking-[-0.035em] text-[#1B1B19]">
               {product.name}
             </h3>
           </div>
           <div className="shrink-0 text-right">
-            <p className="font-mono text-[10px] font-black uppercase tracking-[0.12em] text-[#6D665B]">Planned retail</p>
-            <p className="text-2xl font-black text-[#1B1B19]">{formatMerchPrice(product.retailValue)}</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#777269]">Planned retail</p>
+            <p className="mt-1 text-xl font-semibold tracking-[-0.02em] text-[#1B1B19]">
+              {formatMerchPrice(product.retailValue)}
+            </p>
           </div>
         </div>
 
-        <p className="max-w-2xl text-base leading-7 text-[#4B4943]">{product.description}</p>
+        <p className="mt-4 max-w-lg text-[15px] leading-6 text-[#59564F]">{product.description}</p>
 
-        <ul className="mt-5 grid gap-2 text-sm font-semibold text-[#34332F] sm:grid-cols-3">
-          {product.details.map((detail) => (
-            <li key={detail} className="flex items-start gap-2">
-              <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#9A7B00]" strokeWidth={3} aria-hidden="true" />
-              <span>{detail}</span>
-            </li>
-          ))}
-        </ul>
+        <p className="mt-4 text-xs font-medium leading-5 text-[#777269]">
+          {product.details.join(' · ')}
+        </p>
 
         <button
           type="button"
           onClick={() => onJoin(product.id)}
           aria-controls="merch-waitlist"
-          className="mt-7 inline-flex w-full items-center justify-between bg-[#1B1B19] px-5 py-4 text-sm font-black uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#806C12] focus:outline-none focus:ring-4 focus:ring-[#F1C40F] sm:w-auto sm:min-w-64"
+          className="mt-5 inline-flex items-center gap-2 border-b border-[#1B1B19] pb-1 text-sm font-semibold text-[#1B1B19] transition-colors hover:border-[#A88C00] hover:text-[#806C12] focus:outline-none focus:ring-2 focus:ring-[#C7A900] focus:ring-offset-4"
         >
-          Join waitlist for this item
-          <ArrowDown className="h-4 w-4" aria-hidden="true" />
+          Notify me about this piece
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </button>
       </div>
     </article>
@@ -106,7 +88,7 @@ function MerchWaitlistForm({ selectedInterest, onInterestChange }) {
   const [status, setStatus] = useState('idle');
 
   const selectedProduct = merchProducts.find((product) => product.id === selectedInterest);
-  const interestLabel = selectedProduct?.name || 'The full Drop 001 collection';
+  const interestLabel = selectedProduct?.name || 'the full Edition 01 collection';
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -129,16 +111,18 @@ function MerchWaitlistForm({ selectedInterest, onInterestChange }) {
 
   if (status === 'success') {
     return (
-      <div className="border-2 border-[#1B1B19] bg-[#F5F0E4] p-7 text-[#1B1B19] shadow-[8px_8px_0_#F1C40F] sm:p-10" role="status" aria-live="polite">
-        <CheckCircle2 className="h-12 w-12 text-[#806C12]" strokeWidth={2.5} aria-hidden="true" />
-        <h3 className="mt-5 text-3xl font-black uppercase tracking-[-0.04em]">You’re on the list.</h3>
-        <p className="mt-3 max-w-xl text-base leading-7 text-[#4B4943]">
+      <div className="border border-black/10 bg-[#F5F3EE] p-7 text-[#1B1B19] sm:p-10" role="status" aria-live="polite">
+        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#C7A900]">
+          <CheckCircle2 className="h-5 w-5" strokeWidth={2.5} aria-hidden="true" />
+        </span>
+        <h3 className="mt-6 text-3xl font-semibold tracking-[-0.04em]">You’re on the list.</h3>
+        <p className="mt-3 max-w-xl text-base leading-7 text-[#59564F]">
           We recorded your interest in {interestLabel}. We’ll email you when the first Risk Takers drop or giveaway opens.
         </p>
         <button
           type="button"
           onClick={() => setStatus('idle')}
-          className="mt-6 font-mono text-xs font-black uppercase tracking-[0.14em] underline underline-offset-4"
+          className="mt-6 text-xs font-bold uppercase tracking-[0.14em] underline underline-offset-4"
         >
           Add another email
         </button>
@@ -146,10 +130,12 @@ function MerchWaitlistForm({ selectedInterest, onInterestChange }) {
     );
   }
 
+  const fieldClass = 'min-h-12 border border-[#C9C5BB] bg-white px-4 text-base font-medium normal-case tracking-normal text-[#1B1B19] outline-none transition focus:border-[#1B1B19] focus:ring-2 focus:ring-[#C7A900]';
+
   return (
-    <form onSubmit={handleSubmit} className="border-2 border-[#1B1B19] bg-[#F5F0E4] p-6 text-[#1B1B19] shadow-[8px_8px_0_#F1C40F] sm:p-8">
+    <form onSubmit={handleSubmit} className="border border-black/10 bg-[#F5F3EE] p-6 text-[#1B1B19] sm:p-9">
       <div className="grid gap-5 sm:grid-cols-2">
-        <label className="grid gap-2 font-mono text-xs font-black uppercase tracking-[0.12em]">
+        <label className="grid gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#5F5A51]">
           Name
           <input
             type="text"
@@ -157,11 +143,11 @@ function MerchWaitlistForm({ selectedInterest, onInterestChange }) {
             required
             value={formData.name}
             onChange={(event) => setFormData((current) => ({ ...current, name: event.target.value }))}
-            className="min-h-12 border-2 border-[#1B1B19] bg-white px-4 font-sans text-base font-semibold normal-case tracking-normal outline-none focus:ring-4 focus:ring-[#F1C40F]"
+            className={fieldClass}
             placeholder="Your name"
           />
         </label>
-        <label className="grid gap-2 font-mono text-xs font-black uppercase tracking-[0.12em]">
+        <label className="grid gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#5F5A51]">
           Email
           <input
             type="email"
@@ -170,20 +156,20 @@ function MerchWaitlistForm({ selectedInterest, onInterestChange }) {
             required
             value={formData.email}
             onChange={(event) => setFormData((current) => ({ ...current, email: event.target.value }))}
-            className="min-h-12 border-2 border-[#1B1B19] bg-white px-4 font-sans text-base font-semibold normal-case tracking-normal outline-none focus:ring-4 focus:ring-[#F1C40F]"
+            className={fieldClass}
             placeholder="you@company.com"
           />
         </label>
       </div>
 
-      <label className="mt-5 grid gap-2 font-mono text-xs font-black uppercase tracking-[0.12em]">
+      <label className="mt-5 grid gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#5F5A51]">
         Most interested in
         <select
           value={selectedInterest}
           onChange={(event) => onInterestChange(event.target.value)}
-          className="min-h-12 border-2 border-[#1B1B19] bg-white px-4 font-sans text-base font-semibold normal-case tracking-normal outline-none focus:ring-4 focus:ring-[#F1C40F]"
+          className={fieldClass}
         >
-          <option value="full-drop">The full Drop 001 collection</option>
+          <option value="full-drop">The full Edition 01 collection</option>
           {merchProducts.map((product) => (
             <option key={product.id} value={product.id}>{product.name}</option>
           ))}
@@ -193,7 +179,7 @@ function MerchWaitlistForm({ selectedInterest, onInterestChange }) {
       <PrivacyCollectionNotice className="mt-5" />
 
       {status === 'error' && (
-        <div className="mt-5 flex items-start gap-3 border-2 border-[#9B2C23] bg-[#FFF0ED] p-4 text-sm font-bold text-[#7D251E]" role="alert">
+        <div className="mt-5 flex items-start gap-3 border border-[#A53B31] bg-[#FFF0ED] p-4 text-sm font-semibold text-[#7D251E]" role="alert">
           <AlertCircle className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
           We couldn’t add you just now. Please try again.
         </div>
@@ -202,13 +188,13 @@ function MerchWaitlistForm({ selectedInterest, onInterestChange }) {
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="mt-6 inline-flex min-h-14 w-full items-center justify-center gap-3 bg-[#1B1B19] px-6 text-sm font-black uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#806C12] focus:outline-none focus:ring-4 focus:ring-[#F1C40F] disabled:cursor-wait disabled:opacity-70"
+        className="mt-6 inline-flex min-h-14 w-full items-center justify-center gap-3 bg-[#1B1B19] px-6 text-sm font-bold text-white transition-colors hover:bg-[#353530] focus:outline-none focus:ring-2 focus:ring-[#C7A900] focus:ring-offset-2 disabled:cursor-wait disabled:opacity-70"
       >
         {status === 'loading' ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <Mail className="h-5 w-5" aria-hidden="true" />}
         {status === 'loading' ? 'Joining…' : 'Join the merch waitlist'}
       </button>
 
-      <p className="mt-4 text-center text-xs font-bold leading-5 text-[#6D665B]">
+      <p className="mt-4 text-center text-xs leading-5 text-[#777269]">
         No purchase or reservation is created. See the notice above for how Risk Takers may use your signup information.
       </p>
     </form>
@@ -223,9 +209,9 @@ export default function GiftStore() {
   useEffect(() => {
     setSEO({
       title: 'Merch Waitlist',
-      description: 'Preview Risk Takers apparel and desk gear, then join the waitlist for Drop 001.',
+      description: 'Preview Risk Takers apparel and desk gear, then join the waitlist for Edition 01.',
       path: '/gift-store',
-      image: absoluteUrl('/merch/hero/risk-takers-gift-store-hero.png'),
+      image: absoluteUrl('/merch/hero/risk-takers-merch-real-v2.png'),
       jsonLd: [collectionJsonLd],
     });
   }, []);
@@ -236,156 +222,139 @@ export default function GiftStore() {
   };
 
   return (
-    <main className="min-h-screen bg-[#E8E3D7] font-sans text-[#1B1B19]">
+    <main className="min-h-screen bg-[#E9E7E1] font-sans text-[#1B1B19]">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
-        .gift-store-grid {
-          background-image:
-            linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-          background-size: 44px 44px;
-        }
-        .gift-store-hazard {
-          background: repeating-linear-gradient(135deg, #F1C40F 0 18px, #1B1B19 18px 36px);
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        .gift-store-page { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
       `}</style>
 
-      <section
-        className="gift-store-grid relative isolate min-h-[720px] overflow-hidden bg-[#151513] text-white"
-        style={{
-          backgroundImage:
-            "linear-gradient(90deg, rgba(14,14,13,.97) 0%, rgba(14,14,13,.89) 38%, rgba(14,14,13,.30) 72%, rgba(14,14,13,.52) 100%), url('/merch/hero/risk-takers-gift-store-hero.png')",
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-        }}
-      >
-        <div className="absolute inset-x-0 top-0 h-2 gift-store-hazard" />
-        <div className="mx-auto flex min-h-[720px] max-w-6xl items-center px-4 py-20 sm:px-8">
-          <div className="relative z-10 max-w-3xl">
-            <div className="mb-7 inline-flex items-center gap-2 border border-[#F1C40F] bg-[#1B1B19]/85 px-3 py-2 font-mono text-[11px] font-bold tracking-[0.2em] text-[#F1C40F] backdrop-blur-sm">
-              <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-              RISK TAKERS / DROP 001 / WAITLIST OPEN
-            </div>
+      <div className="gift-store-page">
+        <section className="border-b border-[#1B1B19]/15">
+          <div className="mx-auto grid max-w-7xl lg:min-h-[740px] lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="flex items-center px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24 xl:px-16">
+              <div className="max-w-2xl">
+                <p className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-[#625E55]">
+                  <span className="h-2 w-2 rounded-full bg-[#C7A900]" />
+                  Risk Takers / Edition 01 / WAITLIST ONLY
+                </p>
 
-            <h1 className="max-w-3xl text-5xl font-black uppercase leading-[0.91] tracking-[-0.055em] text-[#F5F0E4] sm:text-7xl lg:text-[6.4rem]">
-              Hardware for
-              <span className="block text-[#F1C40F]">bold operators.</span>
-            </h1>
+                <h1 className="mt-8 text-5xl font-semibold leading-[0.96] tracking-[-0.06em] sm:text-7xl lg:text-[5.5rem]">
+                  Gear for people who make the call.
+                </h1>
 
-            <p className="mt-7 max-w-2xl text-lg font-medium leading-8 text-[#D0CBC0] sm:text-xl">
-              The first Risk Takers merch collection is being prepared. Preview the concepts and join the list for launch access and future giveaways.
-            </p>
+                <p className="mt-7 max-w-xl text-lg leading-8 text-[#59564F]">
+                  A restrained first collection for the people operating where AI, security, and judgment meet. Preview the pieces and tell us what should be made first.
+                </p>
 
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <button
-                type="button"
-                onClick={() => openWaitlist()}
-                className="inline-flex items-center justify-center gap-3 bg-[#F1C40F] px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-[#1B1B19] transition-colors hover:bg-[#F8D84B] focus:outline-none focus:ring-4 focus:ring-white"
-              >
-                Join the waitlist
-                <ArrowDown className="h-4 w-4" aria-hidden="true" />
-              </button>
-              <a
-                href="#collection"
-                className="inline-flex items-center justify-center gap-3 border border-[#77736A] bg-[#1B1B19]/75 px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-white backdrop-blur-sm transition-colors hover:border-white"
-              >
-                <Gift className="h-4 w-4" aria-hidden="true" />
-                Preview Drop 001
-              </a>
-            </div>
+                <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+                  <button
+                    type="button"
+                    onClick={() => openWaitlist()}
+                    className="inline-flex min-h-13 items-center justify-center gap-3 bg-[#1B1B19] px-6 py-4 text-sm font-bold text-white transition-colors hover:bg-[#353530] focus:outline-none focus:ring-2 focus:ring-[#C7A900] focus:ring-offset-4"
+                  >
+                    Join the waitlist
+                    <ArrowDown className="h-4 w-4" aria-hidden="true" />
+                  </button>
+                  <a
+                    href="#collection"
+                    className="inline-flex min-h-13 items-center justify-center border border-[#1B1B19]/35 px-6 py-4 text-sm font-bold text-[#1B1B19] transition-colors hover:border-[#1B1B19] hover:bg-white/35"
+                  >
+                    View the collection
+                  </a>
+                </div>
 
-            <p className="mt-5 font-mono text-xs font-black uppercase tracking-[0.12em] text-[#B4A85F]">
-              Preview only — nothing on this page is for sale yet.
-            </p>
-          </div>
-        </div>
-
-        <div className="absolute bottom-0 left-0 right-0 h-6 bg-[#E8E3D7] [clip-path:polygon(0_52%,4%_18%,9%_63%,15%_30%,22%_66%,28%_23%,35%_58%,41%_19%,48%_64%,55%_26%,62%_70%,68%_31%,75%_62%,82%_19%,89%_56%,95%_26%,100%_60%,100%_100%,0_100%)]" />
-      </section>
-
-      <section className="border-y-2 border-[#1B1B19] bg-[#F1C40F]">
-        <div className="mx-auto grid max-w-6xl px-4 py-6 sm:grid-cols-3 sm:px-8">
-          {[
-            ['01', 'PREVIEW THE DROP', 'See the first six concepts.'],
-            ['02', 'PICK YOUR FAVORITE', 'Tell us what you want first.'],
-            ['03', 'GET FIRST ACCESS', 'We’ll email the waitlist before launch.'],
-          ].map(([number, title, body]) => (
-            <div key={number} className="flex items-start gap-4 border-b-2 border-[#1B1B19] py-4 last:border-b-0 sm:border-b-0 sm:border-l-2 sm:px-6 sm:first:border-l-0 sm:first:pl-0">
-              <span className="font-mono text-sm font-black">{number}</span>
-              <div>
-                <p className="text-sm font-black tracking-[0.08em]">{title}</p>
-                <p className="mt-1 text-sm text-[#454238]">{body}</p>
+                <p className="mt-6 text-xs leading-5 text-[#777269]">
+                  Concept preview only — nothing on this page is for sale yet.
+                </p>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
 
-      <section id="collection" className="scroll-mt-20 px-4 py-20 sm:px-8 sm:py-28">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-14 grid gap-8 lg:grid-cols-[1.25fr_.75fr] lg:items-end">
-            <div>
-              <p className="font-mono text-xs font-black tracking-[0.18em] text-[#806C12]">THE FIRST DROP</p>
-              <h2 className="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.95] tracking-[-0.045em] sm:text-6xl">
-                For the operator who has enough tote bags.
-              </h2>
-            </div>
-            <p className="max-w-xl text-base leading-7 text-[#4B4943] lg:justify-self-end">
-              Six logo-led concepts for AI and security people. Planned retail values are directional until the drop opens; joining the waitlist does not reserve or purchase anything.
-            </p>
+            <figure className="border-t border-[#1B1B19]/15 bg-[#D8D5CE] lg:border-l lg:border-t-0">
+              <img
+                src="/merch/hero/risk-takers-merch-real-v2.png"
+                alt="Risk Takers apparel and desk collection"
+                className="h-full min-h-[480px] w-full object-cover object-center lg:min-h-[740px]"
+                decoding="async"
+              />
+            </figure>
           </div>
+        </section>
 
-          <div className="grid gap-8 lg:grid-cols-12">
-            {merchProducts.map((product, index) => (
-              <ProductCard key={product.id} product={product} index={index} onJoin={openWaitlist} />
+        <section className="border-b border-[#1B1B19]/15 bg-[#F0EEE9]">
+          <div className="mx-auto grid max-w-7xl divide-y divide-[#1B1B19]/10 px-5 sm:px-8 md:grid-cols-3 md:divide-x md:divide-y-0">
+            {[
+              ['01', 'Six physical concepts'],
+              ['02', 'Planned retail values'],
+              ['03', 'Produced by demand'],
+            ].map(([number, label]) => (
+              <div key={number} className="flex items-center gap-4 py-5 md:px-8 md:first:pl-0">
+                <span className="text-[10px] font-bold tracking-[0.15em] text-[#9A8308]">{number}</span>
+                <span className="text-sm font-medium text-[#555149]">{label}</span>
+              </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section ref={waitlistRef} id="merch-waitlist" className="gift-store-grid scroll-mt-14 bg-[#1B1B19] px-4 py-20 text-white sm:px-8 sm:py-28">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[.82fr_1.18fr] lg:items-start">
-          <div>
-            <div className="inline-flex items-center gap-2 bg-[#F1C40F] px-3 py-2 font-mono text-[11px] font-black tracking-[0.15em] text-[#1B1B19]">
-              <Mail className="h-4 w-4" aria-hidden="true" />
-              WAITLIST OPEN
+        <section id="collection" className="scroll-mt-20 px-5 py-20 sm:px-8 sm:py-28">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-14 grid gap-7 border-b border-[#1B1B19]/15 pb-10 lg:grid-cols-[1fr_.75fr] lg:items-end">
+              <div>
+                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#82720E]">Edition 01</p>
+                <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] sm:text-6xl">The first collection.</h2>
+              </div>
+              <p className="max-w-2xl text-base leading-7 text-[#59564F] lg:justify-self-end">
+                Apparel and desk pieces designed to feel at home in the real world—not like security conference swag. Values are directional until production is confirmed.
+              </p>
             </div>
-            <h2 className="mt-6 text-4xl font-black uppercase leading-[0.95] tracking-[-0.045em] sm:text-6xl">
-              Get the first signal.
-            </h2>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-[#BEB9AF]">
-              Tell us which concept you want. We’ll use the response to decide what gets produced and notify you when Drop 001 or a Risk Takers giveaway becomes available.
-            </p>
 
-            <div className="mt-8 border-l-4 border-[#F1C40F] bg-[#292926] p-5">
-              <p className="font-mono text-xs font-black tracking-[0.16em] text-[#F1C40F]">WAITLIST, NOT CHECKOUT</p>
-              <p className="mt-2 text-sm leading-6 text-[#D1CCC2]">No card, shipping address, or payment is requested. This form only records your contact details and product interest.</p>
+            <div className="grid gap-x-6 gap-y-14 md:grid-cols-2 xl:grid-cols-3">
+              {merchProducts.map((product, index) => (
+                <ProductCard key={product.id} product={product} index={index} onJoin={openWaitlist} />
+              ))}
             </div>
           </div>
+        </section>
 
-          <MerchWaitlistForm selectedInterest={selectedInterest} onInterestChange={setSelectedInterest} />
-        </div>
-      </section>
+        <section ref={waitlistRef} id="merch-waitlist" className="scroll-mt-14 bg-[#1B1B19] px-5 py-20 text-white sm:px-8 sm:py-28">
+          <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+            <div className="max-w-xl">
+              <p className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-[#D0B61A]">
+                <span className="h-2 w-2 rounded-full bg-[#D0B61A]" />
+                Waitlist open
+              </p>
+              <h2 className="mt-7 text-4xl font-semibold leading-[1] tracking-[-0.05em] sm:text-6xl">
+                Help choose what gets made.
+              </h2>
+              <p className="mt-6 text-lg leading-8 text-[#BDB9B0]">
+                Pick the piece you want most. We’ll use the signal to prioritize production and email you when Edition 01 or a Risk Takers giveaway opens.
+              </p>
 
-      <section className="bg-[#F5F0E4] px-4 py-16 sm:px-8">
-        <div className="mx-auto grid max-w-6xl gap-10 border-t-2 border-[#1B1B19] pt-10 md:grid-cols-[1fr_1fr_1fr_auto]">
-          <div>
-            <p className="text-lg font-black">RISK TAKERS</p>
-            <p className="mt-2 max-w-xs text-sm leading-6 text-[#5D5A52]">Real stories, real tradeoffs, practical playbooks—and field gear for the people doing the work.</p>
+              <div className="mt-10 border-t border-white/15 pt-6">
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-white">Waitlist, not checkout</p>
+                <p className="mt-3 text-sm leading-6 text-[#9E9A92]">
+                  No card, shipping address, or payment is requested. This only records your contact details and product interest.
+                </p>
+              </div>
+            </div>
+
+            <MerchWaitlistForm selectedInterest={selectedInterest} onInterestChange={setSelectedInterest} />
           </div>
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.14em]">Drop 001</p>
-            <a href="#collection" className="mt-3 block text-sm text-[#555249] hover:text-black">Preview collection</a>
-            <a href="#merch-waitlist" className="mt-2 block text-sm text-[#555249] hover:text-black">Join waitlist</a>
+        </section>
+
+        <footer className="bg-[#F0EEE9] px-5 py-12 sm:px-8">
+          <div className="mx-auto grid max-w-7xl gap-8 border-t border-[#1B1B19]/15 pt-8 sm:grid-cols-[1fr_auto_auto] sm:items-end">
+            <div>
+              <img src="/merch/risk-takers-logo-bug.png" alt="Risk Takers" className="h-14 w-14 rounded-sm" />
+              <p className="mt-4 max-w-md text-sm leading-6 text-[#68645C]">Stories, tradeoffs, and useful objects for people who own the outcome.</p>
+            </div>
+            <a href="#collection" className="text-sm font-medium text-[#555149] hover:text-black">Collection</a>
+            <div className="flex gap-5">
+              <Link to="/privacy" className="text-sm font-medium text-[#555149] hover:text-black">Privacy</Link>
+              <Link to="/terms" className="text-sm font-medium text-[#555149] hover:text-black">Terms</Link>
+            </div>
           </div>
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.14em]">Policies</p>
-            <Link to="/privacy" className="mt-3 block text-sm text-[#555249] hover:text-black">Privacy</Link>
-            <Link to="/terms" className="mt-2 block text-sm text-[#555249] hover:text-black">Terms</Link>
-          </div>
-          <img src="/merch/risk-takers-logo-bug.png" alt="Risk Takers" className="h-20 w-20 rounded-md" />
-        </div>
-      </section>
+        </footer>
+      </div>
     </main>
   );
 }
