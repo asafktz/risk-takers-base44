@@ -6,10 +6,6 @@ import {
   verifyFourthwallWebhookSignature,
 } from './_merch.js';
 
-// Keep the raw request bytes intact. Re-serializing parsed JSON does not produce
-// a valid Fourthwall signature input.
-export const config = { api: { bodyParser: false } };
-
 export default async function fourthwallWebhook(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });

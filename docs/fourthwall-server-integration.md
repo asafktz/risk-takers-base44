@@ -86,7 +86,7 @@ Configure this exact production callback in Fourthwall:
 
 `https://www.risktakers.show/api/fourthwallWebhook`
 
-The handler reads the untouched request bytes, calculates HMAC-SHA256 with `FOURTHWALL_WEBHOOK_SECRET`, base64-encodes the digest, and performs a timing-safe comparison with `X-Fourthwall-Hmac-SHA256`. JSON is parsed only after verification. Logs include the event envelope but omit `data`, which can contain personal data and order details.
+The handler consumes the restored raw incoming-message stream before accessing Vercel's parsed body helper, calculates HMAC-SHA256 with `FOURTHWALL_WEBHOOK_SECRET`, base64-encodes the digest, and performs a timing-safe comparison with `X-Fourthwall-Hmac-SHA256`. JSON is parsed only after verification. Logs include the event envelope but omit `data`, which can contain personal data and order details.
 
 ## Deliberate remaining activation steps
 

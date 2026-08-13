@@ -625,21 +625,27 @@ export function verifyFourthwallWebhookSignature(rawBody, suppliedSignature, sec
 
 export async function readRawRequestBody(req, maxBytes = 1_000_000) {
   if (Buffer.isBuffer(req?.rawBody)) return req.rawBody;
-  if (Buffer.isBuffer(req?.body)) return req.body;
-  if (typeof req?.body === 'string') return Buffer.from(req.body, 'utf8');
-  // Re-stringifying a parsed object changes the bytes and invalidates HMAC
-  // verification, so fail instead of pretending the reconstructed body is raw.
-  if (req?.body && typeof req.body === 'object') return null;
-
+  // Vercel's Node request helpers expose parsed req.body through a getter but
+  // restore the original incoming-message stream afterward. Consume that
+  // stream first so signatures always cover the exact bytes Fourthwall sent.
   const chunks = [];
   let size = 0;
-  for await (const chunk of req) {
-    const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
-    size += buffer.length;
-    if (size > maxBytes) throw serviceError(413, 'WEBHOOK_TOO_LARGE', 'Webhook payload is too large.');
-    chunks.push(buffer);
+  if (req && typeof req[Symbol.asyncIterator] === 'function') {
+    for await (const chunk of req) {
+      const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+      size += buffer.length;
+      if (size > maxBytes) throw serviceError(413, 'WEBHOOK_TOO_LARGE', 'Webhook payload is too large.');
+      chunks.push(buffer);
+    }
+    if (chunks.length > 0) return Buffer.concat(chunks);
   }
-  return Buffer.concat(chunks);
+
+  // These branches support direct/unit invocation where no request stream is
+  // present. Parsed objects are intentionally rejected: re-serialization is
+  // not the signed byte sequence.
+  if (Buffer.isBuffer(req?.body)) return req.body;
+  if (typeof req?.body === 'string') return Buffer.from(req.body, 'utf8');
+  return null;
 }
 
 export function validateWebhookEnvelope(event, config) {

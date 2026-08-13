@@ -349,10 +349,14 @@ test('webhook signatures use raw-body HMAC-SHA256 and envelope shop checks', asy
   assert.equal(await readRawRequestBody({ body: event }), null);
   assert.deepEqual(await readRawRequestBody({ rawBody: raw }), raw);
 
-  const streamedBody = await readRawRequestBody(Readable.from([
+  const restoredStream = Readable.from([
     raw.subarray(0, 17),
     raw.subarray(17),
-  ]));
+  ]);
+  // Vercel's Node helper exposes a parsed body getter before restoring the
+  // original request stream. The raw reader must consume the stream first.
+  Object.defineProperty(restoredStream, 'body', { get: () => event });
+  const streamedBody = await readRawRequestBody(restoredStream);
   assert.deepEqual(streamedBody, raw);
   assert.equal(verifyFourthwallWebhookSignature(streamedBody, signature, secret), true);
 });
