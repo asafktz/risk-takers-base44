@@ -40,7 +40,8 @@ function ProductCard({ product, index, onJoin }) {
           src={product.image}
           alt={`${product.name} product concept`}
           className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.018]"
-          loading={index < 3 ? 'eager' : 'lazy'}
+          loading="lazy"
+          decoding="async"
         />
       </div>
 
@@ -211,7 +212,7 @@ export default function GiftStore() {
       title: 'Merch Waitlist',
       description: 'Preview Risk Takers apparel and desk gear, then join the waitlist for Edition 01.',
       path: '/gift-store',
-      image: absoluteUrl('/merch/hero/risk-takers-merch-real-v2.png'),
+      image: absoluteUrl('/merch/hero/risk-takers-merch-real-v2.avif'),
       jsonLd: [collectionJsonLd],
     });
   }, []);
@@ -271,7 +272,7 @@ export default function GiftStore() {
 
             <figure className="border-t border-[#1B1B19]/15 bg-[#D8D5CE] lg:border-l lg:border-t-0">
               <img
-                src="/merch/hero/risk-takers-merch-real-v2.png"
+                src="/merch/hero/risk-takers-merch-real-v2.avif"
                 alt="Risk Takers apparel and desk collection"
                 className="h-full min-h-[480px] w-full object-cover object-center lg:min-h-[740px]"
                 decoding="async"

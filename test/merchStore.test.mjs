@@ -9,13 +9,14 @@ import {
 
 const requiredAssets = [
   'public/merch/hero/risk-takers-gift-store-hero.png',
-  'public/merch/hero/risk-takers-merch-real-v2.png',
+  'public/merch/hero/risk-takers-merch-real-v2.avif',
   'public/merch/brand/risk-takers-logo-source.png',
-  'public/merch/mockups/tee-human-in-the-loop-v2.png',
-  'public/merch/mockups/hoodie-zero-trust-high-agency-v2.png',
-  'public/merch/mockups/mug-prompt-injection-fuel-v2.png',
-  'public/merch/mockups/deskmat-attack-surface-v2.png',
-  'public/merch/mockups/sticker-risk-takers-v2.png',
+  'public/merch/mockups/tee-human-in-the-loop-v2.avif',
+  'public/merch/mockups/hoodie-zero-trust-high-agency-v2.avif',
+  'public/merch/mockups/mug-prompt-injection-fuel-v2.avif',
+  'public/merch/mockups/deskmat-attack-surface-v2.avif',
+  'public/merch/mockups/sticker-risk-takers-v2.avif',
+  'public/merch/mockups/operators-desk-set-v2.avif',
   'public/merch/artwork/human-in-the-loop-print-4500x5400.png',
   'public/merch/artwork/zero-trust-high-agency-print-4500x5400.png',
   'public/merch/artwork/prompt-injection-fuel-mug-print-4800x2000.png',
@@ -103,12 +104,14 @@ test('public collection uses the real product visual set', async () => {
     readFile('src/config/merch.js', 'utf8'),
   ]);
 
-  assert.match(page, /risk-takers-merch-real-v2\.png/);
-  assert.match(config, /tee-human-in-the-loop-v2\.png/);
-  assert.match(config, /hoodie-zero-trust-high-agency-v2\.png/);
-  assert.match(config, /mug-prompt-injection-fuel-v2\.png/);
-  assert.match(config, /deskmat-attack-surface-v2\.png/);
-  assert.match(config, /sticker-risk-takers-v2\.png/);
+  assert.match(page, /risk-takers-merch-real-v2\.avif/);
+  assert.match(config, /tee-human-in-the-loop-v2\.avif/);
+  assert.match(config, /hoodie-zero-trust-high-agency-v2\.avif/);
+  assert.match(config, /mug-prompt-injection-fuel-v2\.avif/);
+  assert.match(config, /deskmat-attack-surface-v2\.avif/);
+  assert.match(config, /sticker-risk-takers-v2\.avif/);
+  assert.match(config, /operators-desk-set-v2\.avif/);
+  assert.match(page, /loading="lazy"/);
   assert.doesNotMatch(page, /gift-store-hazard|WAITLIST ONLY<\/span>|shadow-\[7px_7px/);
 });
 

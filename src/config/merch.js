@@ -7,7 +7,7 @@ export const merchProducts = [
     retailValue: 39,
     description: 'A washed-black heavyweight tee for the person still accountable when the model stops talking.',
     details: ['Heavyweight cotton concept', 'Relaxed unisex fit', 'Washed black'],
-    image: '/merch/mockups/tee-human-in-the-loop-v2.png',
+    image: '/merch/mockups/tee-human-in-the-loop-v2.avif',
   },
   {
     id: 'zero-trust-high-agency-hoodie',
@@ -17,7 +17,7 @@ export const merchProducts = [
     retailValue: 79,
     description: 'A clean heavyweight layer built around one operating principle: zero trust, high agency.',
     details: ['Heavyweight fleece concept', 'Relaxed unisex fit', 'Washed black'],
-    image: '/merch/mockups/hoodie-zero-trust-high-agency-v2.png',
+    image: '/merch/mockups/hoodie-zero-trust-high-agency-v2.avif',
   },
   {
     id: 'prompt-injection-fuel-mug',
@@ -27,7 +27,7 @@ export const merchProducts = [
     retailValue: 28,
     description: 'Matte ceramic, restrained branding, and enough capacity for the decisions that cannot be delegated.',
     details: ['Matte ceramic concept', '11 oz format', 'Charcoal finish'],
-    image: '/merch/mockups/mug-prompt-injection-fuel-v2.png',
+    image: '/merch/mockups/mug-prompt-injection-fuel-v2.avif',
   },
   {
     id: 'attack-surface-desk-mat',
@@ -37,7 +37,7 @@ export const merchProducts = [
     retailValue: 49,
     description: 'A low-noise extended desk surface for mapping the problem before making the move.',
     details: ['31.5 × 15.5 in concept', '3 mm neoprene', 'Low-profile edge'],
-    image: '/merch/mockups/deskmat-attack-surface-v2.png',
+    image: '/merch/mockups/deskmat-attack-surface-v2.avif',
   },
   {
     id: 'risk-takers-logo-sticker',
@@ -47,7 +47,7 @@ export const merchProducts = [
     retailValue: 8,
     description: 'The original Risk Takers mark as a durable, matte piece for the hardware that follows you.',
     details: ['Matte vinyl concept', 'Die-cut finish', '3 × 3 in'],
-    image: '/merch/mockups/sticker-risk-takers-v2.png',
+    image: '/merch/mockups/sticker-risk-takers-v2.avif',
   },
   {
     id: 'operators-desk-kit',
@@ -57,7 +57,7 @@ export const merchProducts = [
     retailValue: 77,
     description: 'The desk mat and ceramic mug paired as a useful, high-value gift for the operator in the room.',
     details: ['Two-piece concept', 'Mug + desk mat', 'Gift-ready direction'],
-    image: '/merch/hero/risk-takers-merch-real-v2.png',
+    image: '/merch/mockups/operators-desk-set-v2.avif',
   },
 ];
 
