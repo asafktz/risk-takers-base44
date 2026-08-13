@@ -32,5 +32,9 @@ dist-ssr
 .env*
 base44/.app.jsonc
 
+# Provider-ready merch masters are generated into private local brand storage.
+# Never add print files to this public repository or the Vite deployment.
+merch-production/
+
 # saved Base44-era Vercel project link (kept for reference, not part of the app)
 .vercel-base44-team-backup/

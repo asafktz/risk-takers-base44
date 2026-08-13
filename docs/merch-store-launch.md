@@ -88,11 +88,11 @@ The script uses local system fonts only to rasterize exact text; no font file is
 
 | Listing | Print artwork | Store mockup |
 |---|---|---|
-| Human in the Loop Tee | `public/merch/artwork/human-in-the-loop-print-4500x5400.png` | `public/merch/mockups/tee-human-in-the-loop.jpg` |
-| Zero Trust Hoodie | `public/merch/artwork/zero-trust-high-agency-print-4500x5400.png` | `public/merch/mockups/hoodie-zero-trust-high-agency.jpg` |
-| Prompt Injection Mug | `public/merch/artwork/prompt-injection-fuel-mug-print-4800x2000.png` | `public/merch/mockups/mug-prompt-injection-fuel.jpg` |
-| Attack Surface Desk Mat | `public/merch/artwork/attack-surface-desk-mat-print-6000x2600.png` | `public/merch/mockups/deskmat-attack-surface.jpg` |
-| Risk Takers Logo Sticker | `public/merch/artwork/take-the-risk-sticker-print-3000x3000.png` | `public/merch/mockups/sticker-take-the-risk.jpg` |
+| Human in the Loop Tee | Private `Brand Assets/Merch/Production/Edition 01/human-in-the-loop-left-chest-v2-1500x1500.png` | `public/merch/mockups/tee-human-in-the-loop-v2.avif` |
+| Zero Trust Hoodie | Private `Brand Assets/Merch/Production/Edition 01/zero-trust-high-agency-left-chest-v2-1500x1500.png` | `public/merch/mockups/hoodie-zero-trust-high-agency-v2.avif` |
+| Prompt Injection Mug | Private `Brand Assets/Merch/Production/Edition 01/operator-fuel-mug-wrap-v2-4800x2000.png` | `public/merch/mockups/mug-prompt-injection-fuel-v2.avif` |
+| Attack Surface Desk Mat | Private `Brand Assets/Merch/Production/Edition 01/attack-surface-desk-mat-full-bleed-v3-9921x5196.png` | `public/merch/mockups/deskmat-attack-surface-v2.avif` |
+| Risk Takers Logo Sticker | Private `Brand Assets/Merch/Production/Edition 01/risk-takers-sticker-v2-3000x3000.png` | `public/merch/mockups/sticker-risk-takers-v2.avif` |
 
 The generated collection hero is `public/merch/hero/risk-takers-gift-store-hero.png`. It was created with the built-in image generator from the Risk Takers logo source as a style reference; the exact product wording is kept in deterministic print artwork instead of relying on generated text.
 
@@ -103,16 +103,14 @@ The generated collection hero is `public/merch/hero/risk-takers-gift-store-hero.
 3. ~~Create the five products and one paid-checkout bundle from the approved blanks. Upload the matching production PNGs and keep every item hidden.~~ Completed.
 4. ~~Enter the recommended retail prices and confirm live base costs.~~ Completed. Fulfillment regions, destination shipping estimates, and apparel size surcharges still need final review before publishing.
 5. Order one apparel sample and one hard-goods sample only after spend approval. Review print placement, text legibility, black density, yellow reproduction, mug wrap, mat edge safety, garment sizing, packaging, and delivery time.
-6. Complete payout identity and tax onboarding. Fourthwall says Israel is not on its hard-blocked-country list and provides a `bill.com` exception flow when Stripe Connect cannot onboard a country/bank, but the live onboarding result is the authority.
-7. Add a billing card only after approval. A card or sufficient store balance is required for gift-link redemptions because product and shipping are charged when claimed.
-8. Keep every Fourthwall listing hidden and the hosted store unpublished during the waitlist phase.
-9. Validate the native waitlist with a dedicated synthetic identity, verify its `merch_waitlist` record in the existing admin workflow, and remove the test record.
-10. Deploy the Risk Takers branch only after approval, then verify `/gift-store`, navigation, SEO, responsive layout, waitlist success/error behavior, and the absence of outbound purchase links on the production domain.
+6. ~~Connect the payout bank account and billing card.~~ Completed. Recheck payout identity/tax readiness before the first withdrawal.
+7. Configure the server-only Fourthwall credentials and webhook in Vercel, test checkout privately, then publish the listings and launch the shop.
+8. Verify `/gift-store`, navigation, SEO, responsive layout, catalog options, cart, hosted checkout, signed webhook receipt, and fulfillment handoff on production.
 
 ## Integration behavior
 
 - `src/config/merch.js` contains public presentation data only: product names, descriptions, planned retail values, details, and local mockup paths.
-- `src/pages/GiftStore.jsx` renders the native collection preview and a first-party waitlist form. Every product CTA stays on the page and can preselect a product interest.
+- `src/pages/GiftStore.jsx` fails closed to the native preview/waitlist, then exposes product options, a first-party bag, and hosted checkout only after the server confirms the exact live Fourthwall catalog and configuration.
 - `api/submitMerchWaitlist.js` validates and normalizes submissions, records `subscription_type = merch_waitlist`, stores the chosen interest in `description`, and treats a repeated email as an update rather than a second signup.
 - The browser bundle contains no Fourthwall IDs, base costs, shop domain, provider URLs, or purchase integration variables.
 
