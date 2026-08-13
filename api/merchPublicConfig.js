@@ -31,7 +31,7 @@ export default async function merchPublicConfig(req, res) {
 
   // Anonymous responses are identical and safe to cache at the CDN. Combined
   // with server-instance coalescing this prevents a page-view burst from
-  // turning into seven privileged Platform API calls per visitor.
+  // turning into six privileged Platform API calls per visitor.
   res.setHeader('Cache-Control', privateAuthorized
     ? 'private, no-store'
     : 'public, max-age=0, s-maxage=30, stale-while-revalidate=120');

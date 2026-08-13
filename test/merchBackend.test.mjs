@@ -28,6 +28,7 @@ const SHOP_ID = 'sh_test-risk-takers';
 
 function providerProduct(publicProduct, access = 'HIDDEN') {
   const mapping = FOURTHWALL_PRODUCT_MAP[publicProduct.id];
+  assert.equal(mapping.kind, 'direct');
   return {
     id: mapping.providerId,
     name: mapping.providerName,
@@ -52,7 +53,9 @@ function providerProduct(publicProduct, access = 'HIDDEN') {
 function providerCatalog(access = 'HIDDEN') {
   return {
     shop: { id: SHOP_ID, name: 'Risk Takers Gift Store', domain: SHOP_DOMAIN, publicDomain: SHOP_DOMAIN },
-    products: merchProducts.map((product) => providerProduct(product, access)),
+    products: merchProducts
+      .filter((product) => FOURTHWALL_PRODUCT_MAP[product.id].kind === 'direct')
+      .map((product) => providerProduct(product, access)),
   };
 }
 
@@ -103,9 +106,10 @@ test('provider product IDs stay out of browser source', async () => {
     ...(await allFiles('public')).filter((file) => /\.(?:html|js|jsx|json|xml|txt|svg)$/i.test(file)),
   ];
   const browserSource = (await Promise.all(browserFiles.map((file) => readFile(file, 'utf8')))).join('\n');
-  for (const mapping of Object.values(FOURTHWALL_PRODUCT_MAP)) {
+  for (const mapping of Object.values(FOURTHWALL_PRODUCT_MAP).filter((entry) => entry.kind === 'direct')) {
     assert.doesNotMatch(browserSource, new RegExp(mapping.providerId.replaceAll('-', '\\-')));
   }
+  assert.doesNotMatch(browserSource, /1005793e-b740-4a47-ba63-ba74c7c0f652/);
   assert.doesNotMatch(browserSource, /FOURTHWALL_API_PASSWORD|FOURTHWALL_STOREFRONT_TOKEN|FOURTHWALL_WEBHOOK_SECRET/);
 });
 
@@ -120,9 +124,32 @@ test('safe public config strips provider IDs, costs, SKUs, tokens, and shop inte
   assert.equal(safe.products.length, 6);
   assert.match(serialized, /"retailValue":39/);
   assert.doesNotMatch(serialized, /providerId|providerSlug|unitCost|creatorDeclaredCost|PRIVATE-SKU|shopId|publicDomain|ptkn_/);
-  for (const mapping of Object.values(FOURTHWALL_PRODUCT_MAP)) {
+  for (const mapping of Object.values(FOURTHWALL_PRODUCT_MAP).filter((entry) => entry.kind === 'direct')) {
     assert.ok(!serialized.includes(mapping.providerId));
   }
+  const deskSet = safe.products.find((product) => product.id === 'operators-desk-kit');
+  assert.equal(deskSet.availability, 'available');
+  assert.deepEqual(deskSet.variants, [{
+    selection: {},
+    availability: 'available',
+    retailValue: 77,
+    currency: 'USD',
+  }]);
+  assert.doesNotMatch(serialized, /componentProductIds/);
+});
+
+test('authorized private mode exposes one synthetic desk-set option from healthy components', () => {
+  const safe = buildSafePublicConfig({
+    config: getMerchServerConfig(liveEnv({ MERCH_MODE: 'private_test' })),
+    catalog: providerCatalog('PRIVATE'),
+    privateAuthorized: true,
+  });
+  const deskSet = safe.products.find((product) => product.id === 'operators-desk-kit');
+  assert.equal(safe.salesState, 'private_test');
+  assert.equal(safe.commerceEnabled, true);
+  assert.equal(deskSet.variants.length, 1);
+  assert.equal(deskSet.variants[0].availability, 'available');
+  assert.equal(deskSet.variants[0].retailValue, 77);
 });
 
 test('unauthorized private test config remains indistinguishable from waitlist', () => {
@@ -167,12 +194,14 @@ test('public commerce fails closed when any live checkout setting is missing or 
 test('catalog reads are TTL cached and concurrent requests are coalesced per provider credentials', async () => {
   const catalog = providerCatalog('PUBLIC');
   let calls = 0;
+  const requestedUrls = [];
   let release;
   const gate = new Promise((resolve) => { release = resolve; });
   const mockFetch = async (input) => {
     calls += 1;
     await gate;
     const url = String(input);
+    requestedUrls.push(url);
     if (url.endsWith('/shops/current')) return Response.json(catalog.shop);
     const mapping = Object.values(FOURTHWALL_PRODUCT_MAP).find((entry) => url.endsWith(`/products/${entry.providerId}`));
     return Response.json(catalog.products.find((product) => product.id === mapping.providerId));
@@ -182,23 +211,32 @@ test('catalog reads are TTL cached and concurrent requests are coalesced per pro
   const concurrent = fetchFourthwallCatalog(config, mockFetch);
   release();
   const [firstCatalog, concurrentCatalog] = await Promise.all([first, concurrent]);
-  assert.equal(calls, 7);
+  assert.equal(calls, 6);
   assert.strictEqual(firstCatalog, concurrentCatalog);
+  assert.equal(firstCatalog.products.length, 5);
+  assert.ok(!requestedUrls.some((url) => url.includes('1005793e-b740-4a47-ba63-ba74c7c0f652')));
 
   const cached = await fetchFourthwallCatalog(config, mockFetch);
   assert.strictEqual(cached, firstCatalog);
-  assert.equal(calls, 7);
+  assert.equal(calls, 6);
 });
 
 test('catalog reconciliation enforces mode-specific visibility and retail pricing', () => {
   const waitlistConfig = getMerchServerConfig({ MERCH_MODE: 'waitlist', FOURTHWALL_SHOP_DOMAIN: SHOP_DOMAIN });
   const waitlistHealth = reconcileFourthwallCatalog(providerCatalog('HIDDEN'), waitlistConfig);
   assert.equal(waitlistHealth.healthy, true);
+  assert.equal(waitlistHealth.products.find((product) => product.id === 'operators-desk-kit').healthy, true);
 
   const liveConfig = getMerchServerConfig(liveEnv());
   const hiddenInLive = reconcileFourthwallCatalog(providerCatalog('HIDDEN'), liveConfig);
   assert.equal(hiddenInLive.healthy, false);
-  assert.ok(hiddenInLive.products.every((product) => product.issues.includes('access_not_ready_for_mode')));
+  assert.ok(hiddenInLive.products
+    .filter((product) => product.id !== 'operators-desk-kit')
+    .every((product) => product.issues.includes('access_not_ready_for_mode')));
+  assert.deepEqual(
+    hiddenInLive.products.find((product) => product.id === 'operators-desk-kit').issues,
+    ['component_not_ready'],
+  );
 
   const badPrice = providerCatalog('PUBLIC');
   badPrice.products[0].variants[0].unitPrice.value = 1;
@@ -206,6 +244,85 @@ test('catalog reconciliation enforces mode-specific visibility and retail pricin
   assert.equal(priceHealth.healthy, false);
   assert.ok(priceHealth.products[0].issues.includes('retail_price_mismatch'));
   assert.ok(priceHealth.products[0].issues.includes('variant_price_below_retail'));
+});
+
+test('synthetic desk-set health depends only on the mug and desk-mat components', () => {
+  const config = getMerchServerConfig(liveEnv());
+  const brokenNativeBundle = {
+    id: '1005793e-b740-4a47-ba63-ba74c7c0f652',
+    name: "Operator's Desk Kit",
+    slug: 'operators-desk-kit',
+    state: { type: 'SOLD_OUT' },
+    access: { type: 'PUBLIC' },
+    variants: [],
+  };
+  const catalogWithBrokenBundle = providerCatalog('PUBLIC');
+  catalogWithBrokenBundle.products.push(brokenNativeBundle);
+  const healthy = reconcileFourthwallCatalog(catalogWithBrokenBundle, config);
+  assert.equal(healthy.healthy, true);
+  assert.equal(healthy.products.find((product) => product.id === 'operators-desk-kit').healthy, true);
+  const serializedHealth = JSON.stringify(healthy);
+  assert.doesNotMatch(serializedHealth, /1005793e-b740-4a47-ba63-ba74c7c0f652/);
+  for (const mapping of Object.values(FOURTHWALL_PRODUCT_MAP).filter((entry) => entry.kind === 'direct')) {
+    assert.ok(!serializedHealth.includes(mapping.providerId));
+  }
+
+  const safe = buildSafePublicConfig({ config, catalog: catalogWithBrokenBundle });
+  const deskSet = safe.products.find((product) => product.id === 'operators-desk-kit');
+  assert.equal(deskSet.variants.length, 1);
+  assert.equal(deskSet.variants[0].retailValue, 77);
+
+  for (const componentId of ['prompt-injection-fuel-mug', 'attack-surface-desk-mat']) {
+    const unhealthyCatalog = providerCatalog('PUBLIC');
+    const mapping = FOURTHWALL_PRODUCT_MAP[componentId];
+    unhealthyCatalog.products.find((product) => product.id === mapping.providerId).state = { type: 'SOLD_OUT' };
+    const reconciliation = reconcileFourthwallCatalog(unhealthyCatalog, config);
+    const deskSet = reconciliation.products.find((product) => product.id === 'operators-desk-kit');
+    assert.equal(deskSet.healthy, false, componentId);
+    assert.deepEqual(deskSet.issues, ['component_not_ready']);
+  }
+
+  const soldOutBaseCatalog = providerCatalog('PUBLIC');
+  const mugMapping = FOURTHWALL_PRODUCT_MAP['prompt-injection-fuel-mug'];
+  const soldOutBaseMug = soldOutBaseCatalog.products.find((product) => product.id === mugMapping.providerId);
+  soldOutBaseMug.variants[0].stock = { type: 'LIMITED', inStock: 0 };
+  soldOutBaseMug.variants.push({
+    ...structuredClone(soldOutBaseMug.variants[0]),
+    id: 'variant_prompt-injection-fuel-mug_surcharge',
+    unitPrice: { value: 30, currency: 'USD' },
+    stock: { type: 'UNLIMITED' },
+  });
+  const soldOutBaseHealth = reconcileFourthwallCatalog(soldOutBaseCatalog, config);
+  assert.equal(soldOutBaseHealth.products.find((product) => product.id === 'prompt-injection-fuel-mug').healthy, true);
+  assert.deepEqual(
+    soldOutBaseHealth.products.find((product) => product.id === 'operators-desk-kit').issues,
+    ['component_variant_not_ready'],
+  );
+  assert.equal(buildSafePublicConfig({ config, catalog: soldOutBaseCatalog }).commerceEnabled, false);
+
+  const ambiguousCatalog = providerCatalog('PUBLIC');
+  const ambiguousMug = ambiguousCatalog.products.find((product) => product.id === mugMapping.providerId);
+  ambiguousMug.variants.push({
+    ...structuredClone(ambiguousMug.variants[0]),
+    id: 'variant_prompt-injection-fuel-mug_second-base',
+  });
+  const ambiguousHealth = reconcileFourthwallCatalog(ambiguousCatalog, config);
+  assert.equal(ambiguousHealth.products.find((product) => product.id === 'prompt-injection-fuel-mug').healthy, true);
+  assert.deepEqual(
+    ambiguousHealth.products.find((product) => product.id === 'operators-desk-kit').issues,
+    ['component_variant_not_ready'],
+  );
+
+  const missingVariantIdCatalog = providerCatalog('PUBLIC');
+  const missingVariantIdMug = missingVariantIdCatalog.products.find((product) => product.id === mugMapping.providerId);
+  missingVariantIdMug.variants[0].id = '';
+  const missingVariantIdHealth = reconcileFourthwallCatalog(missingVariantIdCatalog, config);
+  assert.equal(missingVariantIdHealth.products.find((product) => product.id === 'prompt-injection-fuel-mug').healthy, true);
+  assert.deepEqual(
+    missingVariantIdHealth.products.find((product) => product.id === 'operators-desk-kit').issues,
+    ['component_variant_not_ready'],
+  );
+  assert.equal(buildSafePublicConfig({ config, catalog: missingVariantIdCatalog }).commerceEnabled, false);
 });
 
 test('checkout validation accepts only local product slugs and bounded quantities', () => {
@@ -296,6 +413,102 @@ test('live checkout resolves private mappings server-side and returns only a hos
   assert.match(result.checkoutUrl, /cartId=cart_123456789/);
   assert.ok(requestedUrls.some((url) => url.includes('storefront_token=ptkn_server-only-secret')));
   assert.doesNotMatch(serialized, /ptkn_server-only-secret|server-password-secret|variant_risk-takers|a59b182f|unitCost|creatorDeclaredCost/);
+});
+
+test('desk-set checkout expands one local line into mug and desk-mat provider variants', async () => {
+  const catalog = providerCatalog('PUBLIC');
+  const requestedUrls = [];
+  let submittedCart;
+  const mockFetch = async (input, init = {}) => {
+    const url = String(input);
+    requestedUrls.push(url);
+    if (url.endsWith('/shops/current')) return Response.json(catalog.shop);
+    const mapping = Object.values(FOURTHWALL_PRODUCT_MAP)
+      .filter((entry) => entry.kind === 'direct')
+      .find((entry) => url.endsWith(`/products/${entry.providerId}`));
+    if (mapping) return Response.json(catalog.products.find((product) => product.id === mapping.providerId));
+    if (url.startsWith('https://storefront-api.fourthwall.com/v1/carts?')) {
+      submittedCart = JSON.parse(init.body);
+      return Response.json({ id: 'cart_set_123456789', items: submittedCart.items });
+    }
+    return new Response('not found', { status: 404 });
+  };
+
+  const result = await createMerchCheckout(
+    { items: [{ productId: 'operators-desk-kit', quantity: 5, selection: {} }] },
+    { headers: {} },
+    liveEnv(),
+    mockFetch,
+  );
+
+  assert.deepEqual(submittedCart.items, [
+    { variantId: 'variant_prompt-injection-fuel-mug', quantity: 5 },
+    { variantId: 'variant_attack-surface-desk-mat', quantity: 5 },
+  ]);
+  assert.equal(submittedCart.items.reduce((sum, item) => sum + item.quantity, 0), 10);
+  assert.equal(result.itemCount, 5);
+  assert.match(result.checkoutUrl, /cartId=cart_set_123456789/);
+  assert.equal(requestedUrls.filter((url) => url.startsWith('https://api.fourthwall.com/')).length, 6);
+  assert.ok(!requestedUrls.some((url) => url.includes('1005793e-b740-4a47-ba63-ba74c7c0f652')));
+  assert.doesNotMatch(JSON.stringify(result), /variant_prompt|variant_attack|e9b888e4|7384f894|ptkn_/);
+});
+
+test('desk-set expansion enforces physical-unit and consolidated-line limits', async () => {
+  const catalog = providerCatalog('PUBLIC');
+  let cartCalls = 0;
+  const mockFetch = async (input) => {
+    const url = String(input);
+    if (url.endsWith('/shops/current')) return Response.json(catalog.shop);
+    const mapping = Object.values(FOURTHWALL_PRODUCT_MAP)
+      .filter((entry) => entry.kind === 'direct')
+      .find((entry) => url.endsWith(`/products/${entry.providerId}`));
+    if (mapping) return Response.json(catalog.products.find((product) => product.id === mapping.providerId));
+    cartCalls += 1;
+    return Response.json({ id: 'cart_must-not-exist' });
+  };
+
+  await assert.rejects(
+    createMerchCheckout(
+      {
+        items: [
+          { productId: 'operators-desk-kit', quantity: 5 },
+          { productId: 'risk-takers-logo-sticker', quantity: 1, selection: { color: 'Black', size: 'One size' } },
+        ],
+      },
+      { headers: {} },
+      liveEnv(),
+      mockFetch,
+    ),
+    (error) => error.code === 'CART_TOO_LARGE' && error.status === 400,
+  );
+  assert.equal(cartCalls, 0);
+
+  await assert.rejects(
+    createMerchCheckout(
+      {
+        items: [
+          { productId: 'operators-desk-kit', quantity: 5 },
+          { productId: 'prompt-injection-fuel-mug', quantity: 1, selection: { color: 'Black', size: 'One size' } },
+        ],
+      },
+      { headers: {} },
+      liveEnv(),
+      mockFetch,
+    ),
+    (error) => error.code === 'INVALID_QUANTITY' && error.status === 400,
+  );
+  assert.equal(cartCalls, 0);
+
+  await assert.rejects(
+    createMerchCheckout(
+      { items: [{ productId: 'operators-desk-kit', selection: { description: 'provider bundle' } }] },
+      { headers: {} },
+      liveEnv(),
+      mockFetch,
+    ),
+    (error) => error.code === 'VARIANT_NOT_AVAILABLE' && error.status === 400,
+  );
+  assert.equal(cartCalls, 0);
 });
 
 test('live checkout refuses a catalog returned for a different Fourthwall shop', async () => {

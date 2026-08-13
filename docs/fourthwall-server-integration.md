@@ -1,6 +1,8 @@
 # Fourthwall server integration
 
-This repository has a server-side Fourthwall adapter for `/gift-store`. The page fails closed to its waitlist unless the selected mode, full server configuration, exact shop identity, public catalog state, variants, and pricing all reconcile. Fourthwall product IDs, API credentials, Storefront token, webhook secret, and provider catalog responses stay in Vercel functions; they are not imported into the Vite application.
+This repository has a server-side Fourthwall adapter for `/gift-store`. The page fails closed to its waitlist unless the selected mode, full server configuration, exact shop identity, public catalog state, variants, and pricing all reconcile. Fourthwall product IDs, API credentials, Storefront token, webhook secret, component relationships, and provider catalog responses stay in Vercel functions; they are not imported into the Vite application.
+
+Five products map directly to Fourthwall listings. `operators-desk-kit` is a native Risk Takers composite: the public store presents one fixed `$77` set, while the server expands it into the existing mug and desk-mat variants when it creates the cart. The adapter deliberately does not fetch or depend on Fourthwall's bundle-product endpoint.
 
 Official references used for the implementation:
 
@@ -51,13 +53,15 @@ In `private_test`, supply the private bearer token to see provider-backed safe o
 
 ### `GET /api/merchCatalogHealth`
 
-Requires `Authorization: Bearer $MERCH_ADMIN_TOKEN`. It fetches the six mapped products with Fourthwall Open API Basic Auth and checks:
+Requires `Authorization: Bearer $MERCH_ADMIN_TOKEN`. It fetches the shop and five directly mapped products with Fourthwall Open API Basic Auth and checks:
 
 - each expected listing exists under its stable server-side ID;
 - slug, lifecycle state, and access match the selected mode;
 - USD variant pricing has the intended retail price as its floor;
 - at least one variant is available;
 - configured shop domain and shop ID match Fourthwall.
+
+The Operator Desk Set reconciliation is derived from its two components. It is healthy only when both the Prompt Injection Fuel Mug and Attack Surface Desk Mat are healthy and each has exactly one available variant at its fixed public price. This prevents an optionless `$77` set from silently selecting an ambiguous variant or inheriting a component surcharge. A broken, sold-out, or missing provider-native bundle record does not affect readiness because that record is not used for catalog reads or checkout.
 
 The response contains local Risk Takers slugs and check results, never provider IDs, SKUs, costs, credentials, or raw provider responses. HTTP `200` means ready for the configured mode; `503` means not ready.
 
@@ -80,6 +84,8 @@ Input uses only Risk Takers product slugs and human-readable selections:
 
 The server resolves current Fourthwall variants, rechecks visibility and pricing, creates the Storefront cart, and returns only the hosted checkout URL, currency, and item count. It never accepts a provider product ID or variant ID from the browser.
 
+`operators-desk-kit` accepts no option selection. One local set line expands to one mug line plus one desk-mat line at the same quantity. The server consolidates identical component variants, caps each provider variant at five, and reapplies the ten-unit cart cap after expansion. Five desk sets therefore produce ten fulfilled pieces; adding another product is rejected before a cart is created.
+
 ### `POST /api/fourthwallWebhook`
 
 Configure this exact production callback in Fourthwall:
@@ -95,7 +101,7 @@ The code is complete, but these external steps cannot be performed by a reposito
 1. Create the Fourthwall Open API user, Storefront token, and webhook secret, then save them as Vercel server variables.
 2. Set `FOURTHWALL_SHOP_ID` to the ID returned by `GET /open-api/v1.0/shops/current`.
 3. Register the production webhook callback in Fourthwall and send a signed test event.
-4. Upload and verify final production artwork/variants, then change listing access from `HIDDEN` to `PRIVATE` for a gated checkout test or `PUBLIC` for launch.
+4. Upload and verify final production artwork/variants, then change the five direct listing access values from `HIDDEN` to `PRIVATE` for a gated checkout test or `PUBLIC` for launch. The native Risk Takers desk set requires no provider bundle publication.
 5. Run the health endpoint; do not change `MERCH_MODE` until it reports ready.
 6. Complete a real hosted checkout/sample order and verify payment, fulfillment, notification, shipping, and refund behavior.
 

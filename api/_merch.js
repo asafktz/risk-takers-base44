@@ -24,34 +24,41 @@ export const MERCH_MODES = Object.freeze({
 // identifiers never enter the Vite browser bundle.
 export const FOURTHWALL_PRODUCT_MAP = Object.freeze({
   'human-in-the-loop-tee': Object.freeze({
+    kind: 'direct',
     providerId: 'a59b182f-02b8-4703-989c-1c59701eed8e',
     providerSlug: 'human-in-the-loop-tee',
     providerName: 'Human in the Loop Tee',
   }),
   'zero-trust-high-agency-hoodie': Object.freeze({
+    kind: 'direct',
     providerId: 'afe610ca-33ff-4322-a9a0-38564bac7165',
     providerSlug: 'zero-trust-high-agency-hoodie',
     providerName: 'Zero Trust / High Agency Hoodie',
   }),
   'prompt-injection-fuel-mug': Object.freeze({
+    kind: 'direct',
     providerId: 'e9b888e4-d70e-41ab-91e8-6b3e033c48d6',
     providerSlug: 'prompt-injection-fuel-mug',
     providerName: 'Prompt Injection Fuel Mug',
   }),
   'attack-surface-desk-mat': Object.freeze({
+    kind: 'direct',
     providerId: '7384f894-1818-42fd-a813-9c734a30df3c',
     providerSlug: 'attack-surface-desk-mat',
     providerName: 'Attack Surface Desk Mat',
   }),
   'risk-takers-logo-sticker': Object.freeze({
+    kind: 'direct',
     providerId: 'c572a824-9f8e-4939-8722-df3780e910ba',
     providerSlug: 'risk-takers-logo-sticker',
     providerName: 'Risk Takers Logo Sticker',
   }),
   'operators-desk-kit': Object.freeze({
-    providerId: '1005793e-b740-4a47-ba63-ba74c7c0f652',
-    providerSlug: 'operators-desk-kit',
-    providerName: "Operator's Desk Kit",
+    kind: 'composite',
+    componentProductIds: Object.freeze([
+      'prompt-injection-fuel-mug',
+      'attack-surface-desk-mat',
+    ]),
   }),
 });
 
@@ -229,7 +236,8 @@ async function platformGet(path, config, fetchImpl) {
 }
 
 async function fetchFourthwallCatalogUncached(config, fetchImpl) {
-  const mappedProducts = Object.values(FOURTHWALL_PRODUCT_MAP);
+  const mappedProducts = Object.values(FOURTHWALL_PRODUCT_MAP)
+    .filter((mapping) => mapping.kind === 'direct');
   const [shop, ...products] = await Promise.all([
     platformGet('/shops/current', config, fetchImpl),
     ...mappedProducts.map((mapping) => (
@@ -374,17 +382,71 @@ function normalizeProviderShopDomain(shop) {
   return normalizeShopDomain(shop?.publicDomain) || normalizeShopDomain(shop?.domain);
 }
 
+function compositeComponentVariants(providerProduct, publicProduct) {
+  const expectedPrice = Math.round(publicProduct.retailValue * 100);
+  return (providerProduct?.variants || [])
+    .filter(variantIsAvailable)
+    .filter((variant) => (
+      Boolean(String(variant?.id || '').trim())
+      && String(variant?.unitPrice?.currency || '').toUpperCase() === 'USD'
+      && moneyToCents(variant?.unitPrice) === expectedPrice
+    ));
+}
+
+function reconcileCompositeProduct(publicProduct, mapping, healthById, providerProducts) {
+  const componentHealth = mapping.componentProductIds.map((productId) => healthById.get(productId));
+  const componentsHealthy = componentHealth.length === mapping.componentProductIds.length
+    && componentHealth.every((product) => product?.healthy);
+  const componentsUniquelyFulfillable = componentsHealthy
+    && mapping.componentProductIds.every((productId) => {
+      const componentProduct = PUBLIC_PRODUCT_BY_ID.get(productId);
+      const componentMapping = FOURTHWALL_PRODUCT_MAP[productId];
+      return compositeComponentVariants(
+        providerProducts.get(componentMapping.providerId),
+        componentProduct,
+      ).length === 1;
+    });
+  const healthy = componentsHealthy && componentsUniquelyFulfillable;
+
+  return {
+    id: publicProduct.id,
+    healthy,
+    availability: healthy ? 'available' : 'unavailable',
+    access: 'derived',
+    variantCount: healthy ? 1 : 0,
+    retailValue: publicProduct.retailValue,
+    issues: healthy
+      ? []
+      : [componentsHealthy ? 'component_variant_not_ready' : 'component_not_ready'],
+    warnings: [],
+  };
+}
+
 export function reconcileFourthwallCatalog(catalog, config) {
   const providerProducts = new Map((catalog?.products || []).map((product) => [product?.id, product]));
-  const products = merchProducts.map((publicProduct) => {
+  const healthById = new Map();
+
+  for (const publicProduct of merchProducts) {
     const mapping = FOURTHWALL_PRODUCT_MAP[publicProduct.id];
-    return reconcileOneProduct(
+    if (mapping.kind !== 'direct') continue;
+    healthById.set(publicProduct.id, reconcileOneProduct(
       publicProduct,
       mapping,
       providerProducts.get(mapping.providerId),
       config.mode,
+    ));
+  }
+
+  for (const publicProduct of merchProducts) {
+    const mapping = FOURTHWALL_PRODUCT_MAP[publicProduct.id];
+    if (mapping.kind !== 'composite') continue;
+    healthById.set(
+      publicProduct.id,
+      reconcileCompositeProduct(publicProduct, mapping, healthById, providerProducts),
     );
-  });
+  }
+
+  const products = merchProducts.map((publicProduct) => healthById.get(publicProduct.id));
 
   const shopDomainMatches = !config.shopDomain
     || normalizeProviderShopDomain(catalog?.shop) === config.shopDomain;
@@ -405,6 +467,15 @@ function safeVariant(variant) {
     availability: variantIsAvailable(variant) ? 'available' : 'sold_out',
     retailValue: Number(variant?.unitPrice?.value),
     currency: String(variant?.unitPrice?.currency || 'USD').toUpperCase(),
+  };
+}
+
+function safeCompositeVariant(publicProduct) {
+  return {
+    selection: {},
+    availability: 'available',
+    retailValue: publicProduct.retailValue,
+    currency: 'USD',
   };
 }
 
@@ -437,7 +508,9 @@ export function buildSafePublicConfig({
       const providerProduct = providerProducts.get(mapping.providerId);
       const health = healthById.get(product.id);
       const variants = commerceEnabled && health?.healthy
-        ? (providerProduct?.variants || []).map(safeVariant)
+        ? mapping.kind === 'composite'
+          ? [safeCompositeVariant(product)]
+          : (providerProduct?.variants || []).map(safeVariant)
         : [];
 
       return {
@@ -538,6 +611,15 @@ function chooseVariant(providerProduct, item, publicProduct) {
   return variant;
 }
 
+function chooseCompositeComponentVariant(providerProduct, publicProduct) {
+  const candidates = compositeComponentVariants(providerProduct, publicProduct);
+
+  if (candidates.length !== 1) {
+    throw serviceError(409, 'CATALOG_PRICE_MISMATCH', 'This item is being updated. Please try again later.');
+  }
+  return candidates[0];
+}
+
 function resolveProviderCartItems(request, catalog, config) {
   const reconciliation = reconcileFourthwallCatalog(catalog, config);
   if (!reconciliation.healthy) {
@@ -546,17 +628,55 @@ function resolveProviderCartItems(request, catalog, config) {
 
   const providerProducts = new Map((catalog.products || []).map((product) => [product?.id, product]));
   const consolidated = new Map();
-  for (const item of request.items) {
-    const publicProduct = PUBLIC_PRODUCT_BY_ID.get(item.productId);
-    const mapping = FOURTHWALL_PRODUCT_MAP[item.productId];
-    const providerProduct = providerProducts.get(mapping.providerId);
-    const variant = chooseVariant(providerProduct, item, publicProduct);
+  let expandedQuantity = 0;
+
+  const addVariant = (variant, quantity) => {
     const prior = consolidated.get(variant.id) || 0;
-    const nextQuantity = prior + item.quantity;
+    const nextQuantity = prior + quantity;
     if (nextQuantity > MAX_LINE_QUANTITY) {
       throw serviceError(400, 'INVALID_QUANTITY', 'Choose a quantity between 1 and 5 per product option.');
     }
     consolidated.set(variant.id, nextQuantity);
+    expandedQuantity += quantity;
+  };
+
+  for (const item of request.items) {
+    const publicProduct = PUBLIC_PRODUCT_BY_ID.get(item.productId);
+    const mapping = FOURTHWALL_PRODUCT_MAP[item.productId];
+
+    if (mapping.kind === 'composite') {
+      if (Object.keys(item.selection).length) {
+        throw serviceError(400, 'VARIANT_NOT_AVAILABLE', 'That product option is not available.');
+      }
+
+      const componentRetailCents = mapping.componentProductIds.reduce((sum, productId) => (
+        sum + Math.round(PUBLIC_PRODUCT_BY_ID.get(productId).retailValue * 100)
+      ), 0);
+      if (componentRetailCents !== Math.round(publicProduct.retailValue * 100)) {
+        throw serviceError(409, 'CATALOG_PRICE_MISMATCH', 'This item is being updated. Please try again later.');
+      }
+
+      for (const componentProductId of mapping.componentProductIds) {
+        const componentProduct = PUBLIC_PRODUCT_BY_ID.get(componentProductId);
+        const componentMapping = FOURTHWALL_PRODUCT_MAP[componentProductId];
+        const componentProviderProduct = providerProducts.get(componentMapping.providerId);
+        addVariant(
+          chooseCompositeComponentVariant(componentProviderProduct, componentProduct),
+          item.quantity,
+        );
+      }
+      continue;
+    }
+
+    const providerProduct = providerProducts.get(mapping.providerId);
+    addVariant(chooseVariant(providerProduct, item, publicProduct), item.quantity);
+  }
+
+  if (expandedQuantity > MAX_TOTAL_QUANTITY) {
+    throw serviceError(400, 'CART_TOO_LARGE', 'Choose no more than 10 fulfilled items. Desk sets contain two pieces.');
+  }
+  if (consolidated.size > MAX_CHECKOUT_LINES) {
+    throw serviceError(400, 'INVALID_CART', 'Choose between 1 and 10 product options.');
   }
 
   return [...consolidated.entries()].map(([variantId, quantity]) => ({ variantId, quantity }));
