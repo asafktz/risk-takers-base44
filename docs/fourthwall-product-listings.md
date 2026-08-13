@@ -1,5 +1,7 @@
 # Fourthwall product-entry pack
 
+> Internal fulfillment reference only. These hidden listings are not public-page copy and are not a current purchase destination. The live-site phase is a native waitlist at `risktakers.show/gift-store`.
+
 Use this document to create the Risk Takers products in Fourthwall. Create every listing as **Hidden** until the live catalog cost, all variants, artwork placement, and physical samples have been approved.
 
 Design approval: the owner approved this logo-led collection on August 12, 2026. This approval covers the creative baseline and retail prices; it does not authorize publishing, billing setup, sample spend, or production deployment.

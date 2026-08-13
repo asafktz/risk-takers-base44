@@ -1,25 +1,27 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
+  AlertCircle,
   ArrowDown,
-  ArrowUpRight,
   Check,
+  CheckCircle2,
   Gift,
-  PackageCheck,
-  ShieldCheck,
+  Loader2,
+  Mail,
   Sparkles,
-  Truck,
 } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
+import PrivacyCollectionNotice from '@/components/PrivacyCollectionNotice';
 import { setSEO, absoluteUrl } from '@/lib/seo';
-import { formatMerchPrice, merchProducts, merchProvider } from '@/config/merch';
+import { formatMerchPrice, merchProducts } from '@/config/merch';
 
 
 const collectionJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
-  name: 'Risk Takers Gift Store',
+  name: 'Risk Takers Merch Waitlist',
   url: absoluteUrl('/gift-store'),
-  description: 'Risk Takers apparel, desk gear, and gifts for AI and cybersecurity operators.',
+  description: 'Preview the first Risk Takers merch collection and join the waitlist.',
   mainEntity: {
     '@type': 'ItemList',
     itemListElement: merchProducts.map((product, index) => ({
@@ -32,9 +34,8 @@ const collectionJsonLd = {
 };
 
 
-function ProductCard({ product, index }) {
+function ProductCard({ product, index, onJoin }) {
   const isWide = index === 0 || index === 3 || index === 5;
-  const imagePosition = product.id === 'operators-desk-kit' ? 'object-center' : 'object-center';
 
   return (
     <article
@@ -47,14 +48,14 @@ function ProductCard({ product, index }) {
         <img
           src={product.image}
           alt={`${product.name} product concept`}
-          className={`h-full w-full object-cover ${imagePosition} transition-transform duration-700 group-hover:scale-[1.025]`}
+          className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.025]"
           loading={index < 2 ? 'eager' : 'lazy'}
         />
         <span className="absolute left-4 top-4 border-2 border-[#1B1B19] bg-[#F1C40F] px-3 py-1 font-mono text-[11px] font-black tracking-[0.14em] text-[#1B1B19]">
           {product.badge}
         </span>
         <span className="absolute bottom-4 right-4 border-2 border-[#1B1B19] bg-[#F5F0E4] px-3 py-1 text-sm font-black text-[#1B1B19]">
-          {product.category}
+          WAITLIST ONLY
         </span>
       </div>
 
@@ -68,7 +69,10 @@ function ProductCard({ product, index }) {
               {product.name}
             </h3>
           </div>
-          <p className="shrink-0 text-2xl font-black text-[#1B1B19]">{formatMerchPrice(product.price)}</p>
+          <div className="shrink-0 text-right">
+            <p className="font-mono text-[10px] font-black uppercase tracking-[0.12em] text-[#6D665B]">Planned retail</p>
+            <p className="text-2xl font-black text-[#1B1B19]">{formatMerchPrice(product.retailValue)}</p>
+          </div>
         </div>
 
         <p className="max-w-2xl text-base leading-7 text-[#4B4943]">{product.description}</p>
@@ -82,58 +86,154 @@ function ProductCard({ product, index }) {
           ))}
         </ul>
 
-        <div className="mt-7">
-          {product.providerUrl ? (
-            <a
-              href={product.providerUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex w-full items-center justify-between bg-[#1B1B19] px-5 py-4 text-sm font-black uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#9A7B00] sm:w-auto sm:min-w-56"
-            >
-              Choose yours
-              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-            </a>
-          ) : (
-            <button
-              type="button"
-              disabled
-              className="inline-flex w-full cursor-not-allowed items-center justify-between border-2 border-[#1B1B19] bg-[#DCD7CB] px-5 py-3.5 text-sm font-black uppercase tracking-[0.12em] text-[#5E5B54] sm:w-auto sm:min-w-56"
-              title="Checkout activates after the fulfillment storefront is connected"
-            >
-              Checkout at launch
-              <PackageCheck className="h-4 w-4" aria-hidden="true" />
-            </button>
-          )}
-        </div>
+        <button
+          type="button"
+          onClick={() => onJoin(product.id)}
+          aria-controls="merch-waitlist"
+          className="mt-7 inline-flex w-full items-center justify-between bg-[#1B1B19] px-5 py-4 text-sm font-black uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#806C12] focus:outline-none focus:ring-4 focus:ring-[#F1C40F] sm:w-auto sm:min-w-64"
+        >
+          Join waitlist for this item
+          <ArrowDown className="h-4 w-4" aria-hidden="true" />
+        </button>
       </div>
     </article>
   );
 }
 
 
-function SupplyStamp({ icon: Icon, title, body }) {
+function MerchWaitlistForm({ selectedInterest, onInterestChange }) {
+  const [formData, setFormData] = useState({ name: '', email: '' });
+  const [status, setStatus] = useState('idle');
+
+  const selectedProduct = merchProducts.find((product) => product.id === selectedInterest);
+  const interestLabel = selectedProduct?.name || 'The full Drop 001 collection';
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setStatus('loading');
+
+    try {
+      const { data } = await base44.functions.invoke('submitMerchWaitlist', {
+        name: formData.name,
+        email: formData.email,
+        interest: selectedInterest,
+      });
+      if (!data?.success) throw new Error(data?.error || 'Waitlist signup failed');
+      setStatus('success');
+      setFormData({ name: '', email: '' });
+    } catch (error) {
+      console.error('Merch waitlist signup failed:', error);
+      setStatus('error');
+    }
+  };
+
+  if (status === 'success') {
+    return (
+      <div className="border-2 border-[#1B1B19] bg-[#F5F0E4] p-7 text-[#1B1B19] shadow-[8px_8px_0_#F1C40F] sm:p-10" role="status" aria-live="polite">
+        <CheckCircle2 className="h-12 w-12 text-[#806C12]" strokeWidth={2.5} aria-hidden="true" />
+        <h3 className="mt-5 text-3xl font-black uppercase tracking-[-0.04em]">You’re on the list.</h3>
+        <p className="mt-3 max-w-xl text-base leading-7 text-[#4B4943]">
+          We recorded your interest in {interestLabel}. We’ll email you when the first Risk Takers drop or giveaway opens.
+        </p>
+        <button
+          type="button"
+          onClick={() => setStatus('idle')}
+          className="mt-6 font-mono text-xs font-black uppercase tracking-[0.14em] underline underline-offset-4"
+        >
+          Add another email
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="border-l border-[#4B4943] pl-5 first:border-l-0 first:pl-0">
-      <Icon className="mb-3 h-6 w-6 text-[#F1C40F]" strokeWidth={2.2} aria-hidden="true" />
-      <p className="text-sm font-black uppercase tracking-[0.08em] text-white">{title}</p>
-      <p className="mt-1 text-sm leading-6 text-[#BEB9AF]">{body}</p>
-    </div>
+    <form onSubmit={handleSubmit} className="border-2 border-[#1B1B19] bg-[#F5F0E4] p-6 text-[#1B1B19] shadow-[8px_8px_0_#F1C40F] sm:p-8">
+      <div className="grid gap-5 sm:grid-cols-2">
+        <label className="grid gap-2 font-mono text-xs font-black uppercase tracking-[0.12em]">
+          Name
+          <input
+            type="text"
+            autoComplete="name"
+            required
+            value={formData.name}
+            onChange={(event) => setFormData((current) => ({ ...current, name: event.target.value }))}
+            className="min-h-12 border-2 border-[#1B1B19] bg-white px-4 font-sans text-base font-semibold normal-case tracking-normal outline-none focus:ring-4 focus:ring-[#F1C40F]"
+            placeholder="Your name"
+          />
+        </label>
+        <label className="grid gap-2 font-mono text-xs font-black uppercase tracking-[0.12em]">
+          Email
+          <input
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            required
+            value={formData.email}
+            onChange={(event) => setFormData((current) => ({ ...current, email: event.target.value }))}
+            className="min-h-12 border-2 border-[#1B1B19] bg-white px-4 font-sans text-base font-semibold normal-case tracking-normal outline-none focus:ring-4 focus:ring-[#F1C40F]"
+            placeholder="you@company.com"
+          />
+        </label>
+      </div>
+
+      <label className="mt-5 grid gap-2 font-mono text-xs font-black uppercase tracking-[0.12em]">
+        Most interested in
+        <select
+          value={selectedInterest}
+          onChange={(event) => onInterestChange(event.target.value)}
+          className="min-h-12 border-2 border-[#1B1B19] bg-white px-4 font-sans text-base font-semibold normal-case tracking-normal outline-none focus:ring-4 focus:ring-[#F1C40F]"
+        >
+          <option value="full-drop">The full Drop 001 collection</option>
+          {merchProducts.map((product) => (
+            <option key={product.id} value={product.id}>{product.name}</option>
+          ))}
+        </select>
+      </label>
+
+      <PrivacyCollectionNotice className="mt-5" />
+
+      {status === 'error' && (
+        <div className="mt-5 flex items-start gap-3 border-2 border-[#9B2C23] bg-[#FFF0ED] p-4 text-sm font-bold text-[#7D251E]" role="alert">
+          <AlertCircle className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
+          We couldn’t add you just now. Please try again.
+        </div>
+      )}
+
+      <button
+        type="submit"
+        disabled={status === 'loading'}
+        className="mt-6 inline-flex min-h-14 w-full items-center justify-center gap-3 bg-[#1B1B19] px-6 text-sm font-black uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#806C12] focus:outline-none focus:ring-4 focus:ring-[#F1C40F] disabled:cursor-wait disabled:opacity-70"
+      >
+        {status === 'loading' ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <Mail className="h-5 w-5" aria-hidden="true" />}
+        {status === 'loading' ? 'Joining…' : 'Join the merch waitlist'}
+      </button>
+
+      <p className="mt-4 text-center text-xs font-bold leading-5 text-[#6D665B]">
+        No purchase or reservation is created. See the notice above for how Risk Takers may use your signup information.
+      </p>
+    </form>
   );
 }
 
 
 export default function GiftStore() {
+  const waitlistRef = useRef(null);
+  const [selectedInterest, setSelectedInterest] = useState('full-drop');
+
   useEffect(() => {
     setSEO({
-      title: 'Gift Store',
-      description: 'Shop Risk Takers apparel, desk gear, and gifts made for AI and cybersecurity operators.',
+      title: 'Merch Waitlist',
+      description: 'Preview Risk Takers apparel and desk gear, then join the waitlist for Drop 001.',
       path: '/gift-store',
       image: absoluteUrl('/merch/hero/risk-takers-gift-store-hero.png'),
       jsonLd: [collectionJsonLd],
     });
   }, []);
 
-  const primaryShopUrl = merchProvider.shopUrl || '#collection';
+  const openWaitlist = (interest = 'full-drop') => {
+    setSelectedInterest(interest);
+    window.requestAnimationFrame(() => waitlistRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  };
 
   return (
     <main className="min-h-screen bg-[#E8E3D7] font-sans text-[#1B1B19]">
@@ -148,61 +248,55 @@ export default function GiftStore() {
         .gift-store-hazard {
           background: repeating-linear-gradient(135deg, #F1C40F 0 18px, #1B1B19 18px 36px);
         }
-        .gift-store-paper {
-          clip-path: polygon(0 2%, 5% 0, 11% 2%, 18% 0, 26% 1.5%, 35% 0, 44% 2%, 53% 0, 63% 1.5%, 72% 0, 83% 2%, 92% 0, 100% 1.5%, 100% 98%, 92% 100%, 82% 98.5%, 72% 100%, 62% 98%, 51% 100%, 41% 98.5%, 31% 100%, 20% 98%, 10% 100%, 0 98.5%);
-        }
       `}</style>
 
       <section
-        className="gift-store-grid relative isolate min-h-[760px] overflow-hidden bg-[#151513] text-white"
+        className="gift-store-grid relative isolate min-h-[720px] overflow-hidden bg-[#151513] text-white"
         style={{
           backgroundImage:
-            "linear-gradient(90deg, rgba(14,14,13,.97) 0%, rgba(14,14,13,.89) 35%, rgba(14,14,13,.28) 70%, rgba(14,14,13,.48) 100%), url('/merch/hero/risk-takers-gift-store-hero.png')",
+            "linear-gradient(90deg, rgba(14,14,13,.97) 0%, rgba(14,14,13,.89) 38%, rgba(14,14,13,.30) 72%, rgba(14,14,13,.52) 100%), url('/merch/hero/risk-takers-gift-store-hero.png')",
           backgroundPosition: 'center',
           backgroundSize: 'cover',
         }}
       >
         <div className="absolute inset-x-0 top-0 h-2 gift-store-hazard" />
-        <div className="mx-auto flex min-h-[760px] max-w-6xl items-center px-4 py-20 sm:px-8">
+        <div className="mx-auto flex min-h-[720px] max-w-6xl items-center px-4 py-20 sm:px-8">
           <div className="relative z-10 max-w-3xl">
-            <div className="mb-7 inline-flex items-center gap-2 border border-[#F1C40F] bg-[#1B1B19]/80 px-3 py-2 font-mono text-[11px] font-bold tracking-[0.2em] text-[#F1C40F] backdrop-blur-sm">
+            <div className="mb-7 inline-flex items-center gap-2 border border-[#F1C40F] bg-[#1B1B19]/85 px-3 py-2 font-mono text-[11px] font-bold tracking-[0.2em] text-[#F1C40F] backdrop-blur-sm">
               <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-              RISK TAKERS / FIELD SUPPLY / DROP 001
+              RISK TAKERS / DROP 001 / WAITLIST OPEN
             </div>
 
-            <h1 className="max-w-3xl text-5xl font-black uppercase leading-[0.91] tracking-[-0.055em] text-[#F5F0E4] sm:text-7xl lg:text-[6.7rem]">
+            <h1 className="max-w-3xl text-5xl font-black uppercase leading-[0.91] tracking-[-0.055em] text-[#F5F0E4] sm:text-7xl lg:text-[6.4rem]">
               Hardware for
               <span className="block text-[#F1C40F]">bold operators.</span>
             </h1>
 
             <p className="mt-7 max-w-2xl text-lg font-medium leading-8 text-[#D0CBC0] sm:text-xl">
-              Premium gear for people working at the edge of AI, cybersecurity, and consequential decisions. Built to wear. Better to give.
+              The first Risk Takers merch collection is being prepared. Preview the concepts and join the list for launch access and future giveaways.
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <a
-                href={primaryShopUrl}
-                target={merchProvider.isConnected ? '_blank' : undefined}
-                rel={merchProvider.isConnected ? 'noreferrer' : undefined}
-                className="inline-flex items-center justify-center gap-3 bg-[#F1C40F] px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-[#1B1B19] transition-colors hover:bg-[#F8D84B]"
+              <button
+                type="button"
+                onClick={() => openWaitlist()}
+                className="inline-flex items-center justify-center gap-3 bg-[#F1C40F] px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-[#1B1B19] transition-colors hover:bg-[#F8D84B] focus:outline-none focus:ring-4 focus:ring-white"
               >
-                Browse the drop
+                Join the waitlist
                 <ArrowDown className="h-4 w-4" aria-hidden="true" />
-              </a>
+              </button>
               <a
-                href="#gift-it"
-                className="inline-flex items-center justify-center gap-3 border border-[#77736A] bg-[#1B1B19]/70 px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-white backdrop-blur-sm transition-colors hover:border-white"
+                href="#collection"
+                className="inline-flex items-center justify-center gap-3 border border-[#77736A] bg-[#1B1B19]/75 px-6 py-4 text-sm font-black uppercase tracking-[0.14em] text-white backdrop-blur-sm transition-colors hover:border-white"
               >
                 <Gift className="h-4 w-4" aria-hidden="true" />
-                How gifting works
+                Preview Drop 001
               </a>
             </div>
 
-            {!merchProvider.isConnected && (
-              <p className="mt-5 font-mono text-xs leading-5 text-[#9E9A91]">
-                COLLECTION PREVIEW — checkout activates after the fulfillment account and product proofs are approved.
-              </p>
-            )}
+            <p className="mt-5 font-mono text-xs font-black uppercase tracking-[0.12em] text-[#B4A85F]">
+              Preview only — nothing on this page is for sale yet.
+            </p>
           </div>
         </div>
 
@@ -210,11 +304,11 @@ export default function GiftStore() {
       </section>
 
       <section className="border-y-2 border-[#1B1B19] bg-[#F1C40F]">
-        <div className="mx-auto grid max-w-6xl gap-0 px-4 py-6 sm:grid-cols-3 sm:px-8">
+        <div className="mx-auto grid max-w-6xl px-4 py-6 sm:grid-cols-3 sm:px-8">
           {[
-            ['01', 'NO MINIMUMS', 'Made only when ordered.'],
-            ['02', 'ONE-USE GIFT LINKS', 'They choose size and address.'],
-            ['03', 'FULFILLED END TO END', 'Print, payment, shipping, support.'],
+            ['01', 'PREVIEW THE DROP', 'See the first six concepts.'],
+            ['02', 'PICK YOUR FAVORITE', 'Tell us what you want first.'],
+            ['03', 'GET FIRST ACCESS', 'We’ll email the waitlist before launch.'],
           ].map(([number, title, body]) => (
             <div key={number} className="flex items-start gap-4 border-b-2 border-[#1B1B19] py-4 last:border-b-0 sm:border-b-0 sm:border-l-2 sm:px-6 sm:first:border-l-0 sm:first:pl-0">
               <span className="font-mono text-sm font-black">{number}</span>
@@ -227,7 +321,7 @@ export default function GiftStore() {
         </div>
       </section>
 
-      <section id="collection" className="px-4 py-20 sm:px-8 sm:py-28">
+      <section id="collection" className="scroll-mt-20 px-4 py-20 sm:px-8 sm:py-28">
         <div className="mx-auto max-w-6xl">
           <div className="mb-14 grid gap-8 lg:grid-cols-[1.25fr_.75fr] lg:items-end">
             <div>
@@ -237,145 +331,59 @@ export default function GiftStore() {
               </h2>
             </div>
             <p className="max-w-xl text-base leading-7 text-[#4B4943] lg:justify-self-end">
-              Six sharp, useful pieces built around the original Risk Takers mark and a credible retail price. Each design has a print-ready production file and a matching storefront mockup.
+              Six logo-led concepts for AI and security people. Planned retail values are directional until the drop opens; joining the waitlist does not reserve or purchase anything.
             </p>
           </div>
 
           <div className="grid gap-8 lg:grid-cols-12">
             {merchProducts.map((product, index) => (
-              <ProductCard key={product.id} product={product} index={index} />
+              <ProductCard key={product.id} product={product} index={index} onJoin={openWaitlist} />
             ))}
           </div>
         </div>
       </section>
 
-      <section id="gift-it" className="gift-store-grid bg-[#1B1B19] px-4 py-20 text-white sm:px-8 sm:py-28">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-14 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 bg-[#F1C40F] px-3 py-2 font-mono text-[11px] font-black tracking-[0.15em] text-[#1B1B19]">
-                <Gift className="h-4 w-4" aria-hidden="true" />
-                GIFT WITHOUT THE GUESSWORK
-              </div>
-              <h2 className="mt-6 text-4xl font-black uppercase leading-[0.95] tracking-[-0.045em] sm:text-6xl">
-                Give retail value. Keep the logistics.
-              </h2>
-              <p className="mt-6 max-w-xl text-lg leading-8 text-[#BEB9AF]">
-                Send one claim link instead of asking for a size, color, and shipping address. The recipient checks out for $0; production starts only after they choose.
-              </p>
-
-              <div className="mt-9 border-l-4 border-[#F1C40F] bg-[#292926] p-5">
-                <p className="font-mono text-xs font-black tracking-[0.16em] text-[#F1C40F]">RECOMMENDED GIVEAWAY</p>
-                <p className="mt-2 text-2xl font-black">Attack Surface Desk Mat</p>
-                <p className="mt-1 text-sm leading-6 text-[#BEB9AF]">A $49 retail gift with a roughly $13 starting product cost—high visibility, useful, and no sizing risk.</p>
-              </div>
+      <section ref={waitlistRef} id="merch-waitlist" className="gift-store-grid scroll-mt-14 bg-[#1B1B19] px-4 py-20 text-white sm:px-8 sm:py-28">
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[.82fr_1.18fr] lg:items-start">
+          <div>
+            <div className="inline-flex items-center gap-2 bg-[#F1C40F] px-3 py-2 font-mono text-[11px] font-black tracking-[0.15em] text-[#1B1B19]">
+              <Mail className="h-4 w-4" aria-hidden="true" />
+              WAITLIST OPEN
             </div>
+            <h2 className="mt-6 text-4xl font-black uppercase leading-[0.95] tracking-[-0.045em] sm:text-6xl">
+              Get the first signal.
+            </h2>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-[#BEB9AF]">
+              Tell us which concept you want. We’ll use the response to decide what gets produced and notify you when Drop 001 or a Risk Takers giveaway becomes available.
+            </p>
 
-            <ol className="space-y-4">
-              {[
-                ['Create the claim', 'Choose one eligible product and generate a unique one-use giveaway link.'],
-                ['They choose the details', 'The recipient selects size or color and enters their own delivery address.'],
-                ['The partner fulfills', 'The recipient pays nothing. Your account covers product cost and destination-based shipping.'],
-              ].map(([title, body], index) => (
-                <li key={title} className="grid grid-cols-[64px_1fr] gap-5 border border-[#46463F] bg-[#22221F] p-5 sm:p-6">
-                  <span className="font-mono text-4xl font-black text-[#F1C40F]">0{index + 1}</span>
-                  <div>
-                    <h3 className="text-xl font-black uppercase tracking-[-0.02em]">{title}</h3>
-                    <p className="mt-2 text-sm leading-6 text-[#BEB9AF]">{body}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
+            <div className="mt-8 border-l-4 border-[#F1C40F] bg-[#292926] p-5">
+              <p className="font-mono text-xs font-black tracking-[0.16em] text-[#F1C40F]">WAITLIST, NOT CHECKOUT</p>
+              <p className="mt-2 text-sm leading-6 text-[#D1CCC2]">No card, shipping address, or payment is requested. This form only records your contact details and product interest.</p>
+            </div>
           </div>
+
+          <MerchWaitlistForm selectedInterest={selectedInterest} onInterestChange={setSelectedInterest} />
         </div>
       </section>
 
-      <section className="bg-[#2B2A27] px-4 py-12 sm:px-8">
-        <div className="mx-auto grid max-w-6xl gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          <SupplyStamp icon={PackageCheck} title="Made on demand" body="No inventory or minimum order quantity." />
-          <SupplyStamp icon={Truck} title="Worldwide delivery" body="Shipping options are calculated for the destination." />
-          <SupplyStamp icon={ShieldCheck} title="Partner checkout" body="Payments, tax calculation, and order confirmation are handled securely." />
-          <SupplyStamp icon={Gift} title="Gift ready" body="One-use links let recipients claim eligible products at $0." />
-        </div>
-      </section>
-
-      <section id="order-info" className="border-b-2 border-[#1B1B19] bg-[#E8E3D7] px-4 py-16 sm:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-8 lg:grid-cols-[.7fr_1.3fr] lg:items-start">
-            <div>
-              <p className="font-mono text-xs font-black tracking-[0.18em] text-[#806C12]">BEFORE YOU ORDER</p>
-              <h2 className="mt-3 text-3xl font-black uppercase leading-none tracking-[-0.04em] sm:text-4xl">Made for you, not pulled from a warehouse.</h2>
-            </div>
-            <div className="grid gap-6 sm:grid-cols-3">
-              <div className="border-t-2 border-[#1B1B19] pt-4">
-                <p className="font-black uppercase">Production</p>
-                <p className="mt-2 text-sm leading-6 text-[#555249]">On-demand items typically take 3–5 business days to produce before transit.</p>
-              </div>
-              <div className="border-t-2 border-[#1B1B19] pt-4">
-                <p className="font-black uppercase">Returns</p>
-                <p className="mt-2 text-sm leading-6 text-[#555249]">Made-to-order items are not returned for sizing preference or a change of mind. Verified damage, defects, or fulfillment errors are covered.</p>
-              </div>
-              <div className="border-t-2 border-[#1B1B19] pt-4">
-                <p className="font-black uppercase">International</p>
-                <p className="mt-2 text-sm leading-6 text-[#555249]">Delivery times vary. Import duties may be due at checkout or on delivery depending on the route.</p>
-              </div>
-            </div>
+      <section className="bg-[#F5F0E4] px-4 py-16 sm:px-8">
+        <div className="mx-auto grid max-w-6xl gap-10 border-t-2 border-[#1B1B19] pt-10 md:grid-cols-[1fr_1fr_1fr_auto]">
+          <div>
+            <p className="text-lg font-black">RISK TAKERS</p>
+            <p className="mt-2 max-w-xs text-sm leading-6 text-[#5D5A52]">Real stories, real tradeoffs, practical playbooks—and field gear for the people doing the work.</p>
           </div>
-        </div>
-      </section>
-
-      <section className="bg-[#F5F0E4] px-4 py-20 sm:px-8 sm:py-28">
-        <div className="mx-auto max-w-6xl">
-          <div className="gift-store-paper grid overflow-hidden bg-[#F1C40F] px-6 py-14 sm:px-12 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-12">
-            <div>
-              <p className="font-mono text-xs font-black tracking-[0.18em]">FIELD SUPPLY / STATUS</p>
-              <h2 className="mt-3 text-4xl font-black uppercase leading-none tracking-[-0.04em] sm:text-5xl">
-                The collection is built. The checkout is the last mile.
-              </h2>
-              <p className="mt-5 max-w-3xl text-base leading-7 text-[#3F3B2E]">
-                Print files, mockups, product pricing, and the native store experience are ready. Live sales and giveaways begin after the fulfillment account, product proofs, payout identity, and billing method are approved.
-              </p>
-            </div>
-
-            {merchProvider.isConnected ? (
-              <a
-                href={merchProvider.shopUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-8 inline-flex items-center justify-center gap-3 bg-[#1B1B19] px-7 py-4 text-sm font-black uppercase tracking-[0.14em] text-white lg:mt-0"
-              >
-                Open the store
-                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-              </a>
-            ) : (
-              <Link
-                to="/contact"
-                className="mt-8 inline-flex items-center justify-center gap-3 bg-[#1B1B19] px-7 py-4 text-sm font-black uppercase tracking-[0.14em] text-white lg:mt-0"
-              >
-                Ask about the drop
-                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
-            )}
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.14em]">Drop 001</p>
+            <a href="#collection" className="mt-3 block text-sm text-[#555249] hover:text-black">Preview collection</a>
+            <a href="#merch-waitlist" className="mt-2 block text-sm text-[#555249] hover:text-black">Join waitlist</a>
           </div>
-
-          <div className="mt-14 grid gap-10 border-t-2 border-[#1B1B19] pt-10 md:grid-cols-[1fr_1fr_1fr_auto]">
-            <div>
-              <p className="text-lg font-black">RISK TAKERS</p>
-              <p className="mt-2 max-w-xs text-sm leading-6 text-[#5D5A52]">Real stories, real tradeoffs, practical playbooks—and now field gear for the people doing the work.</p>
-            </div>
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.14em]">Store</p>
-              <a href="#collection" className="mt-3 block text-sm text-[#555249] hover:text-black">Collection</a>
-              <a href="#gift-it" className="mt-2 block text-sm text-[#555249] hover:text-black">Gift it</a>
-              <a href="#order-info" className="mt-2 block text-sm text-[#555249] hover:text-black">Shipping &amp; returns</a>
-            </div>
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.14em]">Policies</p>
-              <Link to="/privacy" className="mt-3 block text-sm text-[#555249] hover:text-black">Privacy</Link>
-              <Link to="/terms" className="mt-2 block text-sm text-[#555249] hover:text-black">Terms</Link>
-            </div>
-            <img src="/merch/risk-takers-logo-bug.png" alt="Risk Takers" className="h-20 w-20 rounded-md" />
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.14em]">Policies</p>
+            <Link to="/privacy" className="mt-3 block text-sm text-[#555249] hover:text-black">Privacy</Link>
+            <Link to="/terms" className="mt-2 block text-sm text-[#555249] hover:text-black">Terms</Link>
           </div>
+          <img src="/merch/risk-takers-logo-bug.png" alt="Risk Takers" className="h-20 w-20 rounded-md" />
         </div>
       </section>
     </main>

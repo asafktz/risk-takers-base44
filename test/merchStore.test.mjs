@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import { access, readFile } from 'node:fs/promises';
 import test from 'node:test';
+import {
+  MERCH_INTERESTS,
+  normalizeMerchWaitlistInput,
+} from '../api/submitMerchWaitlist.js';
 
 
 const requiredAssets = [
@@ -14,7 +18,7 @@ const requiredAssets = [
 ];
 
 
-test('gift store is routed, discoverable, and indexable', async () => {
+test('merch waitlist is routed, discoverable, and indexable on risktakers.show', async () => {
   const [app, navbar, sitemap] = await Promise.all([
     readFile('src/App.jsx', 'utf8'),
     readFile('src/components/landing/Navbar.jsx', 'utf8'),
@@ -22,21 +26,63 @@ test('gift store is routed, discoverable, and indexable', async () => {
   ]);
 
   assert.match(app, /path="\/gift-store"/);
-  assert.match(navbar, /Gift Store/);
+  assert.match(navbar, /Merch Waitlist/);
   assert.match(sitemap, /https:\/\/risktakers\.show\/gift-store/);
 });
 
 
-test('checkout remains visibly gated until Fourthwall is configured', async () => {
+test('public merch page is waitlist-only and has no provider checkout path', async () => {
   const [page, config] = await Promise.all([
     readFile('src/pages/GiftStore.jsx', 'utf8'),
     readFile('src/config/merch.js', 'utf8'),
   ]);
 
-  assert.match(page, /Checkout at launch/);
-  assert.match(page, /disabled/);
-  assert.match(config, /VITE_FOURTHWALL_SHOP_DOMAIN/);
-  assert.doesNotMatch(config, /sk_live_|pk_live_|Bearer\s+[A-Za-z0-9]/);
+  assert.match(page, /WAITLIST ONLY/);
+  assert.match(page, /Planned retail/);
+  assert.match(page, /nothing on this page is for sale yet/i);
+  assert.match(page, /submitMerchWaitlist/);
+  assert.match(page, /PrivacyCollectionNotice/);
+  assert.match(page, /status === 'loading'/);
+  assert.match(page, /status === 'success'/);
+  assert.match(page, /status === 'error'/);
+  assert.doesNotMatch(`${page}\n${config}`, /Fourthwall|VITE_FOURTHWALL|providerUrl|merchProvider|Open the store|Checkout at launch/);
+  assert.doesNotMatch(config, /baseCost|providerId|providerSlug|shopDomain/);
+});
+
+
+test('waitlist input is normalized and constrained to known product interests', () => {
+  assert.deepEqual(
+    normalizeMerchWaitlistInput({
+      name: '  Ada   Lovelace ',
+      email: ' ADA@EXAMPLE.COM ',
+      interest: 'attack-surface-desk-mat',
+    }),
+    {
+      name: 'Ada Lovelace',
+      email: 'ada@example.com',
+      interest: 'attack-surface-desk-mat',
+    },
+  );
+  assert.ok(MERCH_INTERESTS.has('full-drop'));
+  assert.throws(
+    () => normalizeMerchWaitlistInput({ name: 'Ada', email: 'ada@example.com', interest: 'unknown-product' }),
+    /valid merch interest/,
+  );
+  assert.throws(
+    () => normalizeMerchWaitlistInput({ name: 'Ada', email: 'not-an-email', interest: 'full-drop' }),
+    /valid email address/,
+  );
+});
+
+
+test('waitlist endpoint records a dedicated source and handles repeat email submissions', async () => {
+  const endpoint = await readFile('api/submitMerchWaitlist.js', 'utf8');
+
+  assert.match(endpoint, /subscription_type: 'merch_waitlist'/);
+  assert.match(endpoint, /Source: \/gift-store/);
+  assert.match(endpoint, /findExistingWaitlistEntry/);
+  assert.match(endpoint, /updateRow\('attendees'/);
+  assert.match(endpoint, /existing: true/);
 });
 
 
@@ -54,31 +100,16 @@ test('print artwork is built from the approved Risk Takers logo', async () => {
 });
 
 
-test('giveaway guidance uses an eligible single product instead of the retail bundle', async () => {
-  const [page, config, brief, listings] = await Promise.all([
-    readFile('src/pages/GiftStore.jsx', 'utf8'),
-    readFile('src/config/merch.js', 'utf8'),
-    readFile('docs/merch-store-launch.md', 'utf8'),
-    readFile('docs/fourthwall-product-listings.md', 'utf8'),
-  ]);
-
-  assert.match(page, /RECOMMENDED GIVEAWAY[\s\S]*Attack Surface Desk Mat/);
-  assert.match(config, /category: 'Retail bundle'/);
-  assert.match(config, /details: \['Two-piece retail bundle', 'One bundle checkout', 'May ship separately'\]/);
-  assert.match(brief, /bundles cannot be used with giveaway links/i);
-  assert.match(listings, /Giveaway eligible:\*\* \*\*No\./);
-});
-
-
-test('merchandise policies disclose seller, payment, fulfillment, and order-data handoff', async () => {
+test('public legal copy describes a preview and waitlist rather than a store', async () => {
   const [privacy, terms] = await Promise.all([
     readFile('src/pages/Privacy.jsx', 'utf8'),
     readFile('src/pages/Terms.jsx', 'utf8'),
   ]);
 
-  assert.match(privacy, /Merchandise and order information/);
-  assert.match(privacy, /Full payment-card details[\s\S]*not collected by Risk Takers/);
-  assert.match(terms, /Fourthwall—not Risk Takers—is the seller/);
-  assert.match(terms, /made to order/);
-  assert.match(terms, /consumer law/);
+  assert.match(privacy, /Merch waitlist information/);
+  assert.match(privacy, /selected product interest/);
+  assert.match(terms, /Merchandise previews and waitlist/);
+  assert.match(terms, /does not create an order/);
+  assert.match(terms, /not current offers for sale/);
+  assert.doesNotMatch(`${privacy}\n${terms}`, /Fourthwall/);
 });

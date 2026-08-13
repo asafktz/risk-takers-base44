@@ -1,6 +1,6 @@
-# Risk Takers Gift Store: launch brief
+# Risk Takers merch waitlist: launch brief
 
-Status: the branded site page, logo-led product concepts, print-ready artwork, storefront mockups, price architecture, and provider integration points are built. The owner approved the revised logo-led collection on August 12, 2026. A Fourthwall account now exists and all five products plus the paid-checkout bundle have been created and verified **Hidden**. The shop title is **Risk Takers Gift Store**, `risk-takers-shop.fourthwall.com` is active behind Fourthwall's **Coming soon** gate, and the yellow/washed-gray/cream/black palette is saved in the hosted theme. Billing, payout verification, physical samples, checkout tests, publishing, and production deployment remain gated.
+Status: the native `risktakers.show/gift-store` waitlist page, logo-led product concepts, print-ready artwork, storefront mockups, and planned retail-value architecture are built. The public page is preview-and-waitlist only: it contains no cart, checkout, purchase link, shipping form, or Fourthwall destination. Fourthwall remains an unpublished back-office fulfillment option with all six listings **Hidden**. Payouts, billing, and the $100 monthly charge limit are configured; physical samples, hosted-store publishing, and any future sales flow remain separately gated.
 
 ## Live hidden catalog
 
@@ -19,7 +19,9 @@ Fourthwall's automatic bundle-image generator returned an error, so the hidden b
 
 ## Recommendation
 
-Use Fourthwall as the print-on-demand storefront and fulfillment system. Keep `/gift-store` on `risktakers.show` as the branded discovery layer, then send each item to its corresponding Fourthwall product page and hosted checkout.
+Use `/gift-store` on `risktakers.show` as the only public merch destination for now. It previews the concepts, shows planned retail values, and records name, email, and product interest in the existing Risk Takers attendee workflow under `subscription_type = merch_waitlist`.
+
+Keep Fourthwall strictly behind the scenes as a possible print-on-demand and fulfillment system. Do not publish its hosted store, expose product links, or connect the waitlist page to checkout unless Risk Takers later approves a separate commerce launch.
 
 Why Fourthwall fits this mission:
 
@@ -103,16 +105,16 @@ The generated collection hero is `public/merch/hero/risk-takers-gift-store-hero.
 5. Order one apparel sample and one hard-goods sample only after spend approval. Review print placement, text legibility, black density, yellow reproduction, mug wrap, mat edge safety, garment sizing, packaging, and delivery time.
 6. Complete payout identity and tax onboarding. Fourthwall says Israel is not on its hard-blocked-country list and provides a `bill.com` exception flow when Stripe Connect cannot onboard a country/bank, but the live onboarding result is the authority.
 7. Add a billing card only after approval. A card or sufficient store balance is required for gift-link redemptions because product and shipping are charged when claimed.
-8. Publish the products and copy their exact product URLs into Vercel using the variables in `config/merch.env.example`.
-9. Run a paid-checkout test and a one-use giveaway-link test on an eligible individual product only after approval for the test spend. Verify size/color selection, recipient $0 checkout, shipping charge, confirmation email, order visibility, and support path.
-10. Deploy the Risk Takers branch only after approval, then verify `/gift-store`, navigation, SEO, product links, and checkout return behavior on the production domain.
+8. Keep every Fourthwall listing hidden and the hosted store unpublished during the waitlist phase.
+9. Validate the native waitlist with a dedicated synthetic identity, verify its `merch_waitlist` record in the existing admin workflow, and remove the test record.
+10. Deploy the Risk Takers branch only after approval, then verify `/gift-store`, navigation, SEO, responsive layout, waitlist success/error behavior, and the absence of outbound purchase links on the production domain.
 
 ## Integration behavior
 
-- `src/config/merch.js` is the single product/pricing/integration source for the web page.
-- Without a Fourthwall domain, the site clearly renders a collection preview and disables checkout CTAs. There are no fake or broken purchase links.
-- With the domain and exact product URLs configured, product CTAs open Fourthwall product pages where variant selection, payment, tax, shipping, fulfillment, and catalog-order support are handled.
-- If a native on-site cart becomes worthwhile, use Fourthwall's Storefront API and hosted checkout redirect. Do not collect card details in the Risk Takers application.
+- `src/config/merch.js` contains public presentation data only: product names, descriptions, planned retail values, details, and local mockup paths.
+- `src/pages/GiftStore.jsx` renders the native collection preview and a first-party waitlist form. Every product CTA stays on the page and can preselect a product interest.
+- `api/submitMerchWaitlist.js` validates and normalizes submissions, records `subscription_type = merch_waitlist`, stores the chosen interest in `description`, and treats a repeated email as an update rather than a second signup.
+- The browser bundle contains no Fourthwall IDs, base costs, shop domain, provider URLs, or purchase integration variables.
 
 ## Launch acceptance checklist
 
@@ -122,10 +124,10 @@ The generated collection hero is `public/merch/hero/risk-takers-gift-store-hero.
 - [x] Every base cost rechecked in Fourthwall.
 - [ ] Shipping regions, destination estimates, and size surcharges rechecked in Fourthwall.
 - [ ] Apparel and hard-goods samples approved from physical inspection.
-- [ ] Billing card and payout onboarding complete.
-- [ ] Product URLs configured in a preview deployment.
+- [x] Billing card and payout onboarding complete.
+- [x] $100 monthly charge limit configured and verified after reload.
+- [ ] Native waitlist validated with a synthetic signup and zero-residue cleanup.
 - [ ] Desktop and mobile page review complete.
-- [ ] Test paid order approved and completed.
-- [ ] Test one-use giveaway claim approved and completed.
-- [ ] Privacy and terms reviewed for third-party merch checkout and transactional data.
+- [ ] Any later paid-order or giveaway test explicitly approved as a separate commerce phase.
+- [x] Privacy and terms describe the preview-and-waitlist phase without implying a sale.
 - [ ] Production deployment explicitly approved.

@@ -2,7 +2,7 @@ import React from 'react';
 import LegalPageLayout, { LegalList, LegalSection } from '@/components/LegalPageLayout';
 import { setSEO } from '@/lib/seo';
 
-const EFFECTIVE_DATE = 'August 12, 2026';
+const EFFECTIVE_DATE = 'August 13, 2026';
 
 export default function Terms() {
   React.useEffect(() => {
@@ -37,16 +37,14 @@ export default function Terms() {
         </LegalList>
       </LegalSection>
 
-      <LegalSection title="5. Merchandise, checkout, shipping, and returns">
-        <p>Risk Takers may display merchandise that is sold through a Fourthwall-hosted product page and checkout. For those product orders, Fourthwall—not Risk Takers—is the seller, processes payment, acts as merchant of record for sales-tax purposes, and coordinates manufacturing, fulfillment, shipment, and catalog-order support. Risk Takers supplies the brand and artwork and may receive a royalty from a sale. The product page, checkout disclosures, order confirmation, and Fourthwall&apos;s applicable <a className="font-bold underline" href="https://fourthwall.com/terms-of-service" target="_blank" rel="noreferrer">terms</a> and <a className="font-bold underline" href="https://fourthwall.com/privacy-policy" target="_blank" rel="noreferrer">privacy policy</a> also apply.</p>
+      <LegalSection title="5. Merchandise previews and waitlist">
+        <p>The Risk Takers merch page displays concepts and collects interest through a waitlist. It is not a store or checkout. Joining the waitlist does not create an order, reserve a product, guarantee availability, guarantee a gift, or require payment.</p>
         <LegalList>
-          <li>Prices are shown in the stated currency. Shipping, tax, duties, and other destination-based charges are shown or described during checkout where applicable.</li>
-          <li>Products are made on demand. Product images are representative; placement and color may vary within normal manufacturing and display tolerances.</li>
-          <li>Production and delivery estimates are estimates, not guarantees. Cross-border orders may incur import duties or customs charges unless the checkout states they were collected.</li>
-          <li>Because items are made to order, returns for sizing preference, buyer&apos;s remorse, or a change of mind are not generally accepted. Verified damage, defects, incorrect items, or other fulfillment errors must be reported through the shop support channel within the stated claim window with the order number and requested evidence.</li>
-          <li>Giveaway links are single-use, have no cash value, may become unavailable after redemption, and may be subject to product, destination, availability, or redemption restrictions shown with the offer.</li>
+          <li>Images are product concepts and may change before anything becomes available.</li>
+          <li>Stated retail values are planned launch values, not current offers for sale, prior prices, or claims about market value.</li>
+          <li>Waitlist responses may be used to decide which concepts move into production.</li>
+          <li>If a later sale or giveaway opens, its availability, eligibility, price, fulfillment, and other terms will be disclosed separately.</li>
         </LegalList>
-        <p>Nothing in this section excludes a refund, replacement, cancellation right, warranty, or other remedy that cannot lawfully be excluded under applicable consumer law.</p>
       </LegalSection>
 
       <LegalSection title="6. Recordings and participant contributions">
