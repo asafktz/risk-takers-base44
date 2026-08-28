@@ -88,6 +88,9 @@ export default function FooterCTA() {
             <Link to="/about" className="text-[#666666] hover:text-[#111111] text-sm transition-colors">
               About
             </Link>
+            <Link to="/services" className="text-[#666666] hover:text-[#111111] text-sm transition-colors">
+              Services
+            </Link>
             <Link to="/contact" className="text-[#666666] hover:text-[#111111] text-sm transition-colors">
               Contact
             </Link>
