@@ -68,8 +68,8 @@ const panelists = [
   },
   {
     name: 'Priya Mouli',
-    title: 'CISO',
-    company: 'University of Alberta · Top 10 CISO in Canada, 2026',
+    title: 'Global Cybersecurity Executive | CISO | Strategic Risk Advisor',
+    company: '',
     image: '/ai-defense-stack/priya-mouli.png',
   },
 ];
@@ -272,7 +272,7 @@ export default function AIDefenseStack() {
                 </div>
                 <h3 className="rt-display mt-4 text-3xl uppercase leading-[0.88]">{person.name}</h3>
                 <p className="mt-2 text-xs font-black uppercase leading-5 text-[#E0A800]">{person.title}</p>
-                <p className="mt-1 text-xs font-semibold leading-5 text-[#ABA69D]">{person.company}</p>
+                {person.company && <p className="mt-1 text-xs font-semibold leading-5 text-[#ABA69D]">{person.company}</p>}
               </article>
             ))}
           </div>
