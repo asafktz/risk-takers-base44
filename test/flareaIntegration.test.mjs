@@ -60,12 +60,12 @@ test('grant, rejection, and withdrawal call both Flarea consent outcomes', () =>
   }
 });
 
-test('the site uses one consent-gated account pixel and the AI Defense persistent player', async () => {
+test('the site uses one consent-gated Risk Takers pixel attributed to AI Defense Stack Day', async () => {
   const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
   assert.equal((html.match(/script\.src = 'https:\/\/flarea\.ai\/sr\.js'/g) || []).length, 1);
-  assert.match(html, /data-account', 'px_ea318f7787914774a763926a/);
+  assert.match(html, /data-account', 'px_05e045ad4b2f44eebeeda240/);
+  assert.match(html, new RegExp(`data-show', '${EVENT_SLUG}`));
   assert.match(html, /data-consent', 'required/);
-  assert.doesNotMatch(html, /setAttribute\('data-show'/);
   assert.match(html, new RegExp(`https://www\\.risktakers\\.show/watch/${EVENT_SLUG}`));
   assert.match(html, new RegExp(`https://flarea\\.ai/embed/${EVENT_SLUG}`));
   assert.match(html, new RegExp(`https://flarea\\.ai/api/live\\?room=${EVENT_SLUG}`));

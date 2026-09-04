@@ -5,11 +5,11 @@ import { resolveFlareaConsent } from '../src/lib/flareaConsent.js';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 
-test('the host installs one account pixel and no per-event pixel', async () => {
+test('the host pixel maps to the Risk Takers workspace and current case-study event', async () => {
   const html = await read('index.html');
   assert.equal((html.match(/script\.src = 'https:\/\/flarea\.ai\/sr\.js'/g) || []).length, 1);
-  assert.match(html, /setAttribute\('data-account', 'px_ea318f7787914774a763926a'\)/);
-  assert.doesNotMatch(html, /setAttribute\('data-show'/);
+  assert.match(html, /setAttribute\('data-account', 'px_05e045ad4b2f44eebeeda240'\)/);
+  assert.match(html, /setAttribute\('data-show', 'ai-defense-stack-showcase-day-n4qd'\)/);
   assert.match(html, /'\/analytics-journey-qa-20260810'/);
 });
 
