@@ -15,7 +15,7 @@ export default function Navbar() {
     { label: 'AI Defense Stack', to: '/AIDefenseStack' },
     { label: 'Gift Store', to: '/gift-store', accent: true },
     { label: 'Services', to: '/services' },
-    { label: 'Apply as Vendor', to: '/vendors' },
+    { label: 'Vendor Applications Closed', to: '/vendors' },
     // Hidden until episode videos are uploaded — restore to show the Previous Episodes archive.
     // { label: 'Previous Episodes', to: '/episodes' },
     { label: 'About', to: '/about' },

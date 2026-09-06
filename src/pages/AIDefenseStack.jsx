@@ -367,7 +367,7 @@ export default function AIDefenseStack() {
               Reserve my seat <ArrowRight className="h-4 w-4" />
             </Button>
             <Button asChild variant="outline" className="h-14 rounded-none border-2 border-[#080808] bg-transparent px-7 text-sm font-black uppercase tracking-wide text-[#080808] hover:bg-[#080808] hover:text-white">
-              <Link to="/vendors">Apply as a vendor</Link>
+              <Link to="/vendors">Vendor applications closed</Link>
             </Button>
           </div>
         </div>
