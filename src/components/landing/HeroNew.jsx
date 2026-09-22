@@ -67,9 +67,9 @@ export default function HeroNew() {
               Five cybersecurity companies. Five security leaders. Live demos and questions on defending against AI security risks.
             </p>
             <p className="mt-4 text-sm font-semibold text-white">12 PM Eastern · 7 PM Israel</p>
-            <Button asChild className="mt-8 h-auto whitespace-normal bg-[#F1C40F] hover:bg-[#D4AC0D] text-[#1F1F1F] px-8 py-4 text-base font-bold">
-              <Link to="/AIDefenseStack">See the lineup and register free</Link>
-            </Button>
+            <Link to="/AIDefenseStack" className="inline-flex items-center justify-center rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 mt-8 h-auto whitespace-normal bg-[#F1C40F] hover:bg-[#D4AC0D] text-[#1F1F1F] px-8 py-4 text-base font-bold">
+              See the lineup and register free
+            </Link>
           </div>
         </div>
       </div>
