@@ -1,25 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { episodePath } from '@/lib/seo';
-import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
 import TornPaper from '../TornPaper';
 import { Button } from '@/components/ui/button';
 import SubscribeDialog from '../SubscribeDialog';
 
 export default function FooterCTA() {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
-
-  const { data: nextEpisode } = useQuery({
-    queryKey: ['nextEpisode'],
-    queryFn: async () => {
-      const episodes = await base44.entities.Episode.list('date');
-      const now = new Date();
-      const upcoming = episodes.filter(ep => new Date(ep.date) >= now);
-      return upcoming[0] || null;
-    }
-  });
 
   return (
     <section className="py-24 px-4 sm:px-8 relative overflow-hidden">
@@ -50,23 +37,12 @@ export default function FooterCTA() {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          {nextEpisode ? (
-            <Button 
-              asChild
-              className="bg-[#1F1F1F] hover:bg-[#111111] text-white px-8 py-6 text-base font-bold tracking-wide transition-all hover:translate-y-[-2px]"
-            >
-              <Link to={episodePath(nextEpisode)}>
-                Register for the Next Episode
-              </Link>
-            </Button>
-          ) : (
-            <Button 
-              disabled
-              className="bg-[#1F1F1F] hover:bg-[#111111] text-white px-8 py-6 text-base font-bold tracking-wide transition-all hover:translate-y-[-2px]"
-            >
-              Register for the Next Episode
-            </Button>
-          )}
+          <Button
+            asChild
+            className="h-auto whitespace-normal bg-[#1F1F1F] hover:bg-[#111111] text-white px-8 py-4 text-base font-bold tracking-wide transition-all hover:translate-y-[-2px]"
+          >
+            <Link to="/AIDefenseStack">Register for AI Defense Stack Day</Link>
+          </Button>
           <Button 
             variant="outline"
             onClick={() => setSubscribeOpen(true)}
