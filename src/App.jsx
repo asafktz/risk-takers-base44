@@ -16,6 +16,7 @@ import ApplyPage from '@/pages/Apply';
 import VendorsPage from '@/pages/Vendors';
 import JoinPage from '@/pages/Join';
 import FlareaEmbedLabPage from '@/pages/FlareaEmbedLab';
+import PitchNightQA from '@/pages/PitchNightQA';
 import AnalyticsJourneyQAPage from '@/pages/AnalyticsJourneyQA';
 import PrivacyPage from '@/pages/Privacy';
 import TermsPage from '@/pages/Terms';
@@ -100,6 +101,7 @@ const AuthenticatedApp = () => {
             <FlareaEmbedLabPage />
           </LayoutWrapper>
         } />
+        <Route path="/pitch-night-qa-20260922" element={<LayoutWrapper currentPageName="PitchNightQA"><PitchNightQA /></LayoutWrapper>} />
         <Route path="/analytics-journey-qa-20260810" element={
           <LayoutWrapper currentPageName="AnalyticsJourneyQA">
             <AnalyticsJourneyQAPage />

@@ -78,7 +78,7 @@
          Skipped for privacy opt-outs and on the embed-lab QA page (which renders two players on purpose). -->
     <script>(function(){
       if (window.__rtPrivacyOptOut) return;
-      if (location.pathname.replace(/\/+$/, '') === '/flarea-embed-lab') return;
+      if (['/flarea-embed-lab', '/pitch-night-qa-20260922'].includes(location.pathname.replace(/\/+$/, ''))) return;
       var s = document.createElement('script');
       s.async = true;
       s.src = 'https://flarea.ai/embed.js';
