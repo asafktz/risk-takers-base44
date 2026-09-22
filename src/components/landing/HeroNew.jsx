@@ -1,21 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
-import { episodePath } from '@/lib/seo';
 import { Button } from '@/components/ui/button';
 
 
 export default function HeroNew() {
-  const { data: nextEpisode } = useQuery({
-    queryKey: ['nextEpisode'],
-    queryFn: async () => {
-      const episodes = await base44.entities.Episode.list('date');
-      const now = new Date();
-      const upcoming = episodes.filter(ep => new Date(ep.date) >= now);
-      return upcoming[0] || null;
-    }
-  });
-
   return (
     <section className="relative bg-[#1F1F1F] overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-8 py-16 sm:py-24">
@@ -48,16 +35,14 @@ export default function HeroNew() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {nextEpisode && (
                 <Button
                   asChild
-                  className="bg-[#F1C40F] hover:bg-[#D4AC0D] text-[#1F1F1F] px-8 py-6 text-base font-bold tracking-wide transition-all hover:translate-y-[-2px]"
+                  className="bg-[#F1C40F] hover:bg-[#D4AC0D] text-[#1F1F1F] h-auto whitespace-normal px-8 py-4 text-base font-bold tracking-wide transition-all hover:translate-y-[-2px]"
                 >
-                  <Link to={`/register/${episodePath(nextEpisode).split('/').pop()}`}>
-                    Register for Next Episode
+                  <Link to="/AIDefenseStack">
+                    Explore AI Defense Stack Day
                   </Link>
                 </Button>
-              )}
               <Button
                 variant="outline"
                 className="border-2 border-[#555] text-white bg-transparent hover:bg-[#333] hover:text-white px-8 py-6 text-base font-bold tracking-wide transition-all"
@@ -71,18 +56,20 @@ export default function HeroNew() {
             </div>
           </div>
 
-          {/* Live show embed — full width below */}
-          <div className="w-full mt-12">
-            <iframe
-              src="https://webinar-show.vercel.app/embed/building-resilient-systems-insig-s1pc"
-              width="100%"
-              frameBorder="0"
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowFullScreen
-              className="w-full rounded-xl"
-              style={{ border: 0, height: '70vh' }}
-              title="Risk Takers live show"
-            />
+          <div className="w-full max-w-4xl mt-12 rounded-xl border border-[#F1C40F]/40 bg-[#292929] px-6 py-10 sm:px-12 text-center">
+            <p className="text-sm font-bold uppercase tracking-widest text-[#F1C40F]">
+              September 23, 2026 · Live online
+            </p>
+            <h2 className="mt-4 text-3xl sm:text-5xl font-black text-white">
+              The AI Defense Stack Day
+            </h2>
+            <p className="mx-auto mt-5 max-w-2xl text-lg text-[#CCCCCC]">
+              Five cybersecurity companies. Five security leaders. Live demos and questions on defending against AI security risks.
+            </p>
+            <p className="mt-4 text-sm font-semibold text-white">12 PM Eastern · 7 PM Israel</p>
+            <Button asChild className="mt-8 h-auto whitespace-normal bg-[#F1C40F] hover:bg-[#D4AC0D] text-[#1F1F1F] px-8 py-4 text-base font-bold">
+              <Link to="/AIDefenseStack">See the lineup and register free</Link>
+            </Button>
           </div>
         </div>
       </div>
