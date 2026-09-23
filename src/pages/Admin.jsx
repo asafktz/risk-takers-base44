@@ -142,7 +142,7 @@ export default function Admin() {
           <TabsContent value="guests"><GuestsManager /></TabsContent>
           <TabsContent value="registrations">
             <SubmissionsManager
-              sourceIds={['registrations']}
+              sourceIds={['registrations', 'recording-access']}
               title="Event registrations"
               description="Registrations and subscriptions are kept separate from applications and lead forms."
             />

@@ -2,6 +2,12 @@ const field = (key, label, type = 'text') => ({ key, label, type });
 
 export const SUBMISSION_SOURCES = [
   {
+    id: 'recording-access', label: 'Recording access', shortLabel: 'Recording access',
+    purpose: 'People who unlocked the AI Defense Stack recording library.',
+    table: 'recording_registrations', timestamp: 'created_at', headline: ['full_name'], subhead: ['email'],
+    fields: [field('full_name', 'Name'), field('email', 'Email', 'email'), field('event_slug', 'Event'), field('last_access_at', 'Last access', 'date'), field('privacy_opted_out', 'Privacy opt-out', 'boolean')],
+  },
+  {
     id: 'vendors',
     label: 'Vendor applications',
     shortLabel: 'Vendors',

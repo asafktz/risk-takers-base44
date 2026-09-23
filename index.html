@@ -67,25 +67,6 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    <!-- Flarea persistent mini player — the show follows visitors across the site. ONE hosted tag from the
-         event's embed panel: the behaviour ships from Flarea (a fix lands here without re-pasting), it stands
-         down on /watch where the full embed already plays, and it opens by itself when the doors open.
-         The earlier inline copy had frozen a month behind the platform.
-         data-show MUST be the UPCOMING show. On 2026-09-15 this tag was found pointing at the July episode
-         (ended 2026-07-29) on every page, because a copy of an older snippet overwrote the AI Defense slug.
-         Before changing it, check the show on flarea.ai has not ended. This hand-edited slug goes away once
-         Flarea's "follow my next show" snippet exists — switch to that instead of editing a slug here.
-         Skipped for privacy opt-outs and on the embed-lab QA page (which renders two players on purpose). -->
-    <script>(function(){
-      if (window.__rtPrivacyOptOut) return;
-      if (['/flarea-embed-lab', '/pitch-night-qa-20260922'].includes(location.pathname.replace(/\/+$/, ''))) return;
-      var s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://flarea.ai/embed.js';
-      s.setAttribute('data-show', 'ai-defense-stack-showcase-day-n4qd');
-      s.setAttribute('data-mini', '');
-      s.setAttribute('data-watch', 'https://www.risktakers.show/watch/ai-defense-stack-showcase-day-n4qd');
-      document.body.appendChild(s);
-    })();</script>
+    <!-- The completed AI Defense Stack event is available in the gated recording library. -->
   </body>
 </html>
