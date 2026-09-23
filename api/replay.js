@@ -11,6 +11,7 @@ export function readSession(cookie='',now=Date.now()){
  try{const token=cookie.split(';').map(s=>s.trim()).find(s=>s.startsWith(COOKIE+'='))?.slice(COOKIE.length+1);if(!token||token.length>1000)return null;const [body,sig,...rest]=token.split('.');if(rest.length||!sig||!equal(mac(body),sig))return null;const data=JSON.parse(Buffer.from(body,'base64url'));return data.exp>now/1000&&data.event===RECORDING_EVENT&&/^[a-f0-9-]{36}$/.test(data.id)?data:null;}catch{return null;}
 }
 export function validateRegistration(body){
+ if(!body||typeof body!=='object'||Array.isArray(body))throw Object.assign(new Error('Invalid request'),{status:400});
  const name=typeof body.name==='string'?body.name.trim():'';const email=typeof body.email==='string'?body.email.trim().toLowerCase():'';
  if(name.length<2||name.length>120||[...name].some(c=>c.charCodeAt(0)<32)||email.length>254||!/^\S+@[^\s@]+\.[^\s@]+$/.test(email)||body.website)throw Object.assign(new Error('Please enter your name and a valid email address.'),{status:400});
  return {name,email};
@@ -21,7 +22,7 @@ async function backend(path,options={}){
  return r;
 }
 async function registered(req){const session=readSession(req.headers.cookie);if(!session)return null;const r=await backend(`/rest/v1/recording_registrations?id=eq.${session.id}&event_slug=eq.${RECORDING_EVENT}&select=id&limit=1`);return (await r.json()).length?session:null;}
-async function bodyOf(req){if(req.body&&typeof req.body==='object')return req.body;let raw='';for await(const chunk of req){raw+=chunk;if(Buffer.byteLength(raw)>16384)throw Object.assign(new Error('Request too large'),{status:413});}try{return JSON.parse(raw||'{}');}catch{throw Object.assign(new Error('Invalid request'),{status:400});}}
+async function bodyOf(req){if(req.body&&typeof req.body==='object'){if(Buffer.byteLength(JSON.stringify(req.body))>16384)throw Object.assign(new Error('Request too large'),{status:413});return req.body;}let raw='';for await(const chunk of req){raw+=chunk;if(Buffer.byteLength(raw)>16384)throw Object.assign(new Error('Request too large'),{status:413});}try{return JSON.parse(raw||'{}');}catch{throw Object.assign(new Error('Invalid request'),{status:400});}}
 function validOrigin(req){const allowed=['https://www.risktakers.show','https://risktakers.show',...['VERCEL_URL','VERCEL_BRANCH_URL'].map(k=>process.env[k]&&`https://${process.env[k]}`)];if(!process.env.VERCEL_ENV)allowed.push('http://localhost:5187');return allowed.includes(req.headers.origin);}
 export async function signedManifest(id){
  const raw=await (await backend(`/storage/v1/object/${RECORDING_BUCKET}/${id}/index.m3u8`)).text();
@@ -49,6 +50,7 @@ export default async function replay(req,res){
    if(!validOrigin(req))return res.status(403).json({error:'Please register from the Risk Takers website.'});
    const {name,email}=validateRegistration(await bodyOf(req));const ip=String(req.headers['x-vercel-forwarded-for']||req.headers['x-forwarded-for']||req.socket?.remoteAddress||'unknown').split(',')[0].trim();
    const id=await (await backend('/rest/v1/rpc/register_recording_access',{method:'POST',body:JSON.stringify({p_name:name,p_email:email,p_ip_hash:mac('ip:'+new Date().toISOString().slice(0,10)+':'+ip)})})).json();
+   if(typeof id!=='string'||!/^[a-f0-9-]{36}$/.test(id))throw new Error('Registration not persisted');
    res.setHeader('Set-Cookie',`${COOKIE}=${makeSession(id)}; Path=/api/replay; HttpOnly; Secure; SameSite=Lax; Max-Age=${DAYS}`);return res.status(200).json({unlocked:true});
   }
   if(req.method!=='GET')return res.status(405).json({error:'Method not allowed'});
