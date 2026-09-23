@@ -1,4 +1,6 @@
 import { useMemo } from 'react';
+import RecordingLibrary from './RecordingLibrary';
+import { RECORDING_EVENT } from '../../config/recordings';
 import { useParams, useLocation } from 'react-router-dom';
 import { SHOWRUNNER_ORIGIN } from '@/config/liveEvent';
 
@@ -19,6 +21,8 @@ export default function WatchPage() {
     const qs = out.toString();
     return `${SHOWRUNNER_ORIGIN}/embed/${clean}${qs ? `?${qs}` : ''}`;
   }, [slug, location.search]);
+
+  if (slug === RECORDING_EVENT) return <RecordingLibrary />;
 
   return (
     <div className="bg-black" style={{ minHeight: 'calc(100vh - 64px)' }}>

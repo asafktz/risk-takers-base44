@@ -40,7 +40,7 @@ export default function HeroNew() {
                   className="bg-[#F1C40F] hover:bg-[#D4AC0D] text-[#1F1F1F] h-auto whitespace-normal px-8 py-4 text-base font-bold tracking-wide transition-all hover:translate-y-[-2px]"
                 >
                   <Link to="/AIDefenseStack">
-                    Explore AI Defense Stack Day
+                    Watch AI Defense Stack Day
                   </Link>
                 </Button>
               <Button
@@ -58,7 +58,7 @@ export default function HeroNew() {
 
           <div className="w-full max-w-4xl mt-12 rounded-xl border border-[#F1C40F]/40 bg-[#292929] px-6 py-10 sm:px-12 text-center">
             <p className="text-sm font-bold uppercase tracking-widest text-[#F1C40F]">
-              September 23, 2026 · Live online
+              September 23, 2026 · Now on demand
             </p>
             <h2 className="mt-4 text-3xl sm:text-5xl font-black text-white">
               The AI Defense Stack Day
@@ -66,9 +66,9 @@ export default function HeroNew() {
             <p className="mx-auto mt-5 max-w-2xl text-lg text-[#CCCCCC]">
               Five cybersecurity companies. Five security leaders. New approaches and live questions on defending against AI security risks.
             </p>
-            <p className="mt-4 text-sm font-semibold text-white">12 PM Eastern · 7 PM Israel</p>
+            <p className="mt-4 text-sm font-semibold text-white">Full episode · Company presentations · Panel Q&A</p>
             <Link to="/AIDefenseStack" className="inline-flex items-center justify-center rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 mt-8 h-auto whitespace-normal bg-[#F1C40F] hover:bg-[#D4AC0D] text-[#1F1F1F] px-8 py-4 text-base font-bold">
-              See the lineup and register free
+              Watch all recordings
             </Link>
           </div>
         </div>

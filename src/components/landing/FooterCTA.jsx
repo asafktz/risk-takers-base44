@@ -41,7 +41,7 @@ export default function FooterCTA() {
             asChild
             className="h-auto whitespace-normal bg-[#1F1F1F] hover:bg-[#111111] text-white px-8 py-4 text-base font-bold tracking-wide transition-all hover:translate-y-[-2px]"
           >
-            <Link to="/AIDefenseStack">Register for AI Defense Stack Day</Link>
+            <Link to="/AIDefenseStack">Watch AI Defense Stack Day</Link>
           </Button>
           <Button 
             variant="outline"

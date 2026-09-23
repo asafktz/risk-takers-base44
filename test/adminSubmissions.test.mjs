@@ -4,6 +4,7 @@ import test from 'node:test';
 import { SUBMISSION_SOURCES } from '../src/lib/submissionSources.js';
 
 const EXPECTED_TABLES = [
+  'recording_registrations',
   'vendor_applications',
   'guest_applications',
   'sponsorship_leads',
@@ -27,7 +28,7 @@ test('admin dashboard separates registrations, applications, guest intake, leads
   const adminSource = await readFile(new URL('../src/pages/Admin.jsx', import.meta.url), 'utf8');
   assert.match(adminSource, /import SubmissionsManager/);
   assert.match(adminSource, /value="registrations"/);
-  assert.match(adminSource, /sourceIds=\{\['registrations'\]\}/);
+  assert.match(adminSource, /sourceIds=\{\['registrations', 'recording-access'\]\}/);
   assert.match(adminSource, /value="vendor-applications"/);
   assert.match(adminSource, /sourceIds=\{\['vendors'\]\}/);
   assert.match(adminSource, /value="guest-applications"/);
@@ -44,7 +45,7 @@ test('admin dashboard separates registrations, applications, guest intake, leads
 
 test('admin read migration gates every private intake table through is_admin', async () => {
   const migration = await readFile(new URL('../supabase/migrations/20260811044642_admin_submission_read_access.sql', import.meta.url), 'utf8');
-  for (const table of EXPECTED_TABLES.filter((name) => name !== 'guests')) {
+  for (const table of EXPECTED_TABLES.filter((name) => name !== 'guests' && name !== 'recording_registrations')) {
     assert.match(migration, new RegExp(`'${table}'`));
   }
   assert.match(migration, /for select to authenticated using \(\(select public\.is_admin\(\)\)\)/);

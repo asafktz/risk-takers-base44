@@ -10,7 +10,7 @@ test('the host installs one account pixel and no per-event pixel', async () => {
   assert.equal((html.match(/script\.src = 'https:\/\/flarea\.ai\/sr\.js'/g) || []).length, 1);
   assert.match(html, /setAttribute\('data-account', 'px_ea318f7787914774a763926a'\)/);
   assert.doesNotMatch(html, /setAttribute\('data-show'/);
-  assert.match(html, /'\/analytics-journey-qa-20260810'/);
+  assert.doesNotMatch(html, /flarea\.ai\/embed\.js/);
 });
 
 test('analytics consent defaults off and respects saved privacy choices', () => {
