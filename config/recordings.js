@@ -1,5 +1,5 @@
 export const RECORDING_EVENT = "ai-defense-stack-showcase-day-n4qd";
-export const RECORDING_BUCKET = "ai-defense-recordings-20260923";
+export const RECORDING_BUCKET = "ai-defense-recordings-20260924-v2";
 export const RECORDINGS = [
   {
     "id": "show",
@@ -8,57 +8,57 @@ export const RECORDINGS = [
     "label": "Full episode",
     "topic": "Five companies. Five security leaders. The complete conversation.",
     "speaker": "",
-    "duration": 3764,
+    "duration": 3807,
     "poster": "/recordings/show.jpg"
   },
   {
     "id": "terra",
     "title": "Terra Security",
     "kind": "pitch",
-    "label": "Full pitch + Q&A highlights",
+    "label": "Intro + full pitch + full panel discussion",
     "topic": "Continuous offensive security",
     "speaker": "Onn Rubin",
-    "duration": 597,
+    "duration": 714,
     "poster": "/recordings/terra.jpg"
   },
   {
     "id": "way",
     "title": "Way Security",
     "kind": "pitch",
-    "label": "Full pitch + Q&A highlights",
+    "label": "Intro + full pitch + full panel discussion",
     "topic": "Identity governance",
     "speaker": "Yossi Barishev",
-    "duration": 633,
+    "duration": 642,
     "poster": "/recordings/way.jpg"
   },
   {
     "id": "mine",
     "title": "MineOS",
     "kind": "pitch",
-    "label": "Full pitch + Q&A highlights",
+    "label": "Intro + full pitch + full panel discussion",
     "topic": "AI governance with business context",
     "speaker": "Kobi Nissan",
-    "duration": 640,
+    "duration": 834,
     "poster": "/recordings/mine.jpg"
   },
   {
     "id": "tenet",
     "title": "Tenet Security",
     "kind": "pitch",
-    "label": "Full pitch + Q&A highlights",
+    "label": "Intro + full pitch + full panel discussion",
     "topic": "Securing enterprise AI agents",
     "speaker": "Barak Sternberg",
-    "duration": 442,
+    "duration": 451,
     "poster": "/recordings/tenet.jpg"
   },
   {
     "id": "act",
     "title": "Act Security",
     "kind": "pitch",
-    "label": "Full pitch + Q&A highlights",
+    "label": "Intro + full pitch + full panel discussion",
     "topic": "Action-centric cloud security",
     "speaker": "Jonathan Langer",
-    "duration": 618,
+    "duration": 961,
     "poster": "/recordings/act.jpg"
   },
   {
