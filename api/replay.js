@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
+import { sendEmail, brandedEmail, escapeHtml } from './_lib.js';
 import { RECORDINGS, RECORDING_EVENT, RECORDING_BUCKET } from '../config/recordings.js';
 const BASE='https://umznkxyzovuzhavkmqjt.supabase.co';
 const COOKIE='rt_recordings';
@@ -20,6 +21,23 @@ async function backend(path,options={}){
  const r=await fetch(BASE+path,{...options,headers:{apikey:secret(),Authorization:`Bearer ${secret()}`,'Content-Type':'application/json',...options.headers}});
  if(!r.ok){const text=await r.text();if(text.includes('REPLAY_RATE_LIMIT'))throw Object.assign(new Error('Too many requests. Please try again in a few minutes.'),{status:429});throw Object.assign(new Error('Recording access is temporarily unavailable. Please try again.'),{status:503});}
  return r;
+}
+export async function notifyRegistration(id, deliver=sendEmail) {
+ // Only the live recording page sends alerts. Conditional PATCH claims the row
+ // atomically so concurrent sign-ins cannot send the same notification twice.
+ if(process.env.VERCEL_ENV!=='production')return;
+ try {
+  const rows=await (await backend(`/rest/v1/recording_registrations?id=eq.${id}&event_slug=eq.${RECORDING_EVENT}&notification_status=eq.pending&select=id,full_name,email,created_at`,{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify({notification_status:'sending'})})).json();
+  if(!rows.length)return;
+  const lead=rows[0];
+  const url=`https://www.risktakers.show/watch/${RECORDING_EVENT}`;
+  const result=await deliver({to:'asaf@risktakers.show',subject:'New recording signup: AI Defense Stack Day',
+   idempotencyKey:`recording-signup-${id}`,
+   text:`New recording signup\n\nName: ${lead.full_name}\nEmail: ${lead.email}\nRegistered: ${lead.created_at}\nEvent: AI Defense Stack Day\nRecordings: ${url}`,
+   html:brandedEmail('New recording signup',`<p>Someone registered to watch AI Defense Stack Day.</p><p><strong>Name:</strong> ${escapeHtml(lead.full_name)}<br><strong>Email:</strong> ${escapeHtml(lead.email)}<br><strong>Registered:</strong> ${escapeHtml(lead.created_at)}</p><p><a href="${url}">View the recordings</a></p>`)});
+  await backend(`/rest/v1/recording_registrations?id=eq.${id}&notification_status=eq.sending`,{method:'PATCH',body:JSON.stringify({notification_status:result.sent?'sent':'failed',notification_sent_at:result.sent?new Date().toISOString():null,notification_provider_id:result.id||null})});
+  if(!result.sent)console.error('recording_notification_failed',JSON.stringify({registration_id:id,code:result.error?.code||'provider_rejected'}));
+ } catch {console.error('recording_notification_failed',JSON.stringify({registration_id:id,code:'notification_processing_failed'}));}
 }
 async function registered(req){const session=readSession(req.headers.cookie);if(!session)return null;const r=await backend(`/rest/v1/recording_registrations?id=eq.${session.id}&event_slug=eq.${RECORDING_EVENT}&select=id&limit=1`);return (await r.json()).length?session:null;}
 async function bodyOf(req){if(req.body&&typeof req.body==='object'){if(Buffer.byteLength(JSON.stringify(req.body))>16384)throw Object.assign(new Error('Request too large'),{status:413});return req.body;}let raw='';for await(const chunk of req){raw+=chunk;if(Buffer.byteLength(raw)>16384)throw Object.assign(new Error('Request too large'),{status:413});}try{return JSON.parse(raw||'{}');}catch{throw Object.assign(new Error('Invalid request'),{status:400});}}
@@ -51,6 +69,7 @@ export default async function replay(req,res){
    const {name,email}=validateRegistration(await bodyOf(req));const ip=String(req.headers['x-vercel-forwarded-for']||req.headers['x-forwarded-for']||req.socket?.remoteAddress||'unknown').split(',')[0].trim();
    const id=await (await backend('/rest/v1/rpc/register_recording_access',{method:'POST',body:JSON.stringify({p_name:name,p_email:email,p_ip_hash:mac('ip:'+new Date().toISOString().slice(0,10)+':'+ip)})})).json();
    if(typeof id!=='string'||!/^[a-f0-9-]{36}$/.test(id))throw new Error('Registration not persisted');
+   await notifyRegistration(id);
    res.setHeader('Set-Cookie',`${COOKIE}=${makeSession(id)}; Path=/api/replay; HttpOnly; Secure; SameSite=Lax; Max-Age=${DAYS}`);return res.status(200).json({unlocked:true});
   }
   if(req.method!=='GET')return res.status(405).json({error:'Method not allowed'});
