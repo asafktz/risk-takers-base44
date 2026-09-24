@@ -9,7 +9,7 @@ export const RECORDINGS = [
     "topic": "Five companies. Five security leaders. The complete conversation.",
     "speaker": "",
     "duration": 3807,
-    "poster": "/recordings/show.jpg"
+    "poster": "/recordings/event-cover.png"
   },
   {
     "id": "terra",
