@@ -15,17 +15,20 @@ export default function SponsorshipForm() {
   });
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError('');
 
     try {
-      await base44.functions.invoke('submitSponsorshipLead', formData);
+      const { data } = await base44.functions.invoke('submitSponsorshipLead', formData);
+      if (!data?.success) throw new Error(data?.error || 'Sponsorship inquiry was not saved');
       setSubmitted(true);
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Error submitting form. Please try again.');
+    } catch (submitError) {
+      console.error('Error submitting sponsorship inquiry:', submitError);
+      setError('We could not save your inquiry. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -83,6 +86,7 @@ export default function SponsorshipForm() {
         />
       </div>
       <PrivacyCollectionNotice />
+      {error && <p role="alert" className="text-[#B42318] text-sm font-medium">{error}</p>}
       <Button 
         type="submit"
         disabled={loading}

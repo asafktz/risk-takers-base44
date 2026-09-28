@@ -1,20 +1,11 @@
-import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import TornPaper from '../TornPaper';
 import { Check } from 'lucide-react';
-import SponsorshipForm from './SponsorshipForm';
-
-const principles = [
-  "Disclosed",
-  "Approved with guests",
-  "Independent of content",
-  "Free from topic influence"
-];
+import { SPONSORSHIP_CTA, SPONSORSHIP_PATH, SPONSORSHIP_PRINCIPLES } from '@/lib/sponsorship';
 
 export default function SponsorshipsSection() {
-  const [showForm, setShowForm] = useState(false);
-
   return (
-    <section className="py-20 px-4 sm:px-8 bg-[#1F1F1F]">
+    <section id="sponsorships" className="py-20 px-4 sm:px-8 bg-[#1F1F1F]">
       <div className="max-w-4xl mx-auto">
         {/* Section header */}
         <div className="mb-12">
@@ -49,8 +40,8 @@ export default function SponsorshipsSection() {
               <p className="text-[#666666] mb-4">All sponsorships are:</p>
               
               <ul className="space-y-3 mb-8">
-                {principles.map((principle, index) => (
-                  <li key={index} className="flex items-center gap-3">
+                {SPONSORSHIP_PRINCIPLES.map((principle) => (
+                  <li key={principle} className="flex items-center gap-3">
                     <span className="w-5 h-5 bg-[#1F1F1F] rounded-sm flex items-center justify-center flex-shrink-0">
                       <Check className="w-3 h-3 text-white" />
                     </span>
@@ -59,16 +50,12 @@ export default function SponsorshipsSection() {
                 ))}
               </ul>
 
-              {!showForm ? (
-                <button
-                  onClick={() => setShowForm(true)}
-                  className="border-2 border-[#1F1F1F] text-[#1F1F1F] bg-transparent hover:bg-[#1F1F1F] hover:text-white px-6 py-5 text-base font-bold tracking-wide transition-all"
-                >
-                  Inquire About Sponsorships
-                </button>
-              ) : (
-                <SponsorshipForm />
-              )}
+              <Link
+                to={SPONSORSHIP_PATH}
+                className="inline-block border-2 border-[#1F1F1F] text-[#1F1F1F] bg-transparent hover:bg-[#1F1F1F] hover:text-white px-6 py-5 text-base font-bold tracking-wide transition-all"
+              >
+                {SPONSORSHIP_CTA}
+              </Link>
             </div>
           </TornPaper>
         </div>
