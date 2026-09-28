@@ -1,5 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { SPONSORSHIP_PATH } from '@/lib/sponsorship';
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -8,10 +9,10 @@ export default function Navbar() {
   const scrollLinks = [
     { label: 'Episodes', href: '#episodes' },
     { label: 'Host', href: '#host' },
-    { label: 'Sponsorships', href: '#sponsorships' },
   ];
 
   const pageLinks = [
+    { label: 'Sponsorships', to: SPONSORSHIP_PATH },
     { label: 'AI Defense Stack', to: '/AIDefenseStack' },
     { label: 'Gift Store', to: '/gift-store', accent: true },
     { label: 'Services', to: '/services' },

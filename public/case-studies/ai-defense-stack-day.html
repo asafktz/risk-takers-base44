@@ -10,7 +10,7 @@
   <meta property="og:title" content="AI Defense Stack Day | Risk Takers sponsor case study">
   <meta property="og:description" content="A look at the audience, conversations, and sponsor follow-through behind AI Defense Stack Day.">
   <meta property="og:url" content="https://risktakers.show/case-studies/ai-defense-stack-day.html">
-  <meta property="og:image" content="https://risktakers.show/og-risk-takers.svg">
+  <meta property="og:image" content="https://risktakers.show/ai-defense-stack/risk-takers-logo.png">
   <style>
     :root {
       color-scheme: light;
@@ -28,8 +28,8 @@
     .wrap { width: min(1120px, calc(100% - 48px)); margin-inline: auto; }
     .topline { background: var(--ink); color: #fff; font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
     .topline .wrap { min-height: 46px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    .brand { display: flex; align-items: center; gap: 9px; white-space: nowrap; }
-    .brand-mark { display: inline-grid; place-items: center; width: 25px; height: 25px; background: var(--yellow); color: var(--ink); font-size: 13px; letter-spacing: -.12em; padding-right: 2px; }
+    .brand { display: flex; align-items: center; gap: 9px; white-space: nowrap; color: inherit; text-decoration: none; }
+    .brand img { display: block; width: 40px; height: 40px; object-fit: contain; }
     .toplink { color: var(--yellow); text-align: right; text-decoration: none; }
     .toplink:hover { text-decoration: underline; }
     .hero { position: relative; overflow: hidden; background: var(--ink); color: #fff; border-top: 1px solid #444; }
@@ -89,6 +89,8 @@
     .use-box { padding: 26px; background: var(--yellow); }
     .use-box strong { display: block; margin-bottom: 10px; text-transform: uppercase; letter-spacing: .08em; font-size: 12px; }
     .use-box p { margin: 0; color: var(--ink); font-size: 16px; font-weight: 700; }
+    .cta-link { display: inline-block; margin-top: 18px; padding: 12px 17px; background: var(--ink); color: white; text-decoration: none; font-size: 14px; font-weight: 850; }
+    .cta-link:hover, .cta-link:focus-visible { background: #424242; }
     footer { padding-block: 30px 40px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
     footer p { max-width: 950px; margin-bottom: 8px; }
     @media (max-width: 850px) {
@@ -121,7 +123,7 @@
 <body>
   <div class="topline">
     <div class="wrap">
-      <div class="brand"><span class="brand-mark" aria-hidden="true">RT</span> Risk Takers</div>
+      <a class="brand" href="/"><img src="/ai-defense-stack/risk-takers-logo.png" alt="" width="40" height="40">Risk Takers</a>
       <a class="toplink" href="/">Back to Risk Takers</a>
     </div>
   </div>
@@ -241,7 +243,7 @@
           <div class="section-top"><span class="section-num">06 / Sponsor story</span><h2 id="closing-heading">A show built to keep working afterward</h2></div>
           <p>Risk Takers combined an editorial format with targeted outreach, individualized reporting and reusable video. The result was a clearer path from one live event to relevant relationships and informed sponsor follow-up.</p>
         </div>
-        <aside class="use-box"><strong>Explore a sponsorship</strong><p>Bring your story to a relevant security audience, with clear reporting and content your team can use afterward. <a href="/contact">Get in touch</a>.</p></aside>
+        <aside class="use-box"><strong>Explore a sponsorship</strong><p>Bring your story to a relevant security audience, with clear reporting and content your team can use afterward.</p><a class="cta-link" href="/sponsorships">Inquire about sponsorships</a></aside>
       </div>
     </section>
   </main>

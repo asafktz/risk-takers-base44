@@ -4,6 +4,7 @@ import { createPageUrl } from '@/utils';
 import TornPaper from '../TornPaper';
 import { Button } from '@/components/ui/button';
 import SubscribeDialog from '../SubscribeDialog';
+import { SPONSORSHIP_PATH } from '@/lib/sponsorship';
 
 export default function FooterCTA() {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
@@ -66,6 +67,9 @@ export default function FooterCTA() {
             </Link>
             <Link to="/services" className="text-[#666666] hover:text-[#111111] text-sm transition-colors">
               Services
+            </Link>
+            <Link to={SPONSORSHIP_PATH} className="text-[#666666] hover:text-[#111111] text-sm transition-colors">
+              Sponsorships
             </Link>
             <Link to="/contact" className="text-[#666666] hover:text-[#111111] text-sm transition-colors">
               Contact

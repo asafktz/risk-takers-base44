@@ -8,6 +8,8 @@ import TornPaper from '../components/TornPaper';
 import { base44 } from '@/api/base44Client';
 import { setSEO, organizationJsonLd } from '@/lib/seo';
 import PrivacyCollectionNotice from '@/components/PrivacyCollectionNotice';
+import { Link } from 'react-router-dom';
+import { SPONSORSHIP_CTA, SPONSORSHIP_PATH } from '@/lib/sponsorship';
 
 export default function Contact() {
   React.useEffect(() => {
@@ -58,6 +60,9 @@ export default function Contact() {
         </div>
 
         <div className="max-w-2xl mx-auto space-y-8">
+          <p className="text-center text-[#333333]">
+            Interested in sponsoring a show? <Link to={SPONSORSHIP_PATH} className="font-bold underline underline-offset-4">{SPONSORSHIP_CTA}</Link>.
+          </p>
           {/* Email */}
           <Card className="border-4 border-[#1F1F1F]">
             <CardContent className="p-8 bg-white flex items-center gap-4">
