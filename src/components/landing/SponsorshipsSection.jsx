@@ -35,11 +35,15 @@ export default function SponsorshipsSection() {
           <TornPaper variant="both" bgColor="#FFFFFF" rotate={0.3}>
             <div className="px-6 py-6 sm:px-10 sm:py-8">
               <p className="text-xl sm:text-2xl font-bold text-[#111111] mb-6">
-                Risk Takers is currently unsponsored.
+                See what a Risk Takers sponsorship can deliver.
               </p>
               
               <p className="text-[#333333] leading-relaxed mb-8">
                 We selectively partner with organizations that contribute real insight to conversations around AI, cybersecurity, and risk — not sales pitches.
+              </p>
+
+              <p className="text-[#333333] leading-relaxed mb-8">
+                Our <a className="font-bold underline underline-offset-4" href="/case-studies/ai-defense-stack-day.html">AI Defense Stack Day case study</a> shows the audience mix, conversations, and follow-through from a recent event.
               </p>
 
               <p className="text-[#666666] mb-4">All sponsorships are:</p>
